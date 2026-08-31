@@ -13,6 +13,7 @@ const navItems = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [lang, setLang] = useState<"id" | "en">("id");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -32,6 +33,10 @@ export default function Navbar() {
     setMenuOpen(false);
   };
 
+  const toggleLang = () => {
+    setLang((prev) => (prev === "id" ? "en" : "id"));
+  };
+
   return (
     <header
       className={`pkkb-navbar ${
@@ -40,7 +45,6 @@ export default function Navbar() {
     >
       <div className="pkkb-navbar-inner">
 
-        {/* Logo */}
         <a
           href="#hero"
           className="pkkb-logo"
@@ -54,7 +58,6 @@ export default function Navbar() {
           />
         </a>
 
-        {/* Desktop Navigation */}
         <nav
           className="pkkb-nav"
           aria-label="Main navigation"
@@ -70,52 +73,64 @@ export default function Navbar() {
           ))}
         </nav>
 
-        {/* Right Actions */}
-        <div className="pkkb-navbar-actions">
+        <div className="pkkb-navbar-right">
 
           <button
-            className="pkkb-language"
             type="button"
+            className="pkkb-language-switch"
+            data-lang={lang}
+            onClick={toggleLang}
+            aria-label="Switch language"
           >
-            ID
-            <span className="pkkb-language-divider">
-              /
+            <span className="pkkb-language-thumb" />
+            <span
+              className={`pkkb-language-option ${
+                lang === "id" ? "is-active" : ""
+              }`}
+            >
+              ID
             </span>
-            <span>EN</span>
+            <span
+              className={`pkkb-language-option ${
+                lang === "en" ? "is-active" : ""
+              }`}
+            >
+              EN
+            </span>
           </button>
 
-          <a
-            href="/register"
-            className="pkkb-nav-cta"
+          <div className="pkkb-navbar-actions">
+            <a
+              href="/register"
+              className="pkkb-nav-cta"
+            >
+              Daftar Sekarang
+            </a>
+          </div>
+
+          <button
+            type="button"
+            className={`pkkb-menu-button ${
+              menuOpen ? "is-open" : ""
+            }`}
+            aria-label={
+              menuOpen
+                ? "Tutup menu"
+                : "Buka menu"
+            }
+            aria-expanded={menuOpen}
+            onClick={() =>
+              setMenuOpen((prev) => !prev)
+            }
           >
-            Daftar Sekarang
-          </a>
+            <span />
+            <span />
+          </button>
 
         </div>
 
-        {/* Mobile Menu Button */}
-        <button
-          type="button"
-          className={`pkkb-menu-button ${
-            menuOpen ? "is-open" : ""
-          }`}
-          aria-label={
-            menuOpen
-              ? "Tutup menu"
-              : "Buka menu"
-          }
-          aria-expanded={menuOpen}
-          onClick={() =>
-            setMenuOpen((prev) => !prev)
-          }
-        >
-          <span />
-          <span />
-        </button>
-
       </div>
 
-      {/* Mobile Navigation */}
       <div
         className={`pkkb-mobile-menu ${
           menuOpen ? "is-open" : ""
