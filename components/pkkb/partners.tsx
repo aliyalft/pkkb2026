@@ -120,7 +120,7 @@ export default function Partners() {
                 </span>
 
                 <span className="pkkb-partner-arrow">
-                  ↗
+                  ↗︎
                 </span>
               </button>
             ))}

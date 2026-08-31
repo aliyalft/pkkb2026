@@ -1174,6 +1174,16 @@ canvas {
 
 
 /* =========================================================
+   MOBILE COMBINED BADGE
+   (hidden by default — only shown under 900px, see below)
+   ========================================================= */
+
+.pkkb-hero-mobile-badge {
+  display: none;
+}
+
+
+/* =========================================================
    TABLET
    ========================================================= */
 
@@ -1300,209 +1310,81 @@ canvas {
 
 
   /* =======================================================
-     EVENT CARDS
-     
-     CARD DULU
-     BUTTON NANTI DI BAWAH
+     EVENT CARDS — REPLACED BY MOBILE BADGE
      ======================================================= */
 
   .pkkb-hero-side {
-
-    width: 100%;
-
-    display: grid;
-
-    grid-template-columns:
-      minmax(0, 1fr)
-      minmax(0, 1fr);
-
-    gap: 12px;
-
-    margin-top: 34px;
-
-    padding: 0;
-
-    align-items: stretch;
+    display: none;
   }
 
 
   /* =======================================================
-     CARD
+     MOBILE COMBINED BADGE
      ======================================================= */
 
-  .pkkb-hero-info-card {
+  .pkkb-hero-mobile-badge {
+  width: fit-content;
+  max-width: 100%;
 
-    width: 100%;
+  margin-top: 30px;
 
-    min-width: 0;
+  padding: 14px 20px;
 
-    height: auto;
+  display: flex;
 
-    min-height: 0;
+  align-items: center;
 
-    max-width: none;
+  gap: 10px;
 
-    padding: 18px 16px 17px;
+  border-radius: 999px;
 
-    border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
 
-    display: flex;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(117, 105, 184, 0.95),
+      rgba(97, 135, 243, 0.95)
+    );
 
-    flex-direction: column;
+  box-shadow:
+    0 14px 34px rgba(25, 34, 70, 0.28),
+    0 4px 14px rgba(25, 34, 70, 0.18);
+}
 
-    justify-content: space-between;
+.pkkb-hero-mobile-badge strong {
+  font-family: var(--font-body);
 
-    transform: none !important;
+  font-size: 13px;
+  font-weight: 700;
 
-    box-sizing: border-box;
-  }
+  color: #ffffff;
 
+  white-space: nowrap;
+}
 
-  .pkkb-hero-date-card,
-  .pkkb-hero-venue-card {
+.pkkb-hero-mobile-badge i {
+  font-style: normal;
 
-    align-self: stretch;
+  font-size: 12px;
 
-    height: auto;
-  }
+  color: rgba(255, 255, 255, 0.65);
+}
 
+.pkkb-hero-mobile-badge span {
+  font-family: var(--font-body);
 
-  /* =======================================================
-     CARD TOP
-     ======================================================= */
+  font-size: 13px;
+  font-weight: 600;
 
-  .pkkb-hero-card-top {
+  color: rgba(255, 255, 255, 0.88);
 
-    width: 100%;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    margin-bottom: 24px;
-  }
-
-
-  .pkkb-hero-card-number {
-
-    font-size: 10px;
-
-    line-height: 1;
-
-    letter-spacing: 0.12em;
-  }
-
-
-  .pkkb-hero-card-label {
-
-    font-size: 9px;
-
-    line-height: 1;
-
-    letter-spacing: 0.14em;
-  }
-
-
-  /* =======================================================
-     CARD MAIN
-     ======================================================= */
-
-  .pkkb-hero-card-main {
-
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 8px;
-
-    margin: 0;
-
-    width: 100%;
-  }
-
-
-  /* =======================================================
-     DATE
-     
-     07
-     November
-     teks kecil
-     ======================================================= */
-
-  .pkkb-hero-date-card
-  .pkkb-hero-card-main strong {
-
-    display: flex;
-
-    flex-direction: column;
-
-    font-size: 0;
-
-    line-height: 0.95;
-
-    letter-spacing: -0.035em;
-  }
-
-
-  
-
-
-  /* =======================================================
-     DATE SMALL TEXT
-     ======================================================= */
-
-  .pkkb-hero-date-card
-  .pkkb-hero-card-main span {
-
-    font-size: 9.5px;
-
-    line-height: 1.4;
-
-    margin-top: 4px;
-
-    white-space: normal;
-  }
-
-
-  /* =======================================================
-     VENUE TITLE
-     ======================================================= */
-
-  .pkkb-hero-venue-card
-  .pkkb-hero-card-main strong {
-
-    font-size: 21px;
-
-    line-height: 1.08;
-
-    letter-spacing: -0.025em;
-  }
-
-
-  /* =======================================================
-     VENUE SMALL TEXT
-     ======================================================= */
-
-  .pkkb-hero-venue-card
-  .pkkb-hero-card-main span {
-
-    font-size: 9.5px;
-
-    line-height: 1.4;
-
-    margin-top: 4px;
-  }
+  white-space: nowrap;
+}
 
 
   /* =======================================================
      BUTTONS
-     
-     CARD SUDAH DI ATAS
-     BUTTON DI BAWAH
-     
-     TETAP SEJAJAR KIRI-KANAN
      ======================================================= */
 
   .pkkb-hero-actions {
@@ -1620,250 +1502,23 @@ canvas {
 
 
   /* =======================================================
-     CARDS
+     MOBILE BADGE — SMALLER
      ======================================================= */
 
-  .pkkb-hero-side {
+  .pkkb-hero-mobile-badge {
 
-    gap: 10px;
+    margin-top: 26px;
 
-    margin-top: 30px;
-  }
-
-
-  .pkkb-hero-info-card {
-
-    padding: 17px 14px 16px;
-
-    border-radius: 18px;
-  }
-
-
-  .pkkb-hero-card-top {
-
-    margin-bottom: 21px;
-  }
-
-
-  .pkkb-hero-card-number {
-
-    font-size: 9px;
-  }
-
-
-  .pkkb-hero-card-label {
-
-    font-size: 8px;
-
-    letter-spacing: 0.12em;
-  }
-
-
-  /* DATE */
-
-  .pkkb-hero-date-card
-  .pkkb-hero-card-main strong::before {
-
-    font-size: 27px;
-  }
-
-
-  .pkkb-hero-date-card
-  .pkkb-hero-card-main strong::after {
-
-    font-size: 21px;
-  }
-
-
-  .pkkb-hero-date-card
-  .pkkb-hero-card-main span {
-
-    font-size: 9px;
-  }
-
-
-  /* VENUE */
-
-  .pkkb-hero-venue-card
-  .pkkb-hero-card-main strong {
-
-    font-size: 19px;
-  }
-
-
-  .pkkb-hero-venue-card
-  .pkkb-hero-card-main span {
-
-    font-size: 9px;
-  }
-
-
-  /* =======================================================
-     BUTTONS
-     ======================================================= */
-
-  .pkkb-hero-actions {
-
-    gap: 10px;
-
-    margin-top: 25px;
-  }
-
-
-  .pkkb-hero-actions .pkkb-button {
-
-    min-height: 50px;
-
-    padding: 11px 10px;
-
-    font-size: 10px;
-
-    letter-spacing: 0.065em;
-  }
-
-
-  .pkkb-countdown-wrapper {
-
-    margin-top: 22px;
-  }
-}
-
-
-/* =========================================================
-   VERY SMALL PHONE
-   ========================================================= */
-
-@media (max-width: 380px) {
-
-  .pkkb-hero-content {
-
-    width: calc(100% - 22px);
-
-    padding-top: 104px;
-
-    padding-bottom: 86px;
-  }
-
-
-  .pkkb-hero-title {
-
-    font-size: 2.9rem;
-  }
-
-
-  .pkkb-hero-description {
-
-    font-size: 14px;
-  }
-
-
-  .pkkb-hero-side {
+    padding: 12px 16px;
 
     gap: 8px;
-
-    margin-top: 27px;
   }
 
+  .pkkb-hero-mobile-badge strong,
+  .pkkb-hero-mobile-badge span {
 
-  .pkkb-hero-info-card {
-
-    padding: 15px 11px 14px;
-
-    border-radius: 16px;
+    font-size: 12px;
   }
-
-
-  .pkkb-hero-card-top {
-
-    margin-bottom: 18px;
-  }
-
-
-  .pkkb-hero-card-number {
-
-    font-size: 8px;
-  }
-
-
-  .pkkb-hero-card-label {
-
-    font-size: 7px;
-  }
-
-
-  /* DATE */
-
-  .pkkb-hero-date-card
-  .pkkb-hero-card-main strong::before {
-
-    font-size: 24px;
-  }
-
-
-  .pkkb-hero-date-card
-  .pkkb-hero-card-main strong::after {
-
-    font-size: 19px;
-  }
-
-
-  .pkkb-hero-date-card
-  .pkkb-hero-card-main span {
-
-    font-size: 8px;
-  }
-
-
-  /* VENUE */
-
-  .pkkb-hero-venue-card
-  .pkkb-hero-card-main strong {
-
-    font-size: 17px;
-  }
-
-
-  .pkkb-hero-venue-card
-  .pkkb-hero-card-main span {
-
-    font-size: 8px;
-  }
-
-
-  /* BUTTON */
-
-  .pkkb-hero-actions {
-
-    gap: 8px;
-
-    margin-top: 23px;
-  }
-
-
-  .pkkb-hero-actions .pkkb-button {
-
-    min-height: 47px;
-
-    padding: 10px 7px;
-
-    font-size: 9px;
-
-    letter-spacing: 0.05em;
-  }
-}
-
-
-/* =========================================================
-   REDUCED MOTION
-   ========================================================= */
-
-@media (prefers-reduced-motion: reduce) {
-
-  .pkkb-hero-info-card {
-
-    transition: none;
-  }
-
 }
 
 /* =========================
@@ -1889,7 +1544,7 @@ canvas {
   padding: 26px 32px;
 
   display: grid;
-  grid-template-columns: 0.9fr 1.7fr auto;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
   gap: 36px;
 
@@ -2052,6 +1707,8 @@ canvas {
   position: relative;
   z-index: 1;
 
+  justify-self: end;
+
   display: flex;
   align-items: center;
   gap: 12px;
@@ -2135,15 +1792,29 @@ canvas {
   }
 
   .pkkb-countdown-intro {
-    display: block;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+
+    gap: 6px 14px;
+  }
+
+  .pkkb-countdown-kicker {
+    flex-basis: 100%;
+
+    margin-bottom: 2px;
   }
 
   .pkkb-countdown-intro h2 {
-    font-size: 27px;
+    font-size: 22px;
+    white-space: nowrap;
   }
 
   .pkkb-countdown-intro p {
-    margin-top: 10px;
+    flex: 1 1 140px;
+
+    max-width: none;
+    margin: 0;
   }
 
   .pkkb-countdown-values {
@@ -3499,18 +3170,7 @@ canvas {
 }
 
 @media (max-width: 600px) {
-  .pkkb-day-selector {
-    gap: 8px;
-  }
-
-  .pkkb-day-card {
-    min-height: 125px;
-    padding: 18px;
-  }
-
-  .pkkb-day-card strong {
-    font-size: 36px;
-  }
+  
 
   .pkkb-schedule-filters {
     overflow-x: auto;
@@ -3553,6 +3213,51 @@ canvas {
   .pkkb-schedule-expanded > div {
     padding-left: 0;
   }
+}
+
+/* =========================================================
+   EVENT DATE
+   ========================================================= */
+
+.pkkb-schedule-date {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+
+  margin-top: 70px;
+  padding: 18px 0;
+
+  border-top: 1px solid rgba(25, 34, 70, 0.12);
+  border-bottom: 1px solid rgba(25, 34, 70, 0.12);
+}
+
+.pkkb-schedule-date-number {
+  font-family: var(--font-display);
+  font-size: 42px;
+  line-height: 0.8;
+  letter-spacing: -0.06em;
+
+  color: var(--pkkb-lavender);
+}
+
+.pkkb-schedule-date div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.pkkb-schedule-date strong {
+  font-family: var(--font-display);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+}
+
+.pkkb-schedule-date small {
+  font-size: 8px;
+  font-weight: 750;
+  letter-spacing: 0.14em;
+
+  color: var(--pkkb-muted);
 }
 
 /* =========================
@@ -4565,7 +4270,6 @@ canvas {
 
 .pkkb-gallery-header h2 {
   margin: 28px 0 0;
-
   font-family: var(--font-display);
   font-size: clamp(3.5rem, 6vw, 6.5rem);
   line-height: 0.86;
@@ -4592,7 +4296,6 @@ canvas {
 
 .pkkb-gallery-intro p {
   margin: 18px 0 0;
-
   font-size: 15px;
   line-height: 1.7;
   color: var(--pkkb-muted);
@@ -4604,51 +4307,40 @@ canvas {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   grid-auto-rows: 95px;
-
   gap: 14px;
-
   margin-top: 85px;
 }
 
 .pkkb-gallery-item {
   position: relative;
-
   padding: 0;
-
   overflow: hidden;
-
   border: 0;
   border-radius: 24px;
-
   background: var(--pkkb-navy);
-
   cursor: pointer;
-
   text-align: left;
 }
 
-.pkkb-gallery-large {
-  grid-column: span 7;
-  grid-row: span 6;
-}
-
-.pkkb-gallery-medium {
-  grid-column: span 5;
-  grid-row: span 4;
-}
-
-.pkkb-gallery-small {
-  grid-column: span 5;
-  grid-row: span 3;
+/* Posisi eksplisit tiap kartu — HANYA untuk desktop (≥801px) */
+@media (min-width: 801px) {
+  /*
+    Baris dihitung supaya small(3) + gap + medium(4) = large(7),
+    jadi dua kolom selalu sejajar rapi, tanpa celah/loncat.
+  */
+  .pkkb-gallery-item:nth-child(1) { grid-column: 1 / 8;  grid-row: 1 / 8; }   /* large */
+  .pkkb-gallery-item:nth-child(2) { grid-column: 8 / 13; grid-row: 1 / 4; }   /* small */
+  .pkkb-gallery-item:nth-child(3) { grid-column: 8 / 13; grid-row: 4 / 8; }   /* medium */
+  .pkkb-gallery-item:nth-child(4) { grid-column: 1 / 6;  grid-row: 8 / 12; }  /* medium */
+  .pkkb-gallery-item:nth-child(5) { grid-column: 1 / 6;  grid-row: 12 / 15; } /* small */
+  .pkkb-gallery-item:nth-child(6) { grid-column: 6 / 13; grid-row: 8 / 15; }  /* large */
 }
 
 .pkkb-gallery-image {
   position: absolute;
   inset: 0;
-
   background-size: cover;
   background-position: center;
-
   transition:
     transform 700ms cubic-bezier(0.2, 0.8, 0.2, 1),
     filter 500ms ease;
@@ -4662,7 +4354,6 @@ canvas {
 .pkkb-gallery-item-overlay {
   position: absolute;
   inset: 0;
-
   background:
     linear-gradient(
       to bottom,
@@ -4670,7 +4361,6 @@ canvas {
       transparent 40%,
       rgba(25, 34, 70, 0.8)
     );
-
   transition: opacity 300ms ease;
 }
 
@@ -4681,33 +4371,26 @@ canvas {
 .pkkb-gallery-item-top {
   position: absolute;
   z-index: 2;
-
   top: 20px;
   left: 22px;
   right: 22px;
-
   display: flex;
   justify-content: space-between;
-
   font-size: 8px;
   font-weight: 750;
   letter-spacing: 0.14em;
-
   color: rgba(255, 255, 255, 0.65);
 }
 
 .pkkb-gallery-item-bottom {
   position: absolute;
   z-index: 2;
-
   left: 22px;
   right: 22px;
   bottom: 20px;
-
   display: flex;
   justify-content: space-between;
   align-items: center;
-
   color: white;
 }
 
@@ -4720,16 +4403,12 @@ canvas {
 .pkkb-gallery-item-bottom i {
   width: 34px;
   height: 34px;
-
   display: grid;
   place-items: center;
-
   border: 1px solid rgba(255, 255, 255, 0.35);
   border-radius: 50%;
-
   font-size: 14px;
   font-style: normal;
-
   transition:
     background 200ms ease,
     color 200ms ease;
@@ -4745,14 +4424,10 @@ canvas {
 .pkkb-gallery-footer {
   display: grid;
   grid-template-columns: 1fr 2fr 1fr;
-
   align-items: start;
-
   gap: 30px;
-
   margin-top: 30px;
   padding-top: 20px;
-
   border-top: 1px solid rgba(25, 34, 70, 0.13);
 }
 
@@ -4760,7 +4435,6 @@ canvas {
   font-size: 8px;
   font-weight: 750;
   letter-spacing: 0.14em;
-
   color: var(--pkkb-muted);
 }
 
@@ -4770,7 +4444,6 @@ canvas {
 
 .pkkb-gallery-footer p {
   margin: 0;
-
   font-family: var(--font-display);
   font-size: 18px;
   line-height: 1.15;
@@ -4783,28 +4456,18 @@ canvas {
   position: fixed;
   z-index: 9999;
   inset: 0;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   padding: 30px;
-
   background: rgba(9, 13, 28, 0.94);
-
   backdrop-filter: blur(20px);
-
   animation: lightbox-in 250ms ease both;
 }
 
 @keyframes lightbox-in {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .pkkb-lightbox-content {
@@ -4814,34 +4477,22 @@ canvas {
 .pkkb-lightbox-image {
   width: 100%;
   height: min(72vh, 700px);
-
   border-radius: 20px;
-
   background-position: center;
   background-size: cover;
-
   animation: lightbox-image-in 350ms ease both;
 }
 
 @keyframes lightbox-image-in {
-  from {
-    opacity: 0;
-    transform: scale(0.97);
-  }
-
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+  from { opacity: 0; transform: scale(0.97); }
+  to { opacity: 1; transform: scale(1); }
 }
 
 .pkkb-lightbox-info {
   display: flex;
   justify-content: space-between;
   align-items: center;
-
   padding-top: 15px;
-
   color: white;
 }
 
@@ -4855,7 +4506,6 @@ canvas {
   font-size: 8px;
   font-weight: 750;
   letter-spacing: 0.14em;
-
   color: rgba(255, 255, 255, 0.4);
 }
 
@@ -4867,7 +4517,6 @@ canvas {
 
 .pkkb-lightbox-info p {
   margin: 0;
-
   font-family: var(--font-display);
   font-size: 18px;
 }
@@ -4876,25 +4525,17 @@ canvas {
   position: absolute;
   top: 25px;
   right: 28px;
-
   width: 42px;
   height: 42px;
-
   display: grid;
   place-items: center;
-
   border: 1px solid rgba(255, 255, 255, 0.25);
   border-radius: 50%;
-
   background: transparent;
-
   color: white;
-
   font-size: 27px;
   font-weight: 300;
-
   cursor: pointer;
-
   transition:
     background 200ms ease,
     color 200ms ease;
@@ -4907,24 +4548,16 @@ canvas {
 
 .pkkb-lightbox-arrow {
   position: absolute;
-
   width: 48px;
   height: 48px;
-
   display: grid;
   place-items: center;
-
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 50%;
-
   background: transparent;
-
   color: white;
-
   font-size: 18px;
-
   cursor: pointer;
-
   transition:
     background 200ms ease,
     color 200ms ease,
@@ -4934,17 +4567,11 @@ canvas {
 .pkkb-lightbox-arrow:hover {
   background: white;
   color: var(--pkkb-navy);
-
   transform: scale(1.08);
 }
 
-.pkkb-lightbox-prev {
-  left: 30px;
-}
-
-.pkkb-lightbox-next {
-  right: 30px;
-}
+.pkkb-lightbox-prev { left: 30px; }
+.pkkb-lightbox-next { right: 30px; }
 
 /* Responsive */
 
@@ -4955,22 +4582,17 @@ canvas {
   }
 
   .pkkb-gallery-grid {
-    grid-template-columns: repeat(2, 1fr);
-    grid-auto-rows: 150px;
-
+    grid-template-columns: 1fr;
+    grid-auto-rows: auto;
+    gap: 14px;
     margin-top: 55px;
   }
 
-  .pkkb-gallery-large,
-  .pkkb-gallery-medium,
-  .pkkb-gallery-small {
-    grid-column: span 1;
-    grid-row: span 2;
-  }
-
-  .pkkb-gallery-large {
-    grid-column: span 2;
-    grid-row: span 3;
+  /* Semua kartu jadi satu kolom penuh, rasio 4:3 */
+  .pkkb-gallery-item {
+    grid-column: 1 / -1;
+    grid-row: auto;
+    aspect-ratio: 4 / 3;
   }
 
   .pkkb-gallery-footer {
@@ -4999,13 +4621,8 @@ canvas {
     height: 38px;
   }
 
-  .pkkb-lightbox-prev {
-    left: 12px;
-  }
-
-  .pkkb-lightbox-next {
-    right: 12px;
-  }
+  .pkkb-lightbox-prev { left: 12px; }
+  .pkkb-lightbox-next { right: 12px; }
 
   .pkkb-lightbox-info {
     flex-direction: column;
@@ -5016,7 +4633,6 @@ canvas {
 
 @media (max-width: 500px) {
   .pkkb-gallery-grid {
-    grid-auto-rows: 120px;
     gap: 8px;
   }
 
@@ -7133,6 +6749,7 @@ canvas {
 
 .register-orb {
   position: fixed;
+  z-index: 1;
 
   border-radius: 50%;
 
@@ -7166,6 +6783,9 @@ canvas {
 /* Top */
 
 .register-top {
+  position: relative;
+  z-index: 5;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -7199,6 +6819,9 @@ canvas {
 /* Heading */
 
 .register-heading {
+  position: relative;
+  z-index: 5;
+
   display: grid;
   grid-template-columns: 0.8fr 1.6fr;
   align-items: end;
@@ -7241,6 +6864,9 @@ canvas {
 /* Options */
 
 .register-options {
+  position: relative;
+  z-index: 5;
+
   display: grid;
   grid-template-columns: 1fr 1fr;
 
@@ -7409,6 +7035,9 @@ canvas {
 /* Bottom */
 
 .register-bottom {
+  position: relative;
+  z-index: 5;
+
   display: flex;
   justify-content: space-between;
 
@@ -7528,14 +7157,16 @@ canvas {
 
 .register-form-section {
   display: grid;
+
   grid-template-columns: 60px 1fr;
 
   gap: 20px;
 
   padding-top: 25px;
 
-  border-top: 1px solid rgba(25, 34, 70, 0.15);
+  border-top: 1px solid rgba(117, 105, 184, 1);
 }
+
 
 .register-form-section-number {
   font-size: 8px;
@@ -7636,7 +7267,7 @@ canvas {
 
   padding-top: 30px;
 
-  border-top: 1px solid rgba(25, 34, 70, 0.15);
+  border-top: 1px solid rgba(117, 105, 184, 1);
 }
 
 .register-submit-area p {

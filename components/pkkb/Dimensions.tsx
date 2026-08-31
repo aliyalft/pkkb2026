@@ -122,7 +122,7 @@ export default function Dimensions() {
                 </span>
 
                 <span className="pkkb-dimension-arrow">
-                  ↗
+                  ↗︎
                 </span>
               </button>
             ))}

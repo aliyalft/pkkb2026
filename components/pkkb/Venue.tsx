@@ -101,7 +101,7 @@ export default function Venue() {
               className="pkkb-venue-directions"
             >
               <span>GET DIRECTIONS</span>
-              <strong>↗</strong>
+              <strong>↗︎</strong>
             </a>
           </div>
         </div>

@@ -48,15 +48,15 @@ export default function Footer() {
             <span className="pkkb-footer-label">FOLLOW ALONG</span>
 
             <a href="#" aria-label="Instagram">
-              Instagram ↗
+              Instagram ↗︎
             </a>
 
             <a href="#" aria-label="TikTok">
-              TikTok ↗
+              TikTok ↗︎
             </a>
 
             <a href="#" aria-label="Email">
-              Email ↗
+              Email ↗︎
             </a>
           </div>
         </div>

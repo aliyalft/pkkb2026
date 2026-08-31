@@ -72,9 +72,7 @@ export default function RegisterPage() {
 
             <div className="register-option-content">
               <h2>
-                Saya mau
-                <br />
-                <strong>Datang.</strong>
+                Pengunjung
               </h2>
 
               <p>
@@ -88,7 +86,7 @@ export default function RegisterPage() {
               <span>PUBLIC REGISTRATION</span>
 
               <span className="register-option-arrow">
-                ↗
+                ↗︎
               </span>
             </div>
           </button>
@@ -108,9 +106,8 @@ export default function RegisterPage() {
 
             <div className="register-option-content">
               <h2>
-                Saya mau
-                <br />
-                <strong>Berbagi.</strong>
+                Tenant
+                
               </h2>
 
               <p>
@@ -124,7 +121,7 @@ export default function RegisterPage() {
               <span>TENANT REGISTRATION</span>
 
               <span className="register-option-arrow">
-                ↗
+                ↗︎
               </span>
             </div>
           </button>
@@ -514,7 +511,7 @@ function RegistrationForm({
               </span>
 
               <strong>
-                {isSubmitting ? "..." : "↗"}
+                {isSubmitting ? "..." : "↗︎"}
               </strong>
             </button>
           </div>
@@ -605,7 +602,7 @@ function RegistrationSuccess({
             >
               BACK TO HOME
 
-              <strong>↗</strong>
+              <strong>↗︎</strong>
             </a>
 
             <button

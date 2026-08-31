@@ -117,7 +117,7 @@ export default function Talent() {
 
               <button type="button">
                 EXPLORE TALENT
-                <span>↗</span>
+                <span>↗︎</span>
               </button>
             </div>
 

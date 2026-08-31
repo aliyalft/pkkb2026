@@ -162,7 +162,7 @@ export default function Gallery() {
                 <div className="pkkb-gallery-item-bottom">
                   <span>{item.caption}</span>
 
-                  <i>↗</i>
+                  <i>↗︎</i>
                 </div>
               </button>
             ))}

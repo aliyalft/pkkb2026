@@ -136,7 +136,7 @@ export default function Program() {
                 </span>
 
                 <span className="pkkb-program-item-arrow">
-                  ↗
+                  ↗︎
                 </span>
               </button>
             ))}
