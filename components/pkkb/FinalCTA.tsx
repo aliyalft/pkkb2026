@@ -28,7 +28,7 @@ export default function FinalCTA() {
             </p>
 
             <div className="pkkb-final-cta-actions">
-              <a href="#register-form" className="pkkb-final-cta-button">
+              <a href="/register" className="pkkb-final-cta-button">
                 <span>DAFTAR SEKARANG</span>
                 <strong>↗︎</strong>
               </a>
@@ -39,7 +39,6 @@ export default function FinalCTA() {
 
           <div className="pkkb-final-cta-mark">
             <span>PKKB</span>
-            <strong>∞</strong>
             <small>2026</small>
           </div>
         </div>
