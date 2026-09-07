@@ -7795,3 +7795,601 @@ canvas {
   }
 
 }
+
+/* =========================================================
+   POPOlah
+   ========================================================= */
+
+.popolah-section {
+  position: relative;
+  overflow: hidden;
+  padding: 135px 0 150px;
+  background: #ffffff;
+  color: #192246;
+}
+
+.popolah-container {
+  position: relative;
+  z-index: 2;
+  width: min(100% - 96px, 1280px);
+  margin: 0 auto;
+}
+
+/* BACKGROUND WORD */
+
+.popolah-bg-word {
+  position: absolute;
+  top: 110px;
+  right: -80px;
+
+  font-family: var(--font-display);
+  font-size: clamp(12rem, 23vw, 24rem);
+  line-height: 0.7;
+  font-weight: 800;
+  letter-spacing: -0.1em;
+
+  color: rgba(97, 135, 243, 0.045);
+
+  pointer-events: none;
+  user-select: none;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.popolah-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 390px;
+  gap: 100px;
+  align-items: end;
+  margin-bottom: 105px;
+}
+
+.popolah-heading {
+  position: relative;
+}
+
+.popolah-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  margin-bottom: 25px;
+
+  font-size: 11px;
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+
+  color: #6187f3;
+}
+
+.popolah-eyebrow-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #6187f3;
+}
+
+.popolah-heading h2 {
+  margin: 0;
+
+  font-family: var(--font-display);
+  font-size: clamp(4rem, 7vw, 7.5rem);
+  line-height: 0.86;
+  letter-spacing: -0.065em;
+  font-weight: 800;
+
+  color: #192246;
+}
+
+.popolah-heading h2 span {
+  color: #6187f3;
+}
+
+.popolah-intro {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  padding-bottom: 8px;
+}
+
+.popolah-intro-line {
+  flex: 0 0 3px;
+  width: 3px;
+  min-height: 75px;
+  border-radius: 10px;
+
+  background: linear-gradient(
+    to bottom,
+    #6187f3,
+    #7569b8
+  );
+}
+
+.popolah-intro p {
+  margin: 0;
+
+  font-size: 15px;
+  line-height: 1.75;
+  font-weight: 450;
+
+  color: rgba(25, 34, 70, 0.63);
+}
+
+
+/* =========================================================
+   LIST
+   ========================================================= */
+
+.popolah-list {
+  position: relative;
+}
+
+
+/* =========================================================
+   ITEM
+   ========================================================= */
+
+.popolah-item {
+  position: relative;
+  padding-bottom: 105px;
+  margin-bottom: 105px;
+}
+
+.popolah-item:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+
+/* =========================================================
+   DIMENSIONAL DIVIDER
+   ========================================================= */
+
+.popolah-divider {
+  display: grid;
+  grid-template-columns: 48px 1fr auto;
+  align-items: center;
+  gap: 18px;
+
+  margin-bottom: 42px;
+}
+
+.popolah-divider-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 40px;
+  height: 40px;
+
+  border-radius: 50%;
+
+  background: #192246;
+  box-shadow:
+    0 4px 0 rgba(25, 34, 70, 0.12),
+    0 8px 20px rgba(25, 34, 70, 0.10);
+
+  color: #ffffff;
+}
+
+.popolah-divider-number span {
+  font-family: var(--font-display);
+  font-size: 12px;
+  line-height: 1;
+  font-weight: 700;
+}
+
+.popolah-divider-line {
+  position: relative;
+  height: 7px;
+  overflow: hidden;
+
+  border-radius: 20px;
+
+  background: rgba(97, 135, 243, 0.10);
+}
+
+.popolah-divider-line::before {
+  content: "";
+  position: absolute;
+  inset: 1px 0 auto;
+
+  height: 3px;
+  border-radius: inherit;
+
+  background: linear-gradient(
+    90deg,
+    #6187f3 0%,
+    rgba(97, 135, 243, 0.5) 55%,
+    rgba(117, 105, 184, 0.15) 100%
+  );
+}
+
+.popolah-divider-line span {
+  position: absolute;
+  left: 0;
+  right: 35%;
+
+  bottom: 0;
+  height: 2px;
+
+  border-radius: inherit;
+
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.popolah-divider-date {
+  padding-left: 5px;
+
+  font-size: 10px;
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+
+  color: #6187f3;
+}
+
+
+/* =========================================================
+   CONTENT GRID
+   ========================================================= */
+
+.popolah-grid {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.75fr) minmax(500px, 1.25fr);
+  gap: 75px;
+  align-items: center;
+}
+
+
+/* =========================================================
+   INFO
+   ========================================================= */
+
+.popolah-info {
+  max-width: 430px;
+}
+
+.popolah-info h3 {
+  margin: 0 0 24px;
+
+  font-family: var(--font-display);
+  font-size: clamp(2.7rem, 4vw, 4.6rem);
+  line-height: 0.92;
+  letter-spacing: -0.055em;
+  font-weight: 800;
+
+  color: #192246;
+}
+
+.popolah-location {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  margin-bottom: 28px;
+
+  font-size: 11px;
+  line-height: 1.4;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  color: rgba(25, 34, 70, 0.55);
+}
+
+.popolah-location-dot {
+  flex: 0 0 auto;
+
+  width: 8px;
+  height: 8px;
+
+  border-radius: 50%;
+
+  background: #7569b8;
+  box-shadow: 0 0 0 4px rgba(117, 105, 184, 0.10);
+}
+
+.popolah-description {
+  max-width: 390px;
+
+  margin: 0;
+
+  font-size: 14px;
+  line-height: 1.8;
+  font-weight: 450;
+
+  color: rgba(25, 34, 70, 0.62);
+}
+
+
+/* =========================================================
+   GALLERY
+   ========================================================= */
+
+.popolah-gallery {
+  display: grid;
+  grid-template-columns: 1.45fr 0.7fr;
+  gap: 13px;
+
+  width: 100%;
+}
+
+.popolah-gallery-main,
+.popolah-gallery-small {
+  position: relative;
+  overflow: hidden;
+
+  background: #e9edf8;
+}
+
+.popolah-gallery-main {
+  height: 365px;
+  border-radius: 24px;
+}
+
+.popolah-gallery-side {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  gap: 13px;
+}
+
+.popolah-gallery-small {
+  min-height: 0;
+  border-radius: 19px;
+}
+
+.popolah-gallery img {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  transition:
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.popolah-gallery-main:hover img,
+.popolah-gallery-small:hover img {
+  transform: scale(1.05);
+}
+
+
+/* =========================================================
+   ITEM SEPARATOR
+   ========================================================= */
+
+.popolah-item:not(:last-child)::after {
+  content: "";
+
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  height: 1px;
+
+  background: rgba(25, 34, 70, 0.10);
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.popolah-footer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 70px;
+
+  margin-top: 110px;
+  padding-top: 65px;
+
+  border-top: 1px solid rgba(25, 34, 70, 0.12);
+}
+
+.popolah-footer > span {
+  font-size: 10px;
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: 0.17em;
+  text-transform: uppercase;
+
+  color: #6187f3;
+}
+
+.popolah-footer p {
+  max-width: 480px;
+
+  margin: 0;
+
+  font-family: var(--font-display);
+  font-size: clamp(1.45rem, 2.1vw, 2.2rem);
+  line-height: 1.1;
+  letter-spacing: -0.035em;
+  font-weight: 600;
+
+  color: #192246;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+  .popolah-section {
+    padding: 105px 0 120px;
+  }
+
+  .popolah-container {
+    width: min(100% - 48px, 720px);
+  }
+
+  .popolah-header {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    margin-bottom: 85px;
+  }
+
+  .popolah-intro {
+    max-width: 500px;
+  }
+
+  .popolah-grid {
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: 40px;
+  }
+
+  .popolah-gallery {
+    grid-template-columns: 1.35fr 0.7fr;
+  }
+
+  .popolah-gallery-main {
+    height: 300px;
+  }
+
+  .popolah-info h3 {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+  }
+
+  .popolah-footer {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+  .popolah-section {
+    padding: 80px 0 90px;
+  }
+
+  .popolah-container {
+    width: min(100% - 32px, 500px);
+  }
+
+  .popolah-bg-word {
+    top: 160px;
+    right: -45px;
+    font-size: 10rem;
+  }
+
+  .popolah-header {
+    gap: 30px;
+    margin-bottom: 70px;
+  }
+
+  .popolah-eyebrow {
+    margin-bottom: 20px;
+    font-size: 9px;
+  }
+
+  .popolah-heading h2 {
+    font-size: clamp(3.25rem, 15vw, 5rem);
+  }
+
+  .popolah-intro p {
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  .popolah-item {
+    padding-bottom: 75px;
+    margin-bottom: 75px;
+  }
+
+  .popolah-divider {
+    grid-template-columns: 36px 1fr;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+
+  .popolah-divider-number {
+    width: 34px;
+    height: 34px;
+  }
+
+  .popolah-divider-number span {
+    font-size: 10px;
+  }
+
+  .popolah-divider-date {
+    grid-column: 2;
+    grid-row: 1;
+
+    justify-self: end;
+
+    font-size: 8px;
+  }
+
+  .popolah-divider-line {
+    grid-column: 1 / -1;
+    grid-row: 2;
+
+    height: 6px;
+  }
+
+  .popolah-grid {
+    grid-template-columns: 1fr;
+    gap: 35px;
+  }
+
+  .popolah-info {
+    max-width: none;
+  }
+
+  .popolah-info h3 {
+    margin-bottom: 20px;
+    font-size: clamp(2.7rem, 13vw, 4rem);
+  }
+
+  .popolah-location {
+    margin-bottom: 22px;
+    font-size: 9px;
+  }
+
+  .popolah-description {
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  .popolah-gallery {
+    grid-template-columns: 1.4fr 0.75fr;
+    gap: 9px;
+  }
+
+  .popolah-gallery-main {
+    height: 245px;
+    border-radius: 18px;
+  }
+
+  .popolah-gallery-side {
+    gap: 9px;
+  }
+
+  .popolah-gallery-small {
+    border-radius: 14px;
+  }
+
+  .popolah-footer {
+    margin-top: 75px;
+    padding-top: 45px;
+  }
+
+  .popolah-footer p {
+    font-size: 1.4rem;
+  }
+}

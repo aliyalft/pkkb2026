@@ -10,6 +10,7 @@ import Gallery from "@/components/pkkb/Gallery";
 import Partners from "@/components/pkkb/partners";
 import FinalCTA from "@/components/pkkb/FinalCTA";
 import Footer from "@/components/pkkb/Footer";
+import Popolah from "@/components/pkkb/Popolah";
 
 export default function Home() {
   return (
@@ -21,6 +22,8 @@ export default function Home() {
       <Countdown />
 
       <About />
+
+      <Popolah />
 
       <Program />
 
