@@ -8932,6 +8932,13 @@ canvas {
   }
 
   .pkkb-coming-date-value {
-    font-size: 1.8rem;
+    font-size: 1.80rem;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 380px) {
+  .pkkb-coming-date-value {
+    font-size: 1.4rem;
   }
 }

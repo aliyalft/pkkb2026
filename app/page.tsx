@@ -27,14 +27,14 @@ export default function Home() {
           Kota Bandung
         </h1>
 
-        <span className="pkkb-coming-tagline">- Coming Soon -</span>
+        
 
 
         <div className="pkkb-coming-date-card">
-        <span className="pkkb-coming-date-kicker">Tanggal Pelaksanaan</span>
-        <span className="pkkb-coming-date-value">07 November 2026</span>
 
-      </div>
+  <span className="pkkb-coming-date-value">- To Be Announced -</span>
+</div>
+
       </div>
     </main>
   );
