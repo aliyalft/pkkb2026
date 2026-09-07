@@ -15,7 +15,13 @@ const hanken = Hanken_Grotesk({
   display: "swap",
 });
 
+
+
 export const metadata: Metadata = {
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  },
   title: "PKKB 2026 — Pekan Kebudayaan Kota Bandung",
   description:
     "Pekan Kebudayaan Kota Bandung 2026 — Ngamumule Budaya, Ngawangun Kota.",
@@ -32,5 +38,7 @@ export default function RootLayout({
         {children}
       </body>
     </html>
+
+    
   );
 }
