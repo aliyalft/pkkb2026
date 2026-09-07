@@ -1592,7 +1592,7 @@ canvas {
 
   width: min(100% - 48px, 1280px);
 
-  margin: -72px auto 0;
+  margin: 0px auto 0;
 
   pointer-events: none;
 }
