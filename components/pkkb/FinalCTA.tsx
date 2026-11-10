@@ -30,7 +30,7 @@ export default function FinalCTA() {
             <div className="pkkb-final-cta-actions">
               <a href="/register" className="pkkb-final-cta-button">
                 <span>DAFTAR SEKARANG</span>
-                <strong>↗︎</strong>
+                
               </a>
 
               

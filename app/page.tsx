@@ -1,18 +1,41 @@
-// import Navbar from "@/components/pkkb/Navbar";
-// import Hero from "@/components/pkkb/Hero";
-// import Countdown from "@/components/pkkb/Countdown";
-// import About from "@/components/pkkb/About";
-// import Program from "@/components/pkkb/Program";
-// import Schedule from "@/components/pkkb/Schedule";
-// import Talent from "@/components/pkkb/Talent";
-// import Venue from "@/components/pkkb/Venue";
-// import Gallery from "@/components/pkkb/Gallery";
-// import Partners from "@/components/pkkb/partners";
-// import FinalCTA from "@/components/pkkb/FinalCTA";
-// import Footer from "@/components/pkkb/Footer";
-// import Popolah from "@/components/pkkb/Popolah";
+import Navbar from "@/components/pkkb/Navbar";
+import Hero from "@/components/pkkb/Hero";
+import Countdown from "@/components/pkkb/Countdown";
+import About from "@/components/pkkb/About";
+import Program from "@/components/pkkb/Program";
+import Schedule from "@/components/pkkb/Schedule";
+import Talent from "@/components/pkkb/Talent";
+import Venue from "@/components/pkkb/Venue";
+import Gallery from "@/components/pkkb/Gallery";
+import FinalCTA from "@/components/pkkb/FinalCTA";
+import Footer from "@/components/pkkb/Footer";
+import Popolah from "@/components/pkkb/Popolah";
 
 export default function Home() {
+  return (
+    <>
+      <Navbar />
+
+      <main>
+        <Hero />
+        <Countdown />
+        <About />
+        <Program />
+        <Popolah />
+        <Schedule />
+        <Talent />
+        <Venue />
+        <Gallery />
+       
+        <FinalCTA />
+      </main>
+
+      <Footer />
+    </>
+  );
+}
+
+/*export default function Home() {
   return (
     <main className="pkkb-coming-hero">
       <div className="pkkb-coming-content">
@@ -38,4 +61,4 @@ export default function Home() {
       </div>
     </main>
   );
-}
+}*/

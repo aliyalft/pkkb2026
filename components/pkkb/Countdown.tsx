@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-const EVENT_DATE = new Date("2026-11-07T09:00:00+07:00");
+const EVENT_DATE = new Date("2026-11-13T09:00:00+07:00");
 
 type TimeLeft = {
   days: number;
@@ -168,7 +168,7 @@ export default function Countdown() {
 
         <div className="pkkb-countdown-date">
 
-          <span>07</span>
+          <span>13</span>
 
           <div>
             <strong>NOVEMBER</strong>

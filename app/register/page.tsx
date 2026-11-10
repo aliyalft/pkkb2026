@@ -1,627 +1,1014 @@
+
 "use client";
 
-import { FormEvent, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import type {
+  ChangeEvent,
+  FormEvent,
+} from "react";
+import "./register.css";
 
-type RegistrationType = "selection" | "public" | "tenant";
+type Region = {
+  id: string;
+  name: string;
+};
 
-export default function RegisterPage() {
-  const [type, setType] =
-    useState<RegistrationType>("selection");
+type RegistrationData = {
+  name: string;
+  phone: string;
+  email: string;
+  city: string;
+  cityId: string;
+  district: string;
+  districtId: string;
+};
 
-  if (type === "public") {
-    return (
-      <RegistrationForm
-        type="public"
-        onBack={() => setType("selection")}
-      />
-    );
-  }
+const REGION_API =
+  "https://www.emsifa.com/api-wilayah-indonesia/api";
 
-  if (type === "tenant") {
-    return (
-      <RegistrationForm
-        type="tenant"
-        onBack={() => setType("selection")}
-      />
-    );
-  }
+const INITIAL_DATA: RegistrationData = {
+  name: "",
+  phone: "",
+  email: "",
+  city: "",
+  cityId: "",
+  district: "",
+  districtId: "",
+};
 
+function AppleIcon() {
   return (
-    <main className="register-page">
-      <a href="/" className="register-home">
-        <span>←</span>
-        BACK TO PKKB
-      </a>
-
-      <div className="register-orb register-orb-one" />
-      <div className="register-orb register-orb-two" />
-
-      <div className="register-shell">
-        <div className="register-top">
-          <div className="register-eyebrow">
-            <span />
-            PKKB 2026 / REGISTRATION
-          </div>
-
-          <div className="register-year">2026</div>
-        </div>
-
-        <div className="register-heading">
-          <p>SELAMAT DATANG</p>
-
-          <h1>
-            Mau hadir
-            <br />
-            sebagai <em>apa?</em>
-          </h1>
-        </div>
-
-        <div className="register-options">
-          {/* PUBLIC */}
-          <button
-            type="button"
-            className="register-option register-option-public"
-            onClick={() => setType("public")}
-          >
-            <div className="register-option-top">
-              <span>01</span>
-              <span>FOR EVERYONE</span>
-            </div>
-
-            <div className="register-option-icon">✦</div>
-
-            <div className="register-option-content">
-              <h2>
-                Pengunjung
-              </h2>
-
-              <p>
-                Daftar sebagai pengunjung dan nikmati
-                rangkaian program, pertunjukan, kuliner,
-                dan ruang kebudayaan PKKB 2026.
-              </p>
-            </div>
-
-            <div className="register-option-footer">
-              <span>PUBLIC REGISTRATION</span>
-
-              <span className="register-option-arrow">
-                ↗︎
-              </span>
-            </div>
-          </button>
-
-          {/* TENANT */}
-          <button
-            type="button"
-            className="register-option register-option-tenant"
-            onClick={() => setType("tenant")}
-          >
-            <div className="register-option-top">
-              <span>02</span>
-              <span>FOR CREATORS & BUSINESSES</span>
-            </div>
-
-            <div className="register-option-icon">+</div>
-
-            <div className="register-option-content">
-              <h2>
-                Tenant
-                
-              </h2>
-
-              <p>
-                Daftar sebagai tenant untuk membawa
-                produk, karya, kuliner, atau brand kamu
-                ke dalam perayaan PKKB 2026.
-              </p>
-            </div>
-
-            <div className="register-option-footer">
-              <span>TENANT REGISTRATION</span>
-
-              <span className="register-option-arrow">
-                ↗︎
-              </span>
-            </div>
-          </button>
-        </div>
-
-        <div className="register-bottom">
-          <span>PEKAN KEBUDAYAAN KOTA BANDUNG</span>
-
-          <span>NGAMUMULE BUDAYA / NGAWANGUN KOTA</span>
-        </div>
-      </div>
-    </main>
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path
+        fill="currentColor"
+        d="M16.7 12.8c0-2.1 1.7-3.1 1.8-3.2a3.9 3.9 0 0 0-3.1-1.7c-1.3-.1-2.5.8-3.2.8-.7 0-1.7-.8-2.8-.8a4.1 4.1 0 0 0-3.5 2.1c-1.5 2.6-.4 6.4 1 8.5.7 1 1.5 2.1 2.5 2.1s1.4-.7 2.7-.7 1.7.7 2.8.7 1.8-1 2.5-2.1a9.4 9.4 0 0 0 1.1-2.4 3.7 3.7 0 0 1-1.8-3.3ZM14.6 6.5A3.9 3.9 0 0 0 15.5 3a4 4 0 0 0-3 1.5 3.7 3.7 0 0 0-.9 3.3 3.3 3.3 0 0 0 3-1.3Z"
+      />
+    </svg>
   );
 }
 
-/* =====================================================
-   REGISTRATION FORM
-===================================================== */
+function GooglePlayIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path fill="#34A853" d="M3.5 2.5 13 12 3.5 21.5V2.5Z" />
+      <path fill="#4285F4" d="m3.5 2.5 12 6.7-2.5 2.8-9.5-9.5Z" />
+      <path fill="#FBBC04" d="m15.5 9.2 4.1 2.3c.8.4.8.8 0 1.2l-4.1 2.3-2.5-3 2.5-2.8Z" />
+      <path fill="#EA4335" d="m3.5 21.5 12-6.7-2.5-2.8-9.5 9.5Z" />
+    </svg>
+  );
+}
 
-function RegistrationForm({
-  type,
-  onBack,
+function UploadIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden="true"
+    >
+      <path
+        d="M12 15V3m0 0L7.5 7.5M12 3l4.5 4.5"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M5 14.5v3A2.5 2.5 0 0 0 7.5 20h9a2.5 2.5 0 0 0 2.5-2.5v-3"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+function SearchableRegionField({
+  label,
+  placeholder,
+  value,
+  options,
+  onInputChange,
+  onSelect,
+  disabled = false,
+  loading = false,
 }: {
-  type: "public" | "tenant";
-  onBack: () => void;
+  label: string;
+  placeholder: string;
+  value: string;
+  options: Region[];
+  onInputChange: (value: string) => void;
+  onSelect: (option: Region) => void;
+  disabled?: boolean;
+  loading?: boolean;
 }) {
-  const isTenant = type === "tenant";
+  const [open, setOpen] = useState(false);
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
-  const [submitted, setSubmitted] = useState(false);
+  const filteredOptions = useMemo(() => {
+    const keyword = value.trim().toLowerCase();
+
+    if (!keyword) return options.slice(0, 30);
+
+    return options
+      .filter((option) =>
+        option.name.toLowerCase().includes(keyword)
+      )
+      .slice(0, 40);
+  }, [options, value]);
+
+  useEffect(() => {
+    function handleOutsideClick(event: MouseEvent) {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(event.target as Node)
+      ) {
+        setOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleOutsideClick);
+
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, []);
+
+  return (
+    <div className="botram-field" ref={wrapperRef}>
+      <label className="botram-label">{label}</label>
+
+      <div
+        className={`botram-input-wrap botram-combobox ${
+          open ? "is-open" : ""
+        } ${disabled ? "is-disabled" : ""}`}
+      >
+        <input
+          type="text"
+          role="combobox"
+          aria-expanded={open}
+          aria-autocomplete="list"
+          placeholder={placeholder}
+          value={value}
+          disabled={disabled}
+          autoComplete="off"
+          onFocus={() => setOpen(true)}
+          onChange={(event) => {
+            onInputChange(event.target.value);
+            setOpen(true);
+          }}
+          onKeyDown={(event) => {
+            if (event.key === "Escape") setOpen(false);
+          }}
+        />
+
+        <span className={`botram-combobox-icon ${open ? "is-open" : ""}`}>
+          {loading ? (
+            <span className="botram-spinner" />
+          ) : (
+            <svg viewBox="0 0 24 24" fill="none">
+              <path
+                d="m6 9 6 6 6-6"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          )}
+        </span>
+      </div>
+
+      {open && !disabled && (
+        <div className="botram-dropdown">
+          {loading ? (
+            <div className="botram-dropdown-message">
+              Memuat data wilayah...
+            </div>
+          ) : filteredOptions.length > 0 ? (
+            <>
+              <div className="botram-dropdown-caption">
+                {value.trim()
+                  ? `${filteredOptions.length} hasil ditemukan`
+                  : "PILIH WILAYAH"}
+              </div>
+
+              <div className="botram-dropdown-list">
+                {filteredOptions.map((option) => (
+                  <button
+                    type="button"
+                    key={option.id}
+                    className={
+                      value === option.name ? "is-selected" : ""
+                    }
+                    onMouseDown={(event) => event.preventDefault()}
+                    onClick={() => {
+                      onSelect(option);
+                      setOpen(false);
+                    }}
+                  >
+                    <span>{option.name}</span>
+                    {value === option.name && (
+                      <span className="botram-option-check">✓</span>
+                    )}
+                  </button>
+                ))}
+              </div>
+            </>
+          ) : (
+            <div className="botram-dropdown-message">
+              Wilayah tidak ditemukan.
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default function RegisterPage() {
+  const [step, setStep] = useState(1);
+  const [data, setData] = useState(INITIAL_DATA);
+
+  const [cities, setCities] = useState<Region[]>([]);
+  const [districts, setDistricts] = useState<Region[]>([]);
+
+  const [loadingCities, setLoadingCities] = useState(true);
+  const [loadingDistricts, setLoadingDistricts] = useState(false);
+
+  const [proof, setProof] = useState<File | null>(null);
+  const [downloadConfirmed, setDownloadConfirmed] = useState(false);
+
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState("");
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  const fileRef = useRef<HTMLInputElement>(null);
+  const stepPanelRef = useRef<HTMLElement>(null);
+  const isFirstRender = useRef(true);
+
+  // Arahkan layar ke panel yang aktif, bukan ke bagian paling atas halaman.
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+
+    requestAnimationFrame(() => {
+      stepPanelRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    });
+  }, [step]);
+
+  const updateField = useCallback(
+    (field: keyof RegistrationData, value: string) => {
+      setData((previous) => ({
+        ...previous,
+        [field]: value,
+      }));
+    },
+    []
+  );
+
+  // Ambil seluruh kabupaten/kota di Indonesia.
+  useEffect(() => {
+    const controller = new AbortController();
+
+    async function fetchCities() {
+      setLoadingCities(true);
+      setError("");
+
+      try {
+        const provinceResponse = await fetch(
+          `${REGION_API}/provinces.json`,
+          { signal: controller.signal }
+        );
+
+        if (!provinceResponse.ok) {
+          throw new Error("Gagal mengambil data provinsi.");
+        }
+
+        const provinces: Region[] = await provinceResponse.json();
+
+        const regencyResults = await Promise.all(
+          provinces.map(async (province) => {
+            const response = await fetch(
+              `${REGION_API}/regencies/${province.id}.json`,
+              { signal: controller.signal }
+            );
+
+            if (!response.ok) {
+              throw new Error(
+                `Gagal mengambil wilayah ${province.name}.`
+              );
+            }
+
+            const result: Region[] = await response.json();
+            return result;
+          })
+        );
+
+        const allCities = regencyResults
+          .flat()
+          .sort((a, b) => a.name.localeCompare(b.name, "id"));
+
+        setCities(allCities);
+      } catch (err) {
+        if (
+          err instanceof Error &&
+          err.name !== "AbortError"
+        ) {
+          setError(
+            "Data kota/kabupaten gagal dimuat. Silakan refresh halaman."
+          );
+        }
+      } finally {
+        if (!controller.signal.aborted) {
+          setLoadingCities(false);
+        }
+      }
+    }
+
+    fetchCities();
+
+    return () => controller.abort();
+  }, []);
+
+  // Ambil kecamatan berdasarkan kabupaten/kota terpilih.
+  useEffect(() => {
+    if (!data.cityId) {
+      setDistricts([]);
+      setLoadingDistricts(false);
+      return;
+    }
+
+    const controller = new AbortController();
+
+    async function fetchDistricts() {
+      setLoadingDistricts(true);
+      setDistricts([]);
+
+      try {
+        const response = await fetch(
+          `${REGION_API}/districts/${data.cityId}.json`,
+          { signal: controller.signal }
+        );
+
+        if (!response.ok) {
+          throw new Error("Gagal mengambil data kecamatan.");
+        }
+
+        const result: Region[] = await response.json();
+
+        setDistricts(
+          result.sort((a, b) =>
+            a.name.localeCompare(b.name, "id")
+          )
+        );
+      } catch (err) {
+        if (
+          err instanceof Error &&
+          err.name !== "AbortError"
+        ) {
+          setError("Data kecamatan gagal dimuat. Coba kembali.");
+        }
+      } finally {
+        if (!controller.signal.aborted) {
+          setLoadingDistricts(false);
+        }
+      }
+    }
+
+    fetchDistricts();
+
+    return () => controller.abort();
+  }, [data.cityId]);
+
+  function handleCityInput(value: string) {
+    setData((previous) => ({
+      ...previous,
+      city: value,
+      cityId: "",
+      district: "",
+      districtId: "",
+    }));
+
+    setDistricts([]);
+    setError("");
+  }
+
+  function handleCitySelect(option: Region) {
+    setData((previous) => ({
+      ...previous,
+      city: option.name,
+      cityId: option.id,
+      district: "",
+      districtId: "",
+    }));
+
+    setError("");
+  }
+
+  function handleDistrictInput(value: string) {
+    setData((previous) => ({
+      ...previous,
+      district: value,
+      districtId: "",
+    }));
+
+    setError("");
+  }
+
+  function handleDistrictSelect(option: Region) {
+    setData((previous) => ({
+      ...previous,
+      district: option.name,
+      districtId: option.id,
+    }));
+
+    setError("");
+  }
+
+  function nextStep() {
+    if (!data.name.trim()) {
+      setError("Nama lengkap wajib diisi.");
+      return;
+    }
+
+    if (!data.phone.trim()) {
+      setError("Nomor WhatsApp wajib diisi.");
+      return;
+    }
+
+    if (
+      data.email &&
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)
+    ) {
+      setError("Format email tidak valid.");
+      return;
+    }
+
+    if (!data.cityId) {
+      setError("Silakan pilih kota atau kabupaten dari dropdown.");
+      return;
+    }
+
+    if (!data.districtId) {
+      setError("Silakan pilih kecamatan dari dropdown.");
+      return;
+    }
+
+    if (!/^[0-9+\-\s()]{8,20}$/.test(data.phone.trim())) {
+      setError("Format nomor WhatsApp tidak valid.");
+      return;
+    }
+
+    setError("");
+    setStep(2);
+  }
+
+  function previousStep() {
+    setError("");
+    setStep(1);
+  }
+
+  function handleFile(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+
+    if (!file) return;
+
+    const allowedTypes = [
+      "image/jpeg",
+      "image/png",
+      "image/webp",
+    ];
+
+    if (!allowedTypes.includes(file.type)) {
+      setError("Gunakan format JPG, PNG, atau WEBP.");
+      event.target.value = "";
+      setProof(null);
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      setError("Ukuran gambar maksimal 5 MB.");
+      event.target.value = "";
+      setProof(null);
+      return;
+    }
+
+    setError("");
+    setProof(file);
+  }
+
+  async function handleSubmit(
+    event: FormEvent<HTMLFormElement>
+  ) {
     event.preventDefault();
 
+    if (isSubmitting) return;
+
+    if (!proof) {
+      setError("Silakan upload bukti download TactLink.");
+      return;
+    }
+
+    if (!downloadConfirmed) {
+      setError("Silakan konfirmasi download TactLink.");
+      return;
+    }
+
     setIsSubmitting(true);
+    setError("");
 
-    const formData = new FormData(event.currentTarget);
+    try {
+      const formData = new FormData();
 
-    console.log(
-      "PKKB Registration:",
-      Object.fromEntries(formData)
-    );
+      formData.append("name", data.name.trim());
+      formData.append("phone", data.phone.trim());
+      formData.append("email", data.email.trim());
+      formData.append("city", data.city);
+      formData.append("cityId", data.cityId);
+      formData.append("district", data.district);
+      formData.append("districtId", data.districtId);
+      formData.append("proof", proof);
 
-    // DEMO SUBMIT
-    // Nanti bagian ini tinggal diganti dengan API/backend.
-    setTimeout(() => {
-      setIsSubmitting(false);
+      const response = await fetch("/api/botram/register", {
+        method: "POST",
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          result.message ||
+            "Registrasi gagal. Silakan coba kembali."
+        );
+      }
+
       setSubmitted(true);
-    }, 800);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Terjadi kesalahan. Silakan coba kembali."
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   if (submitted) {
     return (
-      <RegistrationSuccess
-        type={type}
-        onBack={onBack}
-      />
+      <main className="botram-register-page botram-success-page">
+        <div className="botram-success-orb" />
+
+        
+
+        <section className="botram-success-card">
+          <div className="botram-success-mark">✓</div>
+
+          <span className="botram-eyebrow">
+            REGISTRATION COMPLETE
+          </span>
+
+          <h1>
+            Sampai
+            <br />
+            <em style={{ display: "inline-block", marginTop: "0.08em" }}>
+              jumpa.
+            </em>
+          </h1>
+
+          <p>
+            Registrasimu berhasil diterima.
+            Terima kasih telah menjadi bagian dari
+            Botram PKKB 2026. Kami tunggu kehadiranmu
+            di perayaan kebudayaan Kota Bandung!
+          </p>
+
+          <a href="/" className="botram-button botram-button-dark">
+            KEMBALI KE BERANDA
+          </a>
+
+          <span className="botram-success-note">
+            PEKAN KEBUDAYAAN KOTA BANDUNG · 2026
+          </span>
+        </section>
+      </main>
     );
   }
 
   return (
-    <main className="register-form-page">
-      <div className="register-form-background" />
+    <main className="botram-register-page">
+      <div className="botram-bg-orb botram-bg-orb-top" />
+      <div className="botram-bg-orb botram-bg-orb-bottom" />
 
-      <a href="/" className="register-home">
-        <span>←</span>
-        BACK TO PKKB
+      <a href="/" className="botram-back-link">
+        <span>←</span> BACK TO PKKB
       </a>
 
-      <div className="register-form-shell">
-        {/* HEADER */}
-        <div className="register-form-header">
-          <button
-            type="button"
-            className="register-back"
-            onClick={onBack}
-          >
-            ← CHANGE REGISTRATION TYPE
-          </button>
-
-          <div className="register-form-number">
-            {isTenant ? "02" : "01"}
-          </div>
-        </div>
-
-        {/* TITLE */}
-        <div className="register-form-title">
-          <div className="register-eyebrow">
+      <div className="botram-register-shell">
+        <header className="botram-heading">
+          <div className="botram-eyebrow">
             <span />
-            {isTenant
-              ? "TENANT REGISTRATION"
-              : "PUBLIC REGISTRATION"}
-          </div>
-
-          <h1>
-            {isTenant ? (
-              <>
-                Bawa
-                <br />
-                <em>ceritamu.</em>
-              </>
-            ) : (
-              <>
-                Sampai
-                <br />
-                <em>jumpa.</em>
-              </>
-            )}
-          </h1>
-
-          <p>
-            {isTenant
-              ? "Ceritakan tentang brand atau usaha yang ingin kamu bawa ke PKKB 2026."
-              : "Isi data singkat berikut untuk menjadi bagian dari PKKB 2026."}
-          </p>
-        </div>
-
-        {/* FORM */}
-        <form
-          className="register-form"
-          onSubmit={handleSubmit}
-        >
-          {/* SECTION 01 */}
-          <div className="register-form-section">
-            <span className="register-form-section-number">
-              01
-            </span>
-
-            <div>
-              <h2>
-                {isTenant
-                  ? "Tentang kamu & brand"
-                  : "Tentang kamu"}
-              </h2>
-
-              <p>
-                {isTenant
-                  ? "Kenalan dulu dengan kami."
-                  : "Data ini digunakan untuk kebutuhan registrasi."}
-              </p>
-            </div>
-          </div>
-
-          <div className="register-fields">
-            <label>
-              <span>FULL NAME *</span>
-
-              <input
-                type="text"
-                name="name"
-                placeholder="Nama lengkap"
-                required
-              />
-            </label>
-
-            <label>
-              <span>EMAIL *</span>
-
-              <input
-                type="email"
-                name="email"
-                placeholder="nama@email.com"
-                required
-              />
-            </label>
-
-            <label>
-              <span>PHONE / WHATSAPP *</span>
-
-              <input
-                type="tel"
-                name="phone"
-                placeholder="+62 8..."
-                required
-              />
-            </label>
-
-            {isTenant && (
-              <>
-                <label>
-                  <span>BRAND / BUSINESS NAME *</span>
-
-                  <input
-                    type="text"
-                    name="brand"
-                    placeholder="Nama brand / usaha"
-                    required
-                  />
-                </label>
-
-                <label>
-                  <span>CATEGORY *</span>
-
-                  <select
-                    name="category"
-                    defaultValue=""
-                    required
-                  >
-                    <option value="" disabled>
-                      Pilih kategori
-                    </option>
-
-                    <option value="food">
-                      Food & Beverage
-                    </option>
-
-                    <option value="fashion">
-                      Fashion
-                    </option>
-
-                    <option value="craft">
-                      Craft & Handmade
-                    </option>
-
-                    <option value="creative">
-                      Creative Industry
-                    </option>
-
-                    <option value="community">
-                      Community
-                    </option>
-
-                    <option value="other">
-                      Other
-                    </option>
-                  </select>
-                </label>
-
-                <label>
-                  <span>INSTAGRAM / SOCIAL MEDIA</span>
-
-                  <input
-                    type="text"
-                    name="social"
-                    placeholder="@yourbrand"
-                  />
-                </label>
-              </>
-            )}
-          </div>
-
-          {/* SECTION 02 */}
-          <div className="register-form-section">
-            <span className="register-form-section-number">
-              02
-            </span>
-
-            <div>
-              <h2>
-                {isTenant
-                  ? "Sedikit lebih detail"
-                  : "Rencana kunjungan"}
-              </h2>
-
-              <p>
-                {isTenant
-                  ? "Biar kami bisa memahami kebutuhanmu."
-                  : "Bantu kami mempersiapkan pengalaman terbaik."}
-              </p>
-            </div>
-          </div>
-
-          <div className="register-fields">
-            {!isTenant && (
-              <>
-                <label>
-                  <span>NUMBER OF VISITORS</span>
-
-                  <select
-                    name="visitors"
-                    defaultValue=""
-                  >
-                    <option value="" disabled>
-                      Pilih jumlah
-                    </option>
-
-                    <option value="1">
-                      1 orang
-                    </option>
-
-                    <option value="2-3">
-                      2–3 orang
-                    </option>
-
-                    <option value="4-5">
-                      4–5 orang
-                    </option>
-
-                    <option value="6+">
-                      6+ orang
-                    </option>
-                  </select>
-                </label>
-
-                <label>
-                  <span>PROGRAM INTEREST</span>
-
-                  <select
-                    name="interest"
-                    defaultValue=""
-                  >
-                    <option value="" disabled>
-                      Pilih program
-                    </option>
-
-                    <option value="pangan">
-                      Pangan
-                    </option>
-
-                    <option value="seni">
-                      Seni
-                    </option>
-
-                    <option value="tradisi">
-                      Tradisi
-                    </option>
-
-                    <option value="komunitas">
-                      Komunitas
-                    </option>
-
-                    <option value="ruang-kota">
-                      Ruang Kota
-                    </option>
-                  </select>
-                </label>
-              </>
-            )}
-
-            {isTenant && (
-              <>
-                <label className="register-field-full">
-                  <span>WHAT WILL YOU BRING? *</span>
-
-                  <textarea
-                    name="description"
-                    placeholder="Ceritakan produk atau karya yang akan kamu bawa..."
-                    required
-                  />
-                </label>
-
-                <label>
-                  <span>ESTIMATED SPACE NEEDED</span>
-
-                  <select
-                    name="space"
-                    defaultValue=""
-                  >
-                    <option value="" disabled>
-                      Pilih kebutuhan
-                    </option>
-
-                    <option value="small">
-                      Small booth
-                    </option>
-
-                    <option value="medium">
-                      Medium booth
-                    </option>
-
-                    <option value="large">
-                      Large booth
-                    </option>
-                  </select>
-                </label>
-              </>
-            )}
-          </div>
-
-          {/* SUBMIT */}
-          <div className="register-submit-area">
-            <p>
-              Dengan mengirimkan formulir ini, kamu
-              menyetujui proses registrasi PKKB 2026.
-            </p>
-
-            <button
-              type="submit"
-              disabled={isSubmitting}
-            >
-              <span>
-                {isSubmitting
-                  ? "SUBMITTING..."
-                  : isTenant
-                    ? "SUBMIT TENANT REGISTRATION"
-                    : "COMPLETE REGISTRATION"}
-              </span>
-
-              <strong>
-                {isSubmitting ? "..." : "↗︎"}
-              </strong>
-            </button>
-          </div>
-        </form>
-      </div>
-    </main>
-  );
-}
-
-/* =====================================================
-   SUCCESS PAGE
-===================================================== */
-
-function RegistrationSuccess({
-  type,
-  onBack,
-}: {
-  type: "public" | "tenant";
-  onBack: () => void;
-}) {
-  const isTenant = type === "tenant";
-
-  return (
-    <main className="register-success-page">
-      <div className="register-success-orb register-success-orb-one" />
-      <div className="register-success-orb register-success-orb-two" />
-
-      <a href="/" className="register-home">
-        <span>←</span>
-        BACK TO PKKB
-      </a>
-
-      <div className="register-success">
-        <div className="register-success-top">
-          <span>PKKB 2026</span>
-
-          <span>REGISTRATION COMPLETE</span>
-        </div>
-
-        <div className="register-success-content">
-          <div className="register-success-symbol">
-            ✓
-          </div>
-
-          <div className="register-eyebrow">
-            <span />
-            YOU&apos;RE IN
+            PKKB 2026 / BOTRAM REGISTRATION
           </div>
 
           <h1>
             Sampai
             <br />
-            <em>jumpa.</em>
+            <em style={{ display: "inline-block", marginTop: "0.08em" }}>
+              jumpa.
+            </em>
           </h1>
 
           <p>
-            {isTenant
-              ? "Terima kasih sudah mendaftarkan brand kamu sebagai tenant PKKB 2026. Tim kami akan menghubungi kamu untuk informasi selanjutnya."
-              : "Registrasimu sudah diterima. Bersiap untuk menjadi bagian dari PKKB 2026 dan menikmati berbagai ruang kebudayaan yang kami hadirkan."}
+            Isi data singkat berikut untuk menjadi
+            bagian dari Botram PKKB 2026.
           </p>
+        </header>
 
-          <div className="register-success-ticket">
-            <div>
-              <span>REGISTRATION TYPE</span>
-
-              <strong>
-                {isTenant ? "TENANT" : "PUBLIC"}
-              </strong>
+        <form onSubmit={handleSubmit} className="botram-form">
+          <div className="botram-stepper-card">
+            <div className="botram-stepper-track">
+              <div
+                className={`botram-stepper-progress ${
+                  step === 2 ? "step-two" : ""
+                }`}
+              />
             </div>
 
-            <div>
-              <span>STATUS</span>
+            <div className="botram-stepper-items">
+              <div
+                className={`botram-step ${
+                  step === 1 ? "active" : "completed"
+                }`}
+              >
+                <div className="botram-step-number">
+                  {step === 2 ? "✓" : "01"}
+                </div>
+                <strong>Data Pengunjung</strong>
+                <span>Informasi dasar</span>
+              </div>
 
-              <strong>REGISTERED ✓</strong>
-            </div>
-
-            <div>
-              <span>EVENT</span>
-
-              <strong>PKKB 2026</strong>
+              <div
+                className={`botram-step ${
+                  step === 2 ? "active" : ""
+                }`}
+              >
+                <div className="botram-step-number">02</div>
+                <strong>TactLink</strong>
+                <span>Download & Upload Bukti</span>
+              </div>
             </div>
           </div>
 
-          <div className="register-success-actions">
-            <a
-              href="/"
-              className="register-success-primary"
+          {step === 1 && (
+            <section
+              ref={stepPanelRef}
+              className="botram-panel-card"
+              style={{ scrollMarginTop: "24px" }}
             >
-              BACK TO HOME
+              <div className="botram-section-heading">
+                <span className="botram-section-number">01</span>
 
-              <strong>↗︎</strong>
-            </a>
+                <div>
+                  <span className="botram-eyebrow">
+                    DATA PENGUNJUNG
+                  </span>
+                  <h2>Kenali pengunjung.</h2>
+                  <p>
+                    Lengkapi informasi diri untuk kebutuhan
+                    pendataan kehadiran Botram PKKB 2026.
+                  </p>
+                </div>
+              </div>
 
-            <button
-              type="button"
-              onClick={onBack}
-              className="register-success-secondary"
+              <div className="botram-fields">
+                <label className="botram-field">
+                  <span className="botram-label">
+                    NAMA LENGKAP <b>*</b>
+                  </span>
+                  <input
+                    type="text"
+                    name="name"
+                    placeholder="Masukkan nama lengkap"
+                    value={data.name}
+                    onChange={(event) =>
+                      updateField("name", event.target.value)
+                    }
+                    required
+                  />
+                </label>
+
+                <label className="botram-field">
+                  <span className="botram-label">
+                    NOMOR WHATSAPP <b>*</b>
+                  </span>
+                  <input
+                    type="tel"
+                    name="phone"
+                    placeholder="Contoh: 081234567890"
+                    value={data.phone}
+                    onChange={(event) =>
+                      updateField("phone", event.target.value)
+                    }
+                    required
+                  />
+                </label>
+
+                <label className="botram-field botram-field-full">
+                  <span className="botram-label">
+                    EMAIL <small>(OPSIONAL)</small>
+                  </span>
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="nama@email.com"
+                    value={data.email}
+                    onChange={(event) =>
+                      updateField("email", event.target.value)
+                    }
+                  />
+                </label>
+
+                <SearchableRegionField
+                  label="KOTA / KABUPATEN *"
+                  placeholder={
+                    loadingCities
+                      ? "Memuat wilayah Indonesia..."
+                      : "Ketik nama kota atau kabupaten"
+                  }
+                  value={data.city}
+                  options={cities}
+                  loading={loadingCities}
+                  onInputChange={handleCityInput}
+                  onSelect={handleCitySelect}
+                />
+
+                <SearchableRegionField
+                  label="KECAMATAN *"
+                  placeholder={
+                    !data.cityId
+                      ? "Pilih kota/kabupaten terlebih dahulu"
+                      : "Ketik nama kecamatan"
+                  }
+                  value={data.district}
+                  options={districts}
+                  disabled={!data.cityId}
+                  loading={loadingDistricts}
+                  onInputChange={handleDistrictInput}
+                  onSelect={handleDistrictSelect}
+                />
+              </div>
+
+              {error && (
+                <div className="botram-error">
+                  <span>!</span> {error}
+                </div>
+              )}
+
+              <div className="botram-form-actions">
+                <p>
+                  Pastikan informasi yang kamu masukkan
+                  sudah benar.
+                </p>
+                <button
+                  type="button"
+                  onClick={nextStep}
+                  className="botram-button botram-button-dark"
+                >
+                  LANJUTKAN
+                </button>
+              </div>
+            </section>
+          )}
+
+          {step === 2 && (
+            <section
+              ref={stepPanelRef}
+              className="botram-panel-card"
+              style={{ scrollMarginTop: "24px" }}
             >
-              REGISTER ANOTHER
-            </button>
+              <div className="botram-section-heading">
+                <span className="botram-section-number">02</span>
+
+                <div>
+                  <span className="botram-eyebrow">
+                    TACTLINK APPLICATION
+                  </span>
+                  <h2>Satu langkah lagi.</h2>
+                  <p>
+                    Download aplikasi TactLink dan unggah
+                    bukti sebagai bagian dari proses
+                    registrasi Botram.
+                  </p>
+                </div>
+              </div>
+
+              <div className="botram-download-card">
+                <div className="botram-download-brand">
+                  <div className="botram-app-logo">
+                    <img
+                      src="/image/tactlink.png"
+                      alt="TactLink Logo"
+                    />
+                  </div>
+
+                  <div className="botram-download-info">
+                    <span>PKKB OFFICIAL APPLICATION</span>
+                    <h3>Download TactLink</h3>
+                    <p>
+                      Akses aplikasi melalui perangkat
+                      yang kamu gunakan.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="botram-store-buttons">
+                  <a
+                    href="https://apps.apple.com/id/app/tactlink/id1469516661"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="botram-store-button"
+                  >
+                    <AppleIcon />
+                    <span>
+                      <small>Download on the</small>
+                      <strong>App Store</strong>
+                    </span>
+                  </a>
+
+                  <a
+                    href="https://play.google.com/store/apps/details?id=com.tactlink.app"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="botram-store-button"
+                  >
+                    <GooglePlayIcon />
+                    <span>
+                      <small>GET IT ON</small>
+                      <strong>Google Play</strong>
+                    </span>
+                  </a>
+                </div>
+              </div>
+
+              <a
+                href="https://www.youtube.com/shorts/JuYtU3TVvYo"
+                target="_blank"
+                rel="noreferrer"
+                className="botram-tutorial-link"
+              >
+                <span className="botram-tutorial-icon">?</span>
+                <span>
+                  <strong>Butuh bantuan?</strong>
+                  <small>
+                    Pelajari cara download aplikasi TactLink.
+                  </small>
+                </span>
+                <span className="botram-tutorial-action">
+                  LIHAT TUTORIAL
+                </span>
+              </a>
+
+              <div className="botram-upload-section">
+                <div className="botram-upload-heading">
+                  <div>
+                    <h3>Upload bukti download</h3>
+                    <p>
+                      Unggah screenshot aplikasi TactLink
+                      yang sudah terpasang di perangkatmu.
+                    </p>
+                  </div>
+                  <span className="botram-required-tag">
+                    WAJIB
+                  </span>
+                </div>
+
+                <input
+                  ref={fileRef}
+                  type="file"
+                  accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
+                  onChange={handleFile}
+                  hidden
+                />
+
+                <button
+                  type="button"
+                  className={`botram-upload-box ${
+                    proof ? "has-file" : ""
+                  }`}
+                  onClick={() => fileRef.current?.click()}
+                >
+                  {proof ? (
+                    <>
+                      <span className="botram-upload-symbol">
+                        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                          <path
+                            d="m5 12 4.5 4.5L19 7"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </span>
+                      <strong>{proof.name}</strong>
+                      <small>
+                        {(proof.size / 1024 / 1024).toFixed(2)} MB
+                        · Klik untuk mengganti gambar
+                      </small>
+                    </>
+                  ) : (
+                    <>
+                      <span className="botram-upload-symbol">
+                        <UploadIcon />
+                      </span>
+                      <strong>
+                        Klik untuk mengunggah bukti
+                      </strong>
+                      <small>
+                        JPG, PNG, atau WEBP · Maksimal 5 MB
+                      </small>
+                    </>
+                  )}
+                </button>
+              </div>
+
+              <label className="botram-confirmation">
+                <input
+                  type="checkbox"
+                  checked={downloadConfirmed}
+                  onChange={(event) =>
+                    setDownloadConfirmed(event.target.checked)
+                  }
+                />
+                <span>
+                  Saya menyatakan bahwa aplikasi TactLink
+                  telah berhasil diunduh dan bukti yang
+                  saya unggah sesuai dengan kondisi sebenarnya.
+                </span>
+              </label>
+
+              {error && (
+                <div className="botram-error">
+                  <span>!</span> {error}
+                </div>
+              )}
+
+              <div className="botram-form-actions botram-step-two-actions">
+                <button
+                  type="button"
+                  onClick={previousStep}
+                  className="botram-button botram-button-outline"
+                  disabled={isSubmitting}
+                >
+                  KEMBALI
+                </button>
+
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="botram-button botram-button-dark"
+                >
+                  {isSubmitting ? "MENGIRIM..." : "KIRIM REGISTRASI"}
+                </button>
+              </div>
+            </section>
+          )}
+        </form>
+
+        <footer className="botram-register-footer">
+          <div className="botram-footer-main">
+            <div>
+              <span className="botram-footer-eyebrow">
+                PEKAN KEBUDAYAAN KOTA BANDUNG
+              </span>
+              <h2>
+                NGAMUMULE BUDAYA,
+                <br />
+                NGAWANGUN KOTA.
+              </h2>
+            </div>
+            <span className="botram-footer-year">2026</span>
           </div>
-        </div>
 
-        <div className="register-success-footer">
-          <span>
-            NGAMUMULE BUDAYA / NGAWANGUN KOTA
-          </span>
-
-          <span>2026</span>
-        </div>
+          <div className="botram-footer-bottom">
+            <span>BOTRAM · PKKB 2026</span>
+            <span>MERAYAKAN KEBUDAYAAN KOTA BANDUNG</span>
+          </div>
+        </footer>
       </div>
     </main>
   );

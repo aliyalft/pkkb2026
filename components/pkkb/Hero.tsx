@@ -490,7 +490,7 @@ export default function Hero() {
 
 
           <a
-            href="#register"
+            href="/register"
             className="
               pkkb-button
               pkkb-button-outline
