@@ -456,8 +456,7 @@ export default function Hero() {
         </div>
         <div className="pkkb-hero-mobile-badge">
   <strong>13 - 15 November 2026</strong>
-  <i>•</i>
-  <span>Jalan Soekarno & Cikapundung River Side</span>
+  
 </div>
 
         {/* MOBILE-ONLY COMBINED BADGE */}
