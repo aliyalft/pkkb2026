@@ -75,30 +75,7 @@ export default function Navbar() {
 
         <div className="pkkb-navbar-right">
 
-          <button
-            type="button"
-            className="pkkb-language-switch"
-            data-lang={lang}
-            onClick={toggleLang}
-            aria-label="Switch language"
-          >
-            <span className="pkkb-language-thumb" />
-            <span
-              className={`pkkb-language-option ${
-                lang === "id" ? "is-active" : ""
-              }`}
-            >
-              ID
-            </span>
-            <span
-              className={`pkkb-language-option ${
-                lang === "en" ? "is-active" : ""
-              }`}
-            >
-              EN
-            </span>
-          </button>
-
+          
           <div className="pkkb-navbar-actions">
             <a
               href="/register"

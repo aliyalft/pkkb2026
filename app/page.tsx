@@ -3,7 +3,7 @@ import Hero from "@/components/pkkb/Hero";
 import Countdown from "@/components/pkkb/Countdown";
 import About from "@/components/pkkb/About";
 import Program from "@/components/pkkb/Program";
-import Schedule from "@/components/pkkb/Schedule";
+/*import Schedule from "@/components/pkkb/Schedule";*/
 import Talent from "@/components/pkkb/Talent";
 import Venue from "@/components/pkkb/Venue";
 import Gallery from "@/components/pkkb/Gallery";
@@ -22,7 +22,7 @@ export default function Home() {
         <About />
         <Program />
         <Popolah />
-        <Schedule />
+        
         <Talent />
         <Venue />
         <Gallery />

@@ -990,25 +990,45 @@ export default function RegisterPage() {
         </form>
 
         <footer className="botram-register-footer">
-          <div className="botram-footer-main">
-            <div>
-              <span className="botram-footer-eyebrow">
-                PEKAN KEBUDAYAAN KOTA BANDUNG
-              </span>
-              <h2>
-                NGAMUMULE BUDAYA,
-                <br />
-                NGAWANGUN KOTA.
-              </h2>
-            </div>
-            <span className="botram-footer-year">2026</span>
-          </div>
+  <div className="botram-footer-main">
+    <div>
+      <span className="botram-footer-eyebrow">
+        PEKAN KEBUDAYAAN KOTA BANDUNG
+      </span>
+      <h2>
+        NGAMUMULE BUDAYA,
+        <br />
+        NGAWANGUN KOTA.
+      </h2>
+    </div>
+    <span className="botram-footer-year">2026</span>
+  </div>
 
-          <div className="botram-footer-bottom">
-            <span>BOTRAM · PKKB 2026</span>
-            <span>MERAYAKAN KEBUDAYAAN KOTA BANDUNG</span>
-          </div>
-        </footer>
+  <div className="botram-footer-bottom">
+  <span>
+    © 2026 PEKAN KEBUDAYAAN KOTA BANDUNG
+  </span>
+
+  <div className="botram-footer-credits">
+    <div className="botram-footer-powered">
+      <span>POWERED BY</span>
+      <img src="/image/tactlink.png" alt="TactLink" />
+    </div>
+
+    <div className="botram-footer-developed">
+      <span>DEVELOPED BY</span>
+      <a
+        href="https://www.linkedin.com/in/aliyahalfitarossa/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        ALIYAH ALFITA ROSSA
+      </a>
+    </div>
+  </div>
+</div>
+</footer>
+        
       </div>
     </main>
   );

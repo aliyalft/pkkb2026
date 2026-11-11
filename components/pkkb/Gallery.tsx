@@ -1,60 +1,63 @@
+
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const galleryItems = [
   {
     id: 1,
     image:
-      "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1200&q=85",
+      "https://cdn.antaranews.com/cache/1200x800/2026/01/10/CjkinzN000031_20260109_CBMFN0A001.jpg",
     category: "PERFORMANCE",
-    caption: "Ruang untuk berekspresi.",
+    caption: "Gerak Jaipong, ekspresi budaya Sunda.",
     size: "large",
   },
   {
     id: 2,
     image:
-      "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&w=900&q=85",
+      "https://asset.kompas.com/crops/TYG58cAof7H1gI7AMOtEpBqbM44%3D/0x0%3A750x500/750x500/data/photo/2022/11/01/6360fc943185f.jpg",
     category: "COMMUNITY",
-    caption: "Bertemu dalam keberagaman.",
+    caption: "Bersama menjaga bunyi tradisi.",
     size: "small",
   },
   {
-    id: 3,
-    image:
-      "https://images.unsplash.com/photo-1528605248644-14dd04022da1?auto=format&fit=crop&w=1000&q=85",
-    category: "BOTRAM",
-    caption: "Makan, berbagi, bercerita.",
-    size: "medium",
-  },
+  id: 3,
+  category: "BOTRAM",
+  caption: "Makan, berbagi, dan bercerita.",
+  image: "/image/03-botram.png",
+  size: "medium",
+},
   {
     id: 4,
     image:
-      "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1200&q=85",
+      "https://assets.jabarekspres.com/main/2021/11/Peserta-Pasanggiri-Pencasilat-Padungdung-Bandung-2021-unjuk-kebolehan.jpg",
     category: "FESTIVAL",
-    caption: "Kota yang ikut merayakan.",
+    caption: "Tradisi bergerak di ruang bersama.",
     size: "medium",
   },
   {
     id: 5,
     image:
-      "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=900&q=85",
+      "https://assets.pikiran-rakyat.com/crop/0x0%3A0x0/720x0/webp/photo/2023/10/04/572283766.jpg",
     category: "CULTURE",
-    caption: "Tradisi bertemu hari ini.",
+    caption: "Cerita Sunda hidup lewat wayang golek.",
     size: "small",
   },
   {
     id: 6,
     image:
-      "https://images.unsplash.com/photo-1506157786151-b8491531f063?auto=format&fit=crop&w=1200&q=85",
+      "https://awsimages.detik.net.id/community/media/visual/2016/03/08/3fb4b3ff-761d-4701-96ba-4110fa4da159_169.jpg?w=1200",
     category: "MUSIC",
-    caption: "Suara dari berbagai cerita.",
+    caption: "Nada angklung menyatukan banyak suara.",
     size: "large",
   },
 ];
 
 export default function Gallery() {
   const [selected, setSelected] = useState<number | null>(null);
+  const [mobileIndex, setMobileIndex] = useState(0);
+
+  const galleryTrackRef = useRef<HTMLDivElement>(null);
 
   const currentIndex =
     selected !== null
@@ -79,30 +82,99 @@ export default function Gallery() {
   const next = () => {
     if (currentIndex < 0) return;
 
-    const index =
-      (currentIndex + 1) % galleryItems.length;
+    const index = (currentIndex + 1) % galleryItems.length;
 
     setSelected(galleryItems[index]!.id);
   };
 
+  // Update active dot when the mobile slider is swiped.
+  const handleGalleryScroll = () => {
+    const track = galleryTrackRef.current;
+    if (!track) return;
+
+    const cards = Array.from(track.children) as HTMLElement[];
+
+    if (!cards.length) return;
+
+    const trackLeft = track.getBoundingClientRect().left;
+
+    let closestIndex = 0;
+    let closestDistance = Infinity;
+
+    cards.forEach((card, index) => {
+      const distance = Math.abs(
+        card.getBoundingClientRect().left - trackLeft
+      );
+
+      if (distance < closestDistance) {
+        closestDistance = distance;
+        closestIndex = index;
+      }
+    });
+
+    setMobileIndex(closestIndex);
+  };
+
+  // Navigate to a selected slide using the dots.
+  const goToSlide = (index: number) => {
+    const track = galleryTrackRef.current;
+    if (!track) return;
+
+    const card = track.children[index] as HTMLElement | undefined;
+    if (!card) return;
+
+    track.scrollTo({
+      left: card.offsetLeft - track.offsetLeft,
+      behavior: "smooth",
+    });
+
+    setMobileIndex(index);
+  };
+
+  // Lightbox keyboard controls.
   useEffect(() => {
     if (selected === null) return;
 
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") closeLightbox();
-      if (event.key === "ArrowLeft") previous();
-      if (event.key === "ArrowRight") next();
+      if (event.key === "Escape") {
+        setSelected(null);
+      }
+
+      if (event.key === "ArrowLeft") {
+        setSelected((currentId) => {
+          const index = galleryItems.findIndex(
+            (item) => item.id === currentId
+          );
+
+          if (index < 0) return currentId;
+
+          return galleryItems[
+            (index - 1 + galleryItems.length) % galleryItems.length
+          ]!.id;
+        });
+      }
+
+      if (event.key === "ArrowRight") {
+        setSelected((currentId) => {
+          const index = galleryItems.findIndex(
+            (item) => item.id === currentId
+          );
+
+          if (index < 0) return currentId;
+
+          return galleryItems[(index + 1) % galleryItems.length]!.id;
+        });
+      }
     };
 
     document.addEventListener("keydown", handleKeyDown);
-
     document.body.style.overflow = "hidden";
 
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "";
     };
-  }, [selected, currentIndex]);
+  }, [selected]);
 
   return (
     <>
@@ -134,18 +206,23 @@ export default function Gallery() {
           </div>
 
           {/* Gallery */}
-          <div className="pkkb-gallery-grid">
+          <div
+            ref={galleryTrackRef}
+            className="pkkb-gallery-grid"
+            onScroll={handleGalleryScroll}
+          >
             {galleryItems.map((item, index) => (
               <button
                 key={item.id}
                 type="button"
                 className={`pkkb-gallery-item pkkb-gallery-${item.size}`}
                 onClick={() => setSelected(item.id)}
+                aria-label={`Lihat foto ${item.category}: ${item.caption}`}
               >
                 <div
                   className="pkkb-gallery-image"
                   style={{
-                    backgroundImage: `url(${item.image})`,
+                    backgroundImage: `url("${item.image}")`,
                   }}
                 />
 
@@ -161,16 +238,30 @@ export default function Gallery() {
 
                 <div className="pkkb-gallery-item-bottom">
                   <span>{item.caption}</span>
-
-                  <i>↗︎</i>
                 </div>
               </button>
             ))}
           </div>
 
+          {/* Mobile slider dots */}
+          <div className="pkkb-gallery-dots" aria-label="Gallery navigation">
+            {galleryItems.map((item, index) => (
+              <button
+                key={item.id}
+                type="button"
+                className={`pkkb-gallery-dot ${
+                  mobileIndex === index ? "active" : ""
+                }`}
+                onClick={() => goToSlide(index)}
+                aria-label={`Lihat foto ${index + 1}`}
+                aria-current={mobileIndex === index ? "true" : undefined}
+              />
+            ))}
+          </div>
+
           {/* Footer */}
           <div className="pkkb-gallery-footer">
-            <span>06 — STORIES</span>
+            
 
             <p>
               Setiap sudut kota menyimpan cerita.
@@ -189,6 +280,7 @@ export default function Gallery() {
           className="pkkb-lightbox"
           role="dialog"
           aria-modal="true"
+          aria-label="Gallery image preview"
           onClick={closeLightbox}
         >
           <button
@@ -219,7 +311,7 @@ export default function Gallery() {
             <div
               className="pkkb-lightbox-image"
               style={{
-                backgroundImage: `url(${current.image})`,
+                backgroundImage: `url("${current.image}")`,
               }}
             />
 

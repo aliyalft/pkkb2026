@@ -1,3 +1,4 @@
+
 "use client";
 
 const footerLinks = [
@@ -12,6 +13,7 @@ export default function Footer() {
   return (
     <footer className="pkkb-footer">
       <div className="pkkb-container">
+        {/* Main Footer */}
         <div className="pkkb-footer-top">
           {/* Brand */}
           <div className="pkkb-footer-brand">
@@ -26,7 +28,7 @@ export default function Footer() {
 
             <div className="pkkb-footer-location">
               <span>BASED IN</span>
-              <strong>KOTA KITA, INDONESIA</strong>
+              <strong>BANDUNG, JAWA BARAT</strong>
             </div>
           </div>
 
@@ -47,46 +49,74 @@ export default function Footer() {
           <div className="pkkb-footer-social">
             <span className="pkkb-footer-label">FOLLOW ALONG</span>
 
-            <a href="#" aria-label="Instagram">
-              Instagram ↗︎
-            </a>
-
-            <a href="#" aria-label="TikTok">
-              TikTok ↗︎
-            </a>
-
-            <a href="#" aria-label="Email">
-              Email ↗︎
+            <a
+              href="https://www.instagram.com/pekankebudayaankotabandung/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram PKKB"
+              className="pkkb-footer-instagram"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                aria-hidden="true"
+              >
+                <rect
+                  x="3"
+                  y="3"
+                  width="18"
+                  height="18"
+                  rx="5"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                />
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="4"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                />
+                <circle
+                  cx="17.5"
+                  cy="6.8"
+                  r="1.1"
+                  fill="currentColor"
+                />
+              </svg>
+              <span>Instagram</span>
             </a>
           </div>
         </div>
 
-        {/* Big word */}
-        <div className="pkkb-footer-big">
-          <span>PKKB</span>
-          <span>2026</span>
-        </div>
+    
+      </div>
 
-        {/* Bottom */}
-        <div className="pkkb-footer-bottom">
-          <span>© 2026 PKKB. ALL RIGHTS RESERVED.</span>
+      {/* Credit Strip */}
+      <div className="pkkb-footer-credit">
+        <div className="pkkb-footer-credit-inner">
+          <p className="pkkb-footer-copyright">
+            © 2026 Pekan Kebudayaan Kota Bandung
+          </p>
 
-          <div>
-            <a href="#">PRIVACY</a>
-            <a href="#">TERMS</a>
+          <div className="pkkb-footer-powered">
+            <span>Powered by</span>
+            <img
+              src="/image/tactlink.png"
+              alt="TactLink"
+            />
           </div>
 
-          <button
-            type="button"
-            onClick={() =>
-              window.scrollTo({
-                top: 0,
-                behavior: "smooth",
-              })
-            }
-          >
-            BACK TO TOP ↑
-          </button>
+          <p className="pkkb-footer-developer">
+            Dev by{" "}
+            <a
+              href="https://www.linkedin.com/in/aliyahalfitarossa/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Aliyah Alfita Rossa
+            </a>
+          </p>
         </div>
       </div>
     </footer>
