@@ -399,9 +399,7 @@ export default function Hero() {
 
             <div className="pkkb-hero-card-top">
 
-              <span className="pkkb-hero-card-number">
-                01
-              </span>
+             
 
               <span className="pkkb-hero-card-label">
                 DATE
@@ -412,12 +410,10 @@ export default function Hero() {
 
             <div className="pkkb-hero-card-main">
   <strong>
-    07 November
+    13 - 15 November
   </strong>
 
-  <span>
-    Sabtu, 07 November 2026
-  </span>
+
 </div>
 
           </div>
@@ -434,9 +430,7 @@ export default function Hero() {
 
             <div className="pkkb-hero-card-top">
 
-              <span className="pkkb-hero-card-number">
-                02
-              </span>
+          
 
               <span className="pkkb-hero-card-label">
                 VENUE
@@ -448,14 +442,12 @@ export default function Hero() {
             <div className="pkkb-hero-card-main">
 
               <strong>
-                Balai Kota
+                Jalan Soekarno 
                 <br />
-                Bandung
+                & Cikapundung River Side
               </strong>
 
-              <span>
-                Taman Dewi Sartika &amp; Taman Badak
-              </span>
+            
 
             </div>
 
@@ -463,9 +455,9 @@ export default function Hero() {
 
         </div>
         <div className="pkkb-hero-mobile-badge">
-  <strong>07 November 2026</strong>
+  <strong>13 - 15 November 2026</strong>
   <i>•</i>
-  <span>Balai Kota Bandung</span>
+  <span>Jalan Soekarno & Cikapundung River Side</span>
 </div>
 
         {/* MOBILE-ONLY COMBINED BADGE */}

@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -7,31 +8,30 @@ const values = [
     number: "01",
     title: "BERBAGI",
     description:
-      "Berbagi pengetahuan, karya, cerita, dan pengalaman budaya yang tumbuh dari masyarakat Kota Bandung.",
+      "Setiap komunitas membawa praktik kebudayaannya untuk dinikmati bersama.",
     detail:
-      "Budaya menjadi ruang untuk saling belajar dan meneruskan pengetahuan antar generasi.",
+      "Seperti dalam tradisi Botram, setiap orang membawa sesuatu untuk dibagikan dan dinikmati bersama.",
   },
   {
     number: "02",
     title: "KESETARAAN",
     description:
-      "Membuka ruang yang setara bagi masyarakat untuk berpartisipasi, berkarya, dan merayakan keberagaman budaya.",
+      "Semua praktik kebudayaan hadir dalam ruang yang setara dan terbuka.",
     detail:
-      "Setiap komunitas memiliki kesempatan untuk hadir, bersuara, dan menjadi bagian dari perayaan.",
+      "PKKB menjadi ruang yang memberi kesempatan bagi berbagai komunitas dan praktik budaya untuk hadir bersama.",
   },
   {
     number: "03",
     title: "PERJUMPAAN",
     description:
-      "Mempertemukan berbagai komunitas, generasi, gagasan, dan ekspresi budaya dalam satu ruang kota.",
+      "Ruang kolaboratif yang menghubungkan masyarakat, komunitas, dan ruang kota.",
     detail:
-      "Pertemuan menjadi awal dari kolaborasi baru dan pengalaman budaya yang lebih hidup.",
+      "Melalui perjumpaan, berbagai praktik kebudayaan dapat saling terhubung dan memperkuat ekosistem budaya Kota Bandung.",
   },
 ];
 
 export default function About() {
   const [active, setActive] = useState(0);
-
   const current = values[active];
 
   return (
@@ -52,36 +52,45 @@ export default function About() {
             </h2>
 
             <p>
-              Pekan Kebudayaan Kota Bandung hadir sebagai ruang
-              perayaan, perjumpaan, dan kolaborasi yang menghidupkan
-              keberagaman budaya masyarakat Bandung.
+              Kota Bandung tumbuh melalui berbagai praktik kebudayaan
+              yang hidup di tengah masyarakat. Melalui Pekan
+              Kebudayaan Kota Bandung 2026, berbagai praktik tersebut
+              dipertemukan dalam ruang yang terbuka, partisipatif,
+              dan kolaboratif.
             </p>
           </div>
         </div>
 
-        {/* Interactive area */}
+        {/* Interactive Values */}
         <div className="pkkb-about-content">
-          {/* Left visual */}
+          {/* Left Visual */}
           <div className="pkkb-about-visual">
             <div className="pkkb-about-orbit orbit-one" />
             <div className="pkkb-about-orbit orbit-two" />
 
-            <div className="pkkb-about-number">
-              <span>0</span>
-              <strong>{active + 1}</strong>
-            </div>
+            <div className="pkkb-about-visual-content">
+              <span className="pkkb-about-visual-label">
+                PEKAN KEBUDAYAAN KOTA BANDUNG
+              </span>
 
-            <div className="pkkb-about-word">
-              {current.title}
-            </div>
+              <h3>
+                Ngamumule
+                <br />
+                <span>Budaya,</span>
+                <br />
+                Ngawangun
+                <br />
+                <span>Kota.</span>
+              </h3>
 
-            <div className="pkkb-about-caption">
-              <span>NGAMUMULE BUDAYA</span>
-              <span>2026</span>
+              <div className="pkkb-about-visual-footer">
+                <span>BOTRAM</span>
+                <span>PKKB 2026</span>
+              </div>
             </div>
           </div>
 
-          {/* Right content */}
+          {/* Right Content */}
           <div className="pkkb-about-info">
             <div className="pkkb-about-tabs">
               {values.map((value, index) => (
@@ -101,7 +110,7 @@ export default function About() {
 
             <div className="pkkb-about-copy" key={current.title}>
               <span className="pkkb-about-copy-index">
-                {current.number} / 03
+                NILAI {current.number}
               </span>
 
               <h3>{current.title}</h3>
@@ -116,17 +125,16 @@ export default function About() {
           </div>
         </div>
 
-        {/* Bottom statement */}
+        {/* Bottom Statement */}
         <div className="pkkb-about-statement">
-          <span>01</span>
-
           <p>
-            “Ngamumule Budaya, Ngawangun Kota” bukan sekadar tema,
-            tetapi ajakan untuk menjaga budaya sekaligus membangun
-            kota melalui partisipasi masyarakat.
+            “Ngamumule Budaya, Ngawangun Kota” menegaskan bahwa
+            pembangunan kota tidak dapat dipisahkan dari upaya
+            merawat kebudayaan. Sebuah ajakan untuk tumbuh bersama
+            melalui kolaborasi dan partisipasi masyarakat.
           </p>
 
-          <span>PKKB 2026</span>
+          <span>PEKAN KEBUDAYAAN KOTA BANDUNG 2026</span>
         </div>
       </div>
     </section>

@@ -2358,6 +2358,94 @@ canvas {
   }
 }
 
+
+/* About visual - PKKB identity */
+.pkkb-about-visual {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 440px;
+  padding: 48px;
+  background: var(--pkkb-navy);
+  color: var(--pkkb-white);
+  border-radius: 24px;
+}
+
+.pkkb-about-visual-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+}
+
+.pkkb-about-visual-label {
+  display: block;
+  margin-bottom: 34px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: rgba(255, 255, 255, 0.68);
+}
+
+.pkkb-about-visual-content h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(38px, 4.2vw, 60px);
+  line-height: 1.04;
+  font-weight: 700;
+  letter-spacing: -0.055em;
+}
+
+.pkkb-about-visual-content h3 span {
+  color: #c5b9f2;
+}
+
+.pkkb-about-visual-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 48px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+}
+
+.pkkb-about-visual-footer span:last-child {
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.pkkb-about-statement {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.pkkb-about-statement > p {
+  margin: 0;
+}
+
+.pkkb-about-statement > span {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--pkkb-muted);
+}
+
+@media (max-width: 768px) {
+  .pkkb-about-visual {
+    min-height: 340px;
+    padding: 32px;
+  }
+
+  .pkkb-about-visual-content h3 {
+    font-size: 43px;
+  }
+}
+
+
 /* =========================
    PROGRAM BOTRAM
    ========================= */

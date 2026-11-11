@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 
+
 const programs = [
   {
     number: "01",
@@ -10,7 +11,7 @@ const programs = [
     description:
       "Jantung Perjumpaan Kota. Paviliun terbuka sebagai pusat aktivitas dan ruang berkumpul festival. Ruang berbagi, berdiskusi, beristirahat, dan membangun relasi. Desain terbuka menyatu dengan lanskap Balai Kota, tanpa sekat antara pelaku dan pengunjung.",
     image:
-      "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1400&q=85",
+      "https://miro.medium.com/v2/resize%3Afit%3A1358/format%3Awebp/0%2ANUoYaU0m5H3_6FcB.jpg",
   },
   {
     number: "02",
@@ -19,7 +20,7 @@ const programs = [
     description:
       "Ruang budaya yang mengangkat pangan sebagai identitas Kota Bandung. Mempertemukan petani, UMKM, juru masak, komunitas, dan masyarakat. Menghadirkan pengalaman belajar, berbagi, dan merawat tradisi melalui makanan. Berangkat dari hasil eksplorasi Popolah Kampung Cibuntu.",
     image:
-      "https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=1400&q=85",
+      "https://radarutara.bacakoran.co/upload/e4e5fcb23a3419c5d8f11f18a613ad46.jpg",
   },
   {
     number: "03",
@@ -28,7 +29,7 @@ const programs = [
     description:
       "Perayaan Kebudayaan Kota. Panggung terbuka sebagai ruang perayaan kebudayaan Kota Bandung. Menghadirkan beragam ekspresi seni dalam satu ruang bersama. Mengubah plaza Balai Kota menjadi alun-alun budaya yang hidup.",
     image:
-      "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?auto=format&fit=crop&w=1400&q=85",
+      "https://asset.kompas.com/crops/Tn4N02IDCMa4cpfswv3cZyWxFZs%3D/0x0%3A1125x750/1200x800/data/photo/2021/03/23/60597d51ca3ea.jpeg",
   },
   {
     number: "04",
@@ -37,7 +38,7 @@ const programs = [
     description:
       "Ruang untuk mempertemukan beragam komunitas Kota Bandung. Menampilkan inisiatif warga di bidang seni, lingkungan, literasi, sejarah, dan lainnya. Mengajak pengunjung mengenal dan terlibat dalam kehidupan budaya kota.",
     image:
-      "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1400&q=85",
+      "https://asset.kompas.com/crops/tECfuzJIOWClzRvNcj6OgM3Vjkw%3D/0x0%3A1278x852/1200x900/data/photo/2021/06/13/60c57be0f2bcb.jpeg",
   },
   {
     number: "05",
@@ -46,7 +47,7 @@ const programs = [
     description:
       "Ruang bermain sebagai bagian dari kehidupan dan kebudayaan kota. Menghidupkan kembali permainan tradisional Sunda dan Indonesia. Menghadirkan permainan kreatif yang dikembangkan komunitas. Menjadi ruang interaksi lintas generasi dalam suasana yang inklusif.",
     image:
-      "https://images.unsplash.com/photo-1504159506876-f8338247a14a?auto=format&fit=crop&w=1400&q=85",
+      "https://cdn01.metrotvnews.com/dynamic/content/2024/12/06/bw6Comz2/a_6752a12bc0b28.jpg?w=720",
   },
   {
     number: "06",
@@ -55,9 +56,10 @@ const programs = [
     description:
       "Ruang publik untuk membaca, berbagi, dan membangun pengetahuan tentang Bandung. Menghadirkan arsip, buku, foto, peta, dan berbagai narasi kota. Mengajak masyarakat memahami Bandung melalui sejarah, ruang publik, dan pengalaman sehari-hari.",
     image:
-      "https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=1400&q=85",
+      "https://static.republika.co.id/uploads/images/inpicture_slide/seorang-asn-berdiri-di-depan-dokumen-peta-yang-dipajang_220525155751-955.jpg",
   },
 ];
+
 
 export default function Program() {
   const [active, setActive] = useState(0);
