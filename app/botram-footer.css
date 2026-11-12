@@ -1,0 +1,182 @@
+
+/* =========================================
+   BOTRAM FOOTER
+========================================= */
+
+.botram-register-footer {
+  position: relative;
+  width: 100vw;
+  max-width: none;
+  left: 50%;
+  transform: translateX(-50%);
+  box-sizing: border-box;
+
+  margin-top: 75px;
+  padding: 40px clamp(28px, 7vw, 100px) 20px;
+
+  border-radius: 24px 24px 0 0;
+  background: var(--botram-navy, #192246);
+  color: #ffffff;
+}
+
+/* FOOTER MAIN */
+
+.botram-footer-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 25px;
+  padding-bottom: 30px;
+}
+
+.botram-footer-eyebrow {
+  color: #b9b4dc;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+}
+
+.botram-footer-main h2 {
+  margin: 15px 0 0;
+  font-family: var(--font-bricolage), sans-serif;
+  font-size: clamp(25px, 2.8vw, 38px);
+  line-height: 1.05;
+  font-weight: 800;
+  letter-spacing: -0.05em;
+}
+
+.botram-footer-year {
+  color: #b3a8e0;
+  font-family: var(--font-bricolage), sans-serif;
+  font-size: clamp(35px, 4vw, 55px);
+  font-weight: 800;
+  letter-spacing: -0.07em;
+}
+
+/* FOOTER BOTTOM */
+
+.botram-footer-bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 13px;
+
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+
+  color: #a7a8bd;
+  font-size: 11px;
+  font-weight: 500;
+  text-align: center;
+}
+
+/* FOOTER CREDITS */
+
+.botram-footer-credits {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.botram-footer-powered,
+.botram-footer-developed {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.botram-footer-powered > span,
+.botram-footer-developed > span {
+  color: #9295ad;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.botram-footer-powered img {
+  width: 22px;
+  height: 17px;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+}
+
+.botram-footer-developed a {
+  color: #6388f5;
+  font-size: 11px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.botram-footer-developed a:hover {
+  color: #ffffff;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 768px) {
+  .botram-register-footer {
+    margin-top: 55px;
+    padding: 34px 28px 20px;
+    border-radius: 20px 20px 0 0;
+  }
+
+  .botram-footer-main {
+    padding-bottom: 25px;
+  }
+
+  .botram-footer-main h2 {
+    font-size: clamp(23px, 5vw, 30px);
+  }
+
+  .botram-footer-year {
+    font-size: 38px;
+  }
+
+  .botram-footer-bottom {
+    gap: 15px;
+  }
+
+  .botram-footer-credits {
+    gap: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .botram-register-footer {
+    margin-top: 45px;
+    padding: 30px 20px 18px;
+    border-radius: 17px 17px 0 0;
+  }
+
+  .botram-footer-main {
+    gap: 12px;
+    padding-bottom: 22px;
+  }
+
+  .botram-footer-main h2 {
+    font-size: 23px;
+  }
+
+  .botram-footer-year {
+    font-size: 32px;
+  }
+
+  .botram-footer-bottom {
+    font-size: 9px;
+    line-height: 1.6;
+  }
+
+  .botram-footer-powered > span,
+  .botram-footer-developed > span,
+  .botram-footer-developed a {
+    font-size: 9px;
+  }
+
+  .botram-footer-powered img {
+    width: 19px;
+    height: 15px;
+  }
+}

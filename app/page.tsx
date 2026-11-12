@@ -10,6 +10,7 @@ import Gallery from "@/components/pkkb/Gallery";
 import FinalCTA from "@/components/pkkb/FinalCTA";
 import Footer from "@/components/pkkb/Footer";
 import Popolah from "@/components/pkkb/Popolah";
+import RegistrationChoiceModal from "@/components/RegistrationChoiceModal";
 
 export default function Home() {
   return (
@@ -31,6 +32,7 @@ export default function Home() {
       </main>
 
       <Footer />
+      <RegistrationChoiceModal />
     </>
   );
 }

@@ -1,7 +1,6 @@
 
 /* =========================================
    PKKB 2026 — BOTRAM REGISTRATION
-   Uses global PKKB typography and colors
 ========================================= */
 
 .botram-register-page {
@@ -16,22 +15,12 @@
 
   position: relative;
   min-height: 100vh;
-  padding: 44px 24px 0;
+  padding: 35px 24px 0;
   overflow: hidden;
-
   background:
-    radial-gradient(
-      ellipse at 91% 8%,
-      rgba(117, 105, 184, 0.17),
-      transparent 29%
-    ),
-    radial-gradient(
-      ellipse at 4% 72%,
-      rgba(139, 126, 208, 0.12),
-      transparent 28%
-    ),
+    radial-gradient(ellipse at 91% 8%, rgba(117, 105, 184, 0.17), transparent 29%),
+    radial-gradient(ellipse at 4% 72%, rgba(139, 126, 208, 0.12), transparent 28%),
     #f5f4fa;
-
   color: var(--botram-text);
   font-family: var(--font-hanken), sans-serif;
 }
@@ -75,39 +64,48 @@
   background: rgba(97, 135, 243, 0.08);
 }
 
+/* BACK BUTTON */
+
 .botram-back-link {
   position: relative;
   z-index: 2;
-
   display: inline-flex;
   align-items: center;
-  gap: 9px;
-
-  color: var(--botram-navy);
-  font-size: 11px;
+  justify-content: center;
+  gap: 11px;
+  min-height: 43px;
+  padding: 0 19px 0 15px;
+  border: 1px solid rgba(117, 105, 184, 0.16);
+  border-radius: 999px;
+  background: var(--botram-purple);
+  color: #fff;
+  font-size: 10px;
   font-weight: 800;
   letter-spacing: 0.1em;
   text-decoration: none;
-
-  transition: color 200ms ease;
+  box-shadow: 0 7px 18px rgba(117, 105, 184, 0.24);
+  transition: transform 200ms ease, background 200ms ease, box-shadow 200ms ease;
 }
 
 .botram-back-link:hover {
-  color: var(--botram-purple);
+  transform: translateY(-2px);
+  background: #6659aa;
+  box-shadow: 0 11px 25px rgba(117, 105, 184, 0.3);
 }
 
-.botram-back-link > span {
-  font-size: 19px;
-  font-weight: 400;
-  color: var(--botram-blue);
+.botram-back-link svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
 }
+
+/* MAIN HEADING */
 
 .botram-register-shell {
   position: relative;
   z-index: 1;
-
   width: min(100%, 1120px);
-  margin: 85px auto 0;
+  margin: 105px auto 0;
 }
 
 .botram-heading {
@@ -119,7 +117,6 @@
   display: flex;
   align-items: center;
   gap: 12px;
-
   color: var(--botram-navy);
   font-size: 10px;
   font-weight: 800;
@@ -133,26 +130,36 @@
 }
 
 .botram-heading h1 {
-  margin: 38px 0 20px;
-
+  margin: 30px 0 0;
+  padding: 0 0 4px;
+  line-height: 1.02;
   font-family: var(--font-bricolage), sans-serif;
   font-size: clamp(76px, 10vw, 132px);
-  line-height: 0.79;
   font-weight: 800;
-  letter-spacing: -0.085em;
+  letter-spacing: -0.045em;
   color: var(--botram-navy);
+  text-shadow:
+    0 3px 0 rgba(25, 34, 70, 0.04),
+    0 10px 24px rgba(25, 34, 70, 0.10);
 }
 
 .botram-heading h1 em {
-  font-style: normal;
+  display: inline-block;
+  margin-top: 0.04em;
   color: var(--botram-blue);
+  font-style: normal;
+  letter-spacing: -0.045em;
+  text-shadow:
+    0 3px 0 rgba(97, 135, 243, 0.08),
+    0 10px 24px rgba(97, 135, 243, 0.18);
 }
 
 .botram-heading > p {
-  margin: 27px 0 0;
+  max-width: 570px;
+  margin: 28px 0 0;
   color: var(--botram-muted);
   font-size: 15px;
-  line-height: 1.8;
+  line-height: 1.9;
 }
 
 .botram-form {
@@ -161,34 +168,27 @@
   gap: 28px;
 }
 
-/* =========================================
-   STEPPER
-========================================= */
+/* STEPPER */
 
 .botram-stepper-card {
   position: relative;
-
   display: grid;
   align-items: center;
-
   min-height: 180px;
   padding: 34px 80px;
-
   border: 1px solid rgba(117, 105, 184, 0.2);
   border-radius: 28px;
-
   background: rgba(255, 255, 255, 0.83);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
-
-  box-shadow: 0 18px 55px rgba(31, 34, 69, 0.045);
+  box-shadow: 0 18px 55px rgba(31, 34, 69, 0.055);
 }
 
 .botram-stepper-track {
   position: absolute;
   top: 62px;
-  left: 25%;
-  right: 25%;
+  left: 16.666%;
+  right: 16.666%;
   height: 2px;
   background: #e6e4f0;
 }
@@ -201,44 +201,47 @@
 }
 
 .botram-stepper-progress.step-two {
+  width: 50%;
+}
+
+.botram-stepper-progress.step-three {
   width: 100%;
 }
 
 .botram-stepper-items {
   position: relative;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .botram-step {
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
   gap: 7px;
-
   color: #9294aa;
+  text-align: center;
 }
 
 .botram-step-number {
   display: flex;
   align-items: center;
   justify-content: center;
-
   width: 50px;
   height: 50px;
   margin-bottom: 8px;
-
   border: 2px solid #d9d8e9;
   border-radius: 50%;
-
   background: white;
   color: #81839d;
-
   font-size: 14px;
   font-weight: 800;
-
   transition: all 300ms ease;
+}
+
+.botram-step-number svg {
+  width: 19px;
+  height: 19px;
 }
 
 .botram-step.active .botram-step-number,
@@ -263,19 +266,14 @@
   font-size: 12px;
 }
 
-/* =========================================
-   FORM PANEL
-========================================= */
+/* FORM PANEL */
 
 .botram-panel-card {
   padding: 62px 72px 48px;
-
   border: 1px solid rgba(117, 105, 184, 0.19);
   border-radius: 28px;
-
-  background: rgba(255, 255, 255, 0.93);
-
-  box-shadow: 0 20px 65px rgba(31, 34, 69, 0.055);
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 20px 65px rgba(31, 34, 69, 0.065);
 }
 
 .botram-section-heading {
@@ -283,7 +281,6 @@
   grid-template-columns: 56px 1fr;
   gap: 30px;
   align-items: start;
-
   margin-bottom: 54px;
 }
 
@@ -291,13 +288,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-
   width: 50px;
   height: 50px;
-
   border: 1px solid rgba(117, 105, 184, 0.3);
   border-radius: 50%;
-
   color: var(--botram-purple);
   font-size: 15px;
   font-weight: 600;
@@ -310,9 +304,7 @@
 
 .botram-section-heading h2 {
   margin: 0;
-
   color: var(--botram-navy);
-
   font-family: var(--font-bricolage), sans-serif;
   font-size: clamp(35px, 4.5vw, 49px);
   line-height: 1.05;
@@ -323,15 +315,12 @@
 .botram-section-heading p {
   max-width: 650px;
   margin: 14px 0 0;
-
   color: var(--botram-muted);
   font-size: 14px;
   line-height: 1.8;
 }
 
-/* =========================================
-   FIELDS
-========================================= */
+/* FIELDS */
 
 .botram-fields {
   display: grid;
@@ -372,17 +361,11 @@
 .botram-input-wrap {
   width: 100%;
   height: 59px;
-
   border: 1px solid #e0deeb;
   border-radius: 13px;
-
   background: #f9f8fc;
   color: var(--botram-navy);
-
-  transition:
-    border-color 200ms ease,
-    background 200ms ease,
-    box-shadow 200ms ease;
+  transition: border-color 200ms ease, background 200ms ease, box-shadow 200ms ease;
 }
 
 .botram-field > input {
@@ -414,11 +397,9 @@
   width: 100%;
   height: 100%;
   padding: 0 35px 0 3px;
-
   border: none;
   outline: none;
   background: transparent;
-
   color: var(--botram-navy);
   font-size: 14px;
 }
@@ -433,14 +414,11 @@
   right: 17px;
   top: 50%;
   transform: translateY(-50%);
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   width: 19px;
   height: 19px;
-
   color: var(--botram-purple);
   pointer-events: none;
 }
@@ -465,14 +443,10 @@
 }
 
 @keyframes botram-spin {
-  to {
-    transform: rotate(360deg);
-  }
+  to { transform: rotate(360deg); }
 }
 
-/* =========================================
-   DROPDOWN
-========================================= */
+/* DROPDOWN */
 
 .botram-dropdown {
   position: absolute;
@@ -480,33 +454,21 @@
   top: calc(100% + 8px);
   left: 0;
   right: 0;
-
   overflow: hidden;
-
   border: 1px solid #e5e1f0;
   border-radius: 14px;
-
   background: white;
   box-shadow: 0 18px 45px rgba(31, 34, 69, 0.13);
-
   animation: botram-dropdown-in 160ms ease;
 }
 
 @keyframes botram-dropdown-in {
-  from {
-    opacity: 0;
-    transform: translateY(-5px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .botram-dropdown-caption {
   padding: 14px 17px 10px;
-
   color: #9995b2;
   font-size: 9px;
   font-weight: 800;
@@ -523,20 +485,15 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-
   width: 100%;
   min-height: 43px;
   padding: 10px 12px;
-
   border: none;
   border-radius: 9px;
-
   background: transparent;
   color: #44465d;
-
   text-align: left;
   font-size: 13px;
-
   transition: background 160ms ease;
 }
 
@@ -546,8 +503,9 @@
   color: var(--botram-purple);
 }
 
-.botram-option-check {
-  font-weight: 800;
+.botram-option-check svg {
+  width: 17px;
+  height: 17px;
 }
 
 .botram-dropdown-message {
@@ -557,26 +515,21 @@
   text-align: center;
 }
 
-/* =========================================
-   ACTIONS
-========================================= */
+/* ACTIONS */
 
 .botram-form-actions {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 20px;
-
   margin-top: 54px;
   padding-top: 27px;
-
   border-top: 1px solid #e9e7f0;
 }
 
 .botram-form-actions > p {
   max-width: 360px;
   margin: 0;
-
   color: #85869a;
   font-size: 12px;
   line-height: 1.7;
@@ -586,23 +539,15 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-
   min-height: 54px;
   padding: 0 30px;
-
   border: 1px solid transparent;
   border-radius: 999px;
-
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 0.11em;
   text-decoration: none;
-
-  transition:
-    transform 200ms ease,
-    background 200ms ease,
-    color 200ms ease,
-    box-shadow 200ms ease;
+  transition: transform 200ms ease, background 200ms ease, color 200ms ease, box-shadow 200ms ease;
 }
 
 .botram-button:hover:not(:disabled) {
@@ -639,16 +584,12 @@
   display: flex;
   align-items: center;
   gap: 10px;
-
   margin-top: 23px;
   padding: 14px 17px;
-
   border: 1px solid #e8d5e0;
   border-radius: 11px;
-
   background: #fbf3f7;
   color: #a14e76;
-
   font-size: 12px;
   line-height: 1.6;
 }
@@ -657,38 +598,26 @@
   display: flex;
   align-items: center;
   justify-content: center;
-
   width: 19px;
   height: 19px;
-
   border: 1px solid #c984a5;
   border-radius: 50%;
-
   font-weight: 800;
   flex-shrink: 0;
 }
 
-/* =========================================
-   DOWNLOAD CARD
-========================================= */
+/* DOWNLOAD */
 
 .botram-download-card {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 30px;
-
   padding: 28px;
-
   border: 1px solid #e1dcef;
   border-radius: 19px;
-
   background:
-    radial-gradient(
-      circle at 100% 0,
-      rgba(117, 105, 184, 0.11),
-      transparent 45%
-    ),
+    radial-gradient(circle at 100% 0, rgba(117, 105, 184, 0.11), transparent 45%),
     #f8f7fc;
 }
 
@@ -702,20 +631,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
-
-  width: 61px;
-  height: 61px;
+  width: 64px;
+  height: 64px;
   flex-shrink: 0;
+  overflow: hidden;
+  background: transparent;
+}
 
-  border-radius: 17px;
-
-  background: var(--botram-navy);
-  color: white;
-
-  font-family: var(--font-bricolage), sans-serif;
-  font-size: 37px;
-  font-weight: 800;
-  letter-spacing: -0.08em;
+.botram-app-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .botram-download-info > span {
@@ -750,17 +676,13 @@
   display: flex;
   align-items: center;
   gap: 9px;
-
   min-width: 145px;
   min-height: 52px;
   padding: 8px 13px;
-
   border: 1px solid #e1deea;
   border-radius: 10px;
-
   background: white;
   color: var(--botram-navy);
-
   text-decoration: none;
   transition: all 200ms ease;
 }
@@ -792,24 +714,18 @@
   font-weight: 800;
 }
 
-/* =========================================
-   TUTORIAL
-========================================= */
+/* TUTORIAL */
 
 .botram-tutorial-link {
   display: flex;
   align-items: center;
   gap: 14px;
-
   margin-top: 19px;
   padding: 16px 18px;
-
   border: 1px solid #e6e2f0;
   border-radius: 13px;
-
   background: white;
   text-decoration: none;
-
   transition: border-color 200ms ease;
 }
 
@@ -821,15 +737,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-
   width: 33px;
   height: 33px;
   flex-shrink: 0;
-
   border-radius: 50%;
   background: #f0eef8;
   color: var(--botram-purple);
-
   font-weight: 800;
 }
 
@@ -857,9 +770,7 @@
   letter-spacing: 0.08em;
 }
 
-/* =========================================
-   UPLOAD
-========================================= */
+/* UPLOAD */
 
 .botram-upload-section {
   margin-top: 43px;
@@ -904,17 +815,13 @@
   align-items: center;
   justify-content: center;
   gap: 9px;
-
   width: 100%;
   min-height: 190px;
   padding: 25px;
-
   border: 1.5px dashed #c9c3df;
   border-radius: 16px;
-
   background: #faf9fd;
   color: var(--botram-navy);
-
   transition: all 200ms ease;
 }
 
@@ -928,15 +835,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
-
   width: 44px;
   height: 44px;
-
   border-radius: 50%;
   background: #ece9f6;
   color: var(--botram-purple);
+}
 
-  font-size: 24px;
+.botram-upload-symbol svg {
+  width: 22px;
+  height: 22px;
 }
 
 .botram-upload-box strong {
@@ -951,27 +859,20 @@
   font-size: 11px;
 }
 
-/* =========================================
-   CONFIRMATION
-========================================= */
+/* CONFIRMATION */
 
 .botram-confirmation {
   display: flex;
   align-items: flex-start;
   gap: 13px;
-
   margin-top: 24px;
   padding: 18px;
-
   border: 1px solid #e8e5f0;
   border-radius: 13px;
-
   background: #faf9fd;
-
   color: #62647a;
   font-size: 12px;
   line-height: 1.8;
-
   cursor: pointer;
 }
 
@@ -980,7 +881,6 @@
   height: 17px;
   margin-top: 2px;
   flex-shrink: 0;
-
   accent-color: var(--botram-purple);
   cursor: pointer;
 }
@@ -990,16 +890,266 @@
 }
 
 /* =========================================
-   FOOTER
+   MENU SELECTION
+========================================= */
+
+.botram-menu-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 22px;
+}
+
+.botram-menu-heading > div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.botram-menu-heading strong {
+  color: var(--botram-navy);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.botram-menu-heading > div > span {
+  color: var(--botram-muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.botram-menu-counter {
+  flex-shrink: 0;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: #f0eef8;
+  color: var(--botram-purple);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.botram-menu-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.botram-menu-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  min-height: 112px;
+  padding: 17px 19px;
+  border: 1px solid #e5e2ef;
+  border-radius: 18px;
+  background: #fff;
+  color: var(--botram-navy);
+  text-align: left;
+  box-shadow: 0 3px 12px rgba(31, 34, 69, 0.025);
+  transition: border-color 180ms ease, background 180ms ease, transform 180ms ease, box-shadow 180ms ease, opacity 180ms ease;
+}
+
+.botram-menu-card:hover:not(:disabled) {
+  transform: translateY(-2px);
+  border-color: var(--botram-purple);
+  background: #fbfaff;
+  box-shadow: 0 9px 22px rgba(67, 56, 120, 0.08);
+}
+
+.botram-menu-card.is-selected {
+  border: 1.5px solid var(--botram-purple);
+  background: #f7f5fc;
+  box-shadow:
+    0 0 0 3px rgba(117, 105, 184, 0.1),
+    0 9px 24px rgba(67, 56, 120, 0.08);
+}
+
+.botram-menu-card.is-sold-out {
+  opacity: 0.45;
+  background: #f3f2f5;
+  cursor: not-allowed;
+  filter: grayscale(0.65);
+}
+
+/* FOOD ICON CONTAINER */
+
+.botram-menu-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  flex-shrink: 0;
+  border: 1px solid rgba(117, 105, 184, 0.12);
+  border-radius: 15px;
+  background: #f4f1fa;
+  color: var(--botram-purple);
+  transition: background 180ms ease, color 180ms ease;
+}
+
+.botram-menu-card.is-selected .botram-menu-icon {
+  background: #ebe6f8;
+  color: #6659aa;
+}
+
+.botram-food-svg {
+  width: 34px;
+  height: 34px;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* MENU TEXT */
+
+.botram-menu-copy {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+}
+
+.botram-menu-copy strong {
+  color: var(--botram-navy);
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.botram-menu-copy small {
+  color: #9291a5;
+  font-size: 10px;
+}
+
+.botram-menu-stock {
+  color: #6d6792;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.botram-menu-card.is-sold-out .botram-menu-stock {
+  color: #a14e76;
+}
+
+/* RADIO + CHECK */
+
+.botram-menu-check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 27px;
+  height: 27px;
+  flex-shrink: 0;
+}
+
+.botram-menu-radio {
+  display: block;
+  width: 25px;
+  height: 25px;
+  border: 2px solid var(--botram-purple);
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: inset 0 0 0 3px #fff;
+  transition: background 180ms ease, transform 180ms ease;
+}
+
+.botram-menu-card:hover:not(:disabled) .botram-menu-radio {
+  background: #eeeafa;
+}
+
+.botram-menu-selected-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 27px;
+  height: 27px;
+  border: 2px solid var(--botram-purple);
+  border-radius: 50%;
+  background: var(--botram-purple);
+  color: white;
+  box-shadow: 0 3px 9px rgba(117, 105, 184, 0.25);
+  animation: botram-check-pop 180ms ease;
+}
+
+.botram-menu-selected-mark svg {
+  width: 17px;
+  height: 17px;
+}
+
+@keyframes botram-check-pop {
+  from { transform: scale(0.78); }
+  to { transform: scale(1); }
+}
+
+.botram-menu-sold-label {
+  color: #a14e76;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.botram-menu-note {
+  margin: 18px 0 0;
+  color: #8b899e;
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.botram-menu-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 130px;
+  padding: 20px;
+  border: 1px dashed #d8d3e7;
+  border-radius: 15px;
+  color: var(--botram-muted);
+  font-size: 12px;
+  text-align: center;
+}
+
+.botram-menu-status.is-error {
+  flex-direction: column;
+  color: #a14e76;
+}
+
+.botram-menu-status button {
+  padding: 8px 14px;
+  border: 1px solid #dcd9eb;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--botram-purple);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+
+
+/* =========================================
+   FOOTER — DESKTOP & MOBILE
 ========================================= */
 
 .botram-register-footer {
+  width: 100%;
   margin-top: 110px;
-  padding: 56px 58px 25px;
+  padding: 56px 58px 27px;
   border-radius: 27px 27px 0 0;
   background: var(--botram-navy);
   color: white;
+  box-shadow: 0 -12px 35px rgba(31, 34, 69, 0.055);
+  box-sizing: border-box;
 }
+
+/* MAIN */
 
 .botram-footer-main {
   display: flex;
@@ -1011,16 +1161,16 @@
 
 .botram-footer-eyebrow {
   color: #b9b4dc;
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 800;
-  letter-spacing: 0.17em;
+  letter-spacing: 0.16em;
 }
 
 .botram-footer-main h2 {
   margin: 19px 0 0;
   font-family: var(--font-bricolage), sans-serif;
   font-size: clamp(30px, 4vw, 48px);
-  line-height: 0.98;
+  line-height: 1;
   font-weight: 800;
   letter-spacing: -0.055em;
 }
@@ -1033,132 +1183,141 @@
   letter-spacing: -0.07em;
 }
 
-/* FOOTER BOTTOM */
+/* BOTTOM */
 
 .botram-footer-bottom {
+  width: 100%;
+  padding-top: 26px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 17px;
-  padding-top: 27px;
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  gap: 22px;
+
   color: #a7a8bd;
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 500;
-  letter-spacing: 0;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+/* COPYRIGHT */
+
+.botram-footer-copyright {
+  display: block;
+  width: 100%;
+  margin: 0;
   text-align: center;
 }
 
-/* FOOTER CREDITS */
+/* CREDITS — STACKED */
 
 .botram-footer-credits {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 13px;
+  justify-content: center;
+  gap: 16px;
+
+  width: 100%;
+  margin: 0;
+  padding: 0;
+
+  position: static;
+  left: auto;
+  transform: none;
 }
+
+/* POWERED & DEVELOPED */
 
 .botram-footer-powered,
 .botram-footer-developed {
   display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 9px;
+
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  text-align: center;
 }
 
 .botram-footer-powered > span,
 .botram-footer-developed > span {
   color: #9295ad;
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 0;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
 }
 
 .botram-footer-powered img {
-  width: 24px;
-  height: 19px;
+  display: block;
+  width: 25px;
+  height: 20px;
   object-fit: contain;
   filter: brightness(0) invert(1);
 }
 
 .botram-footer-developed a {
-  color: #6388f5;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0;
+  color: #7898ff;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
 .botram-footer-developed a:hover {
-  color: #ffffff;
+  color: #fff;
 }
-/* RESPONSIVE */
 
-@media (max-width: 768px) {
-  .botram-register-footer {
-    margin-top: 75px;
-    padding: 42px 28px 22px;
+/* MOBILE */
+
+@media (max-width: 640px) {
+  .botram-register-footer .botram-footer-bottom {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
   }
 
-  .botram-footer-main {
-    padding-bottom: 32px;
+  .botram-register-footer .botram-footer-copyright {
+    width: 100%;
+    text-align: center;
   }
 
-  .botram-footer-bottom {
-  align-items: center;
-  flex-direction: column;
-  gap: 22px;
-  text-align: center;
-}
-
-.botram-footer-credits {
-  align-items: center;
-  gap: 18px;
-}
-}
-
-@media (max-width: 480px) {
-  .botram-register-footer {
-    margin-top: 60px;
-    padding: 35px 20px 20px;
-    border-radius: 20px 20px 0 0;
-  }
-
-  .botram-footer-main {
+  .botram-register-footer .botram-footer-credits {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     gap: 15px;
+    margin: 0;
+    position: static;
+    transform: none;
   }
 
-  .botram-footer-main h2 {
-    font-size: 29px;
+  .botram-register-footer .botram-footer-powered,
+  .botram-register-footer .botram-footer-developed {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    margin: 0;
+    text-align: center;
   }
-
-  .botram-footer-year {
-    font-size: 38px;
-  }
-
-  .botram-footer-bottom {
-    font-size: 8px;
-    line-height: 1.6;
-  }
-
-  .botram-footer-powered > span,
-  .botram-footer-developed > span,
-  .botram-footer-developed a {
-    font-size: 8px;
-  }
-
-  .botram-footer-powered img {
-    width: 18px;
-    height: 15px;
-  }
-
 }
 
-/* =========================================
-   SUCCESS
-========================================= */
+
+/* SUCCESS */
 
 .botram-success-page {
   display: flex;
@@ -1169,17 +1328,13 @@
 .botram-success-card {
   position: relative;
   z-index: 1;
-
   width: min(100%, 650px);
   margin: auto;
   padding: 70px 55px;
-
   border: 1px solid rgba(117, 105, 184, 0.2);
   border-radius: 28px;
-
   background: rgba(255, 255, 255, 0.9);
   text-align: center;
-
   box-shadow: 0 25px 75px rgba(31, 34, 69, 0.07);
 }
 
@@ -1187,15 +1342,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-
   width: 65px;
   height: 65px;
   margin: 0 auto 30px;
-
   border-radius: 50%;
   background: #efedf8;
   color: var(--botram-purple);
-
   font-size: 28px;
 }
 
@@ -1206,11 +1358,10 @@
 
 .botram-success-card h1 {
   margin: 32px 0 20px;
-
   color: var(--botram-navy);
   font-family: var(--font-bricolage), sans-serif;
   font-size: clamp(65px, 10vw, 95px);
-  line-height: 0.85;
+  line-height: 0.9;
   font-weight: 800;
   letter-spacing: -0.08em;
 }
@@ -1223,7 +1374,6 @@
 .botram-success-card > p {
   max-width: 420px;
   margin: 0 auto 30px;
-
   color: var(--botram-muted);
   font-size: 14px;
   line-height: 1.9;
@@ -1239,12 +1389,12 @@
 }
 
 /* =========================================
-   RESPONSIVE
+   TABLET
 ========================================= */
 
 @media (max-width: 900px) {
   .botram-register-shell {
-    margin-top: 65px;
+    margin-top: 75px;
   }
 
   .botram-panel-card {
@@ -1261,55 +1411,101 @@
   }
 }
 
+/* =========================================
+   MOBILE
+========================================= */
+
 @media (max-width: 600px) {
   .botram-register-page {
-    padding: 28px 17px 0;
+    padding: 24px 15px 0;
+  }
+
+  .botram-back-link {
+    min-height: 40px;
+    padding: 0 15px 0 12px;
+    gap: 8px;
+    font-size: 9px;
+  }
+
+  .botram-back-link svg {
+    width: 19px;
+    height: 19px;
   }
 
   .botram-register-shell {
-    margin-top: 60px;
+    margin-top: 67px;
   }
 
   .botram-heading {
-    margin-bottom: 48px;
+    margin-bottom: 43px;
   }
 
   .botram-heading h1 {
-    margin-top: 29px;
-    font-size: clamp(67px, 16vw, 91px);
-  }
+   margin-top: 24px;
+  padding-bottom: 4px;
+  line-height: 1.02;
+  font-size: clamp(58px, 14vw, 78px);
+  letter-spacing: -0.035em;
+}
+
+.botram-heading h1 em {
+  margin-top: 0.06em;
+  letter-spacing: -0.035em;
+}
 
   .botram-heading > p {
+    max-width: 340px;
+    margin-top: 29px;
     font-size: 13px;
+    line-height: 1.8;
+  }
+
+  .botram-form {
+    gap: 19px;
   }
 
   .botram-stepper-card {
-    min-height: 160px;
-    padding: 25px 12px;
+    min-height: 155px;
+    padding: 23px 7px;
     border-radius: 20px;
   }
 
   .botram-stepper-track {
-    top: 52px;
-    left: 25%;
-    right: 25%;
+    top: 49px;
+    left: 16.666%;
+    right: 16.666%;
   }
 
   .botram-step-number {
-    width: 43px;
-    height: 43px;
+    width: 42px;
+    height: 42px;
+    margin-bottom: 6px;
+    font-size: 12px;
+  }
+
+  .botram-step-number svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .botram-step {
+    gap: 6px;
   }
 
   .botram-step strong {
-    font-size: 11px;
+    max-width: 100px;
+    font-size: 10px;
+    line-height: 1.35;
   }
 
   .botram-step > span {
-    font-size: 10px;
+    max-width: 100px;
+    font-size: 9px;
+    line-height: 1.35;
   }
 
   .botram-panel-card {
-    padding: 34px 21px 27px;
+    padding: 34px 20px 27px;
     border-radius: 21px;
   }
 
@@ -1325,12 +1521,17 @@
     font-size: 12px;
   }
 
+  .botram-section-heading .botram-eyebrow {
+    font-size: 9px;
+  }
+
   .botram-section-heading h2 {
-    font-size: 34px;
+    font-size: 32px;
   }
 
   .botram-section-heading p {
     font-size: 12px;
+    line-height: 1.75;
   }
 
   .botram-fields {
@@ -1376,8 +1577,6 @@
   .botram-app-logo {
     width: 49px;
     height: 49px;
-    font-size: 30px;
-    border-radius: 13px;
   }
 
   .botram-download-info h3 {
@@ -1446,27 +1645,147 @@
     flex-direction: column-reverse;
   }
 
+  /* MENU MOBILE */
+
+  .botram-menu-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 11px;
+  }
+
+  .botram-menu-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .botram-menu-card {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+    min-height: 155px;
+    padding: 13px;
+    border-radius: 14px;
+  }
+
+  .botram-menu-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 11px;
+  }
+
+  .botram-food-svg {
+    width: 29px;
+    height: 29px;
+  }
+
+  .botram-menu-copy strong {
+    font-size: 12px;
+  }
+
+  .botram-menu-copy small,
+  .botram-menu-stock {
+    font-size: 9px;
+  }
+
+  .botram-menu-check {
+    position: absolute;
+    top: 12px;
+    right: 11px;
+  }
+
+  .botram-menu-radio {
+    width: 21px;
+    height: 21px;
+    border-width: 1.8px;
+  }
+
+  .botram-menu-selected-mark {
+    width: 23px;
+    height: 23px;
+  }
+
+  .botram-menu-selected-mark svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  .botram-menu-card.is-sold-out .botram-menu-check {
+    top: auto;
+    right: 12px;
+    bottom: 13px;
+  }
+
+  /* FOOTER MOBILE */
+
   .botram-register-footer {
-    margin-top: 65px;
-    padding: 37px 24px 22px;
+    margin-top: 62px;
+    padding: 33px 23px 23px;
     border-radius: 20px 20px 0 0;
   }
 
   .botram-footer-main {
-    padding-bottom: 32px;
+    align-items: flex-start;
+    gap: 12px;
+    padding-bottom: 27px;
+  }
+
+  .botram-footer-eyebrow {
+    font-size: 8px;
+    line-height: 1.6;
+    letter-spacing: 0.12em;
   }
 
   .botram-footer-main h2 {
-    font-size: 29px;
+    margin-top: 14px;
+    font-size: clamp(22px, 6vw, 29px);
+    line-height: 1.04;
+    letter-spacing: -0.05em;
   }
 
   .botram-footer-year {
-    font-size: 37px;
+    padding-top: 3px;
+    font-size: 31px;
   }
 
   .botram-footer-bottom {
+    align-items: flex-start;
+    gap: 16px;
+    padding-top: 19px;
+    font-size: 9px;
+    text-align: left;
+  }
+
+  .botram-footer-copyright {
+    font-size: 8px;
+    line-height: 1.6;
+    letter-spacing: 0.04em;
+  }
+
+  .botram-footer-credits {
+    width: 100%;
+    align-items: flex-start;
+    justify-content: flex-start;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
+  }
+
+  .botram-footer-powered,
+  .botram-footer-developed {
+    justify-content: flex-start;
+    gap: 9px;
+  }
+
+  .botram-footer-powered > span,
+  .botram-footer-developed > span {
+    font-size: 8px;
+  }
+
+  .botram-footer-powered img {
+    width: 21px;
+    height: 17px;
+  }
+
+  .botram-footer-developed a {
     font-size: 8px;
   }
 
@@ -1474,19 +1793,26 @@
     padding: 48px 24px;
   }
 }
-.botram-app-logo {
-  width: 64px;
-  height: 64px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  overflow: hidden;
-  background: transparent;
-}
 
-.botram-app-logo img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
+@media (max-width: 360px) {
+  .botram-menu-grid {
+    gap: 8px;
+  }
+
+  .botram-menu-card {
+    min-height: 150px;
+    padding: 11px;
+  }
+
+  .botram-menu-copy strong {
+    font-size: 11px;
+  }
+
+  .botram-footer-main h2 {
+    font-size: 22px;
+  }
+
+  .botram-footer-year {
+    font-size: 27px;
+  }
 }

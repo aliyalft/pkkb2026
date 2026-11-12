@@ -1,0 +1,1595 @@
+
+/* =========================================
+   BOTRAM SCANNER — PKKB 2026
+   LAVENDER / PURPLE THEME
+========================================= */
+
+.botram-scan-page {
+  --scan-blue: #6187f3;
+  --scan-navy: #192246;
+  --scan-purple: #7569b8;
+  --scan-purple-dark: #5f529f;
+  --scan-purple-light: #eeeafd;
+  --scan-muted: #77798a;
+  --scan-border: #e8e5f0;
+  --scan-bg: #f6f4fb;
+
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+  padding: 44px 42px 38px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 10% 12%, rgba(193, 180, 245, 0.28), transparent 28%),
+    radial-gradient(circle at 90% 48%, rgba(208, 199, 244, 0.24), transparent 30%),
+    linear-gradient(145deg, #faf9fd 0%, #f5f3fb 52%, #f9f8fc 100%);
+  color: var(--scan-navy);
+  font-family: var(--font-body), sans-serif;
+}
+
+.botram-scan-page,
+.botram-scan-page * {
+  box-sizing: border-box;
+}
+
+.botram-scan-orb {
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  border: 1px solid rgba(117, 105, 184, 0.13);
+  border-radius: 50%;
+}
+
+.botram-scan-orb-one {
+  width: 370px;
+  height: 370px;
+  top: 70px;
+  right: -180px;
+  box-shadow:
+    0 0 0 28px rgba(117, 105, 184, 0.025),
+    0 0 0 60px rgba(117, 105, 184, 0.02);
+}
+
+.botram-scan-orb-two {
+  width: 230px;
+  height: 230px;
+  left: -130px;
+  top: 480px;
+  background: rgba(210, 202, 245, 0.12);
+}
+
+.botram-scan-orb-three {
+  width: 90px;
+  height: 90px;
+  right: 12%;
+  top: 520px;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.botram-scan-container {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* HEADER */
+
+.botram-scan-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 29px;
+}
+
+.botram-scan-eyebrow {
+  color: var(--scan-purple);
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 1.8px;
+}
+
+.botram-scan-header h1 {
+  margin: 11px 0 9px;
+  color: var(--scan-navy);
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(36px, 5vw, 48px);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -2px;
+  text-shadow: 0 3px 12px rgba(78, 64, 135, 0.12);
+}
+
+.botram-scan-header h1 em {
+  color: var(--scan-purple);
+  font-style: normal;
+}
+
+.botram-scan-header p {
+  max-width: 500px;
+  margin: 0;
+  color: var(--scan-muted);
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+.botram-scan-help-button {
+  display: grid;
+  place-items: center;
+  width: 35px;
+  height: 35px;
+  flex-shrink: 0;
+  margin-top: 8px;
+  border: 1px solid rgba(117, 105, 184, 0.22);
+  border-radius: 50%;
+  background: #fff;
+  color: var(--scan-purple);
+  font-family: var(--font-display), sans-serif;
+  font-size: 17px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 5px 15px rgba(65, 51, 125, 0.07);
+  transition: 0.2s ease;
+}
+
+.botram-scan-help-button:hover {
+  transform: translateY(-2px);
+  background: var(--scan-purple);
+  color: #fff;
+}
+
+/* STATISTICS */
+
+.botram-scan-stats {
+  padding: 22px 25px 19px;
+  margin-bottom: 22px;
+  border: 1px solid rgba(117, 105, 184, 0.13);
+  border-radius: 17px;
+  background: rgba(255, 255, 255, 0.86);
+  box-shadow: 0 10px 32px rgba(40, 34, 80, 0.045);
+  backdrop-filter: blur(12px);
+}
+
+.botram-scan-stat-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.botram-scan-stat-copy > span {
+  color: var(--scan-purple);
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 1.3px;
+}
+
+.botram-scan-stat-copy > strong {
+  display: block;
+  margin-top: 7px;
+  color: var(--scan-navy);
+  font-family: var(--font-display), sans-serif;
+  font-size: 32px;
+  line-height: 1.15;
+}
+
+.botram-scan-stat-copy > strong small {
+  color: var(--scan-muted);
+  font-family: var(--font-body), sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.botram-scan-stat-copy p {
+  margin: 5px 0 0;
+  color: var(--scan-muted);
+  font-size: 10px;
+}
+
+.botram-scan-stat-percent {
+  display: grid;
+  place-items: center;
+  width: 65px;
+  height: 65px;
+  flex-shrink: 0;
+  border: 5px solid #eae6fa;
+  border-radius: 50%;
+  background: #f7f5ff;
+  color: var(--scan-purple);
+  font-family: var(--font-display), sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.botram-scan-progress-track {
+  height: 7px;
+  margin-top: 19px;
+  overflow: hidden;
+  border-radius: 20px;
+  background: #efedf5;
+}
+
+.botram-scan-progress-track span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #9c8ddd, #7569b8);
+  transition: width 0.4s ease;
+}
+
+.botram-scan-stat-bottom {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 22px;
+  margin-top: 14px;
+}
+
+.botram-scan-stat-bottom > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--scan-muted);
+  font-size: 10px;
+}
+
+.botram-scan-stat-bottom strong {
+  color: var(--scan-navy);
+}
+
+.botram-scan-stat-bottom i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+.botram-scan-stat-bottom i.is-redeemed {
+  background: #45a77b;
+}
+
+.botram-scan-stat-bottom i.is-pending {
+  background: #b5acd8;
+}
+
+/* MAIN CARD */
+
+.botram-scan-card {
+  width: 100%;
+  max-width: 700px;
+  padding: 29px;
+  margin: 0 auto;
+  border: 1px solid rgba(117, 105, 184, 0.13);
+  border-radius: 19px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 15px 45px rgba(45, 37, 89, 0.065);
+}
+
+.botram-scan-card-heading {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  margin-bottom: 23px;
+}
+
+.botram-scan-card-icon {
+  display: grid;
+  place-items: center;
+  width: 43px;
+  height: 43px;
+  flex-shrink: 0;
+  border-radius: 13px;
+  background: var(--scan-purple-light);
+  color: var(--scan-purple);
+}
+
+.botram-scan-card-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.botram-scan-card-heading > div:last-child > span {
+  color: var(--scan-purple);
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 1.4px;
+}
+
+.botram-scan-card-heading h2 {
+  margin: 4px 0 4px;
+  color: var(--scan-navy);
+  font-family: var(--font-display), sans-serif;
+  font-size: 20px;
+  letter-spacing: -0.5px;
+}
+
+.botram-scan-card-heading p {
+  margin: 0;
+  color: var(--scan-muted);
+  font-size: 10px;
+  line-height: 1.7;
+}
+
+/* CAMERA AREA */
+
+.botram-qr-reader-wrapper {
+  width: 100%;
+  max-width: 440px;
+  padding: 10px;
+  margin: 0 auto 17px;
+  overflow: hidden;
+  border: 1px solid #e7e1f6;
+  border-radius: 16px;
+  background: #f7f5fc;
+}
+
+.botram-qr-reader-frame {
+  position: relative;
+  min-height: 280px;
+  overflow: hidden;
+  border: 1px dashed rgba(117, 105, 184, 0.3);
+  border-radius: 11px;
+  background: #f0edf8;
+}
+
+#botram-qr-reader {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  min-height: 0;
+}
+
+#botram-qr-reader video {
+  display: block;
+  width: 100%;
+  max-height: 370px;
+  border-radius: 9px;
+  object-fit: cover;
+}
+
+#botram-qr-reader img {
+  max-width: 100%;
+}
+
+#botram-qr-reader__scan_region {
+  min-height: 0;
+}
+
+#botram-qr-reader__dashboard {
+  padding: 8px;
+  color: var(--scan-navy);
+  font-family: var(--font-body), sans-serif;
+  font-size: 11px;
+}
+
+#botram-qr-reader button {
+  padding: 9px 13px;
+  margin: 6px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--scan-purple);
+  color: #fff;
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+#botram-qr-reader select {
+  max-width: 100%;
+  padding: 8px;
+  border: 1px solid var(--scan-border);
+  border-radius: 7px;
+  background: #fff;
+  color: var(--scan-navy);
+}
+
+.botram-scan-camera-placeholder {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 25px;
+  text-align: center;
+  pointer-events: none;
+}
+
+.botram-scan-camera-icon {
+  display: grid;
+  place-items: center;
+  width: 61px;
+  height: 61px;
+  margin-bottom: 14px;
+  border-radius: 20px;
+  background: #fff;
+  color: var(--scan-purple);
+  box-shadow: 0 7px 22px rgba(77, 62, 138, 0.08);
+}
+
+.botram-scan-camera-icon svg {
+  width: 29px;
+  height: 29px;
+}
+
+.botram-scan-camera-placeholder strong {
+  color: var(--scan-navy);
+  font-family: var(--font-display), sans-serif;
+  font-size: 14px;
+}
+
+.botram-scan-camera-placeholder > span {
+  max-width: 230px;
+  margin-top: 7px;
+  color: var(--scan-muted);
+  font-size: 10px;
+  line-height: 1.7;
+}
+
+/* CAMERA BUTTON */
+
+.botram-scan-camera-button {
+  width: 100%;
+  min-height: 46px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--scan-purple);
+  color: #fff;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  cursor: pointer;
+  box-shadow: 0 7px 17px rgba(117, 105, 184, 0.2);
+  transition: 0.2s ease;
+}
+
+.botram-scan-camera-button:hover {
+  transform: translateY(-1px);
+  background: var(--scan-purple-dark);
+}
+
+.botram-scan-camera-button.is-stop {
+  border: 1px solid #e4def4;
+  background: #f1eef9;
+  color: var(--scan-purple);
+  box-shadow: none;
+}
+
+.botram-scan-camera-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* MANUAL INPUT */
+
+.botram-scan-or-divider {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  margin: 25px 0;
+}
+
+.botram-scan-or-divider span {
+  height: 1px;
+  flex: 1;
+  background: var(--scan-border);
+}
+
+.botram-scan-or-divider small {
+  color: #9995a8;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+
+.botram-scan-manual label {
+  display: block;
+  margin-bottom: 9px;
+  color: var(--scan-muted);
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 1.1px;
+}
+
+.botram-scan-manual input {
+  width: 100%;
+  height: 47px;
+  padding: 0 14px;
+  border: 1px solid var(--scan-border);
+  border-radius: 9px;
+  outline: none;
+  background: #fff;
+  color: var(--scan-navy);
+  font-family: inherit;
+  font-size: 12px;
+  transition: 0.2s ease;
+}
+
+.botram-scan-manual input:focus {
+  border-color: var(--scan-purple);
+  box-shadow: 0 0 0 3px rgba(117, 105, 184, 0.1);
+}
+
+.botram-scan-manual input::placeholder {
+  color: #aaa7b5;
+}
+
+.botram-scan-manual-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 46px;
+  margin-top: 12px;
+  border: 0;
+  border-radius: 9px;
+  background: var(--scan-navy);
+  color: #fff;
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.botram-scan-manual-button:hover:not(:disabled) {
+  background: var(--scan-purple);
+}
+
+.botram-scan-manual-button > span {
+  font-size: 16px;
+}
+
+.botram-scan-manual-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* PROCESSING / ERROR */
+
+.botram-scan-processing {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 15px 0 0;
+  color: var(--scan-purple);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.botram-scan-spinner {
+  width: 17px;
+  height: 17px;
+  border: 2px solid #e7e1f6;
+  border-top-color: var(--scan-purple);
+  border-radius: 50%;
+  animation: botram-scan-spin 0.7s linear infinite;
+}
+
+@keyframes botram-scan-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.botram-scan-inline-error {
+  display: grid;
+  gap: 5px;
+  padding: 14px;
+  margin-top: 17px;
+  border: 1px solid #f0d0d0;
+  border-radius: 10px;
+  background: #fff6f6;
+  color: #a83f49;
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.botram-scan-inline-error strong {
+  font-size: 12px;
+}
+
+/* RESET */
+
+.botram-scan-reset {
+  width: 100%;
+  min-height: 42px;
+  margin-top: 15px;
+  border: 1px solid #e3def0;
+  border-radius: 9px;
+  background: #f8f6fc;
+  color: var(--scan-purple);
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+/* HISTORY CARD */
+
+.botram-scan-history-card {
+  width: 100%;
+  max-width: 700px;
+  margin: 18px auto 0;
+  overflow: hidden;
+  border: 1px solid rgba(117, 105, 184, 0.14);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 7px 25px rgba(45, 37, 89, 0.035);
+}
+
+.botram-scan-history-toggle {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  width: 100%;
+  min-height: 77px;
+  padding: 14px 19px;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.botram-scan-history-icon {
+  display: grid;
+  place-items: center;
+  width: 39px;
+  height: 39px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  background: var(--scan-purple-light);
+  color: var(--scan-purple);
+}
+
+.botram-scan-history-icon svg {
+  width: 19px;
+  height: 19px;
+}
+
+.botram-scan-history-copy {
+  display: grid;
+  gap: 4px;
+  flex: 1;
+}
+
+.botram-scan-history-copy strong {
+  color: var(--scan-navy);
+  font-family: var(--font-display), sans-serif;
+  font-size: 13px;
+}
+
+.botram-scan-history-copy small {
+  color: var(--scan-muted);
+  font-size: 10px;
+}
+
+.botram-scan-history-count {
+  display: grid;
+  place-items: center;
+  min-width: 26px;
+  height: 26px;
+  padding: 0 7px;
+  border-radius: 20px;
+  background: #f0edfa;
+  color: var(--scan-purple);
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.botram-scan-history-arrow {
+  color: var(--scan-purple);
+  font-size: 25px;
+}
+
+/* FOOTER */
+
+.botram-scan-footer {
+  margin: 32px auto 0;
+  color: #9290a1;
+  text-align: center;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 1.3px;
+}
+
+/* RESULT / HELP MODALS */
+
+.botram-scan-modal-backdrop,
+.botram-scan-drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(25, 27, 54, 0.48);
+  backdrop-filter: blur(7px);
+  animation: botram-scan-fade 0.2s ease;
+}
+
+@keyframes botram-scan-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.botram-scan-result-modal,
+.botram-scan-help-modal {
+  position: relative;
+  width: min(100%, 450px);
+  max-height: min(85vh, 760px);
+  padding: 31px;
+  overflow-y: auto;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 25px 80px rgba(17, 17, 42, 0.2);
+  text-align: center;
+  animation: botram-scan-pop 0.25s ease;
+}
+
+@keyframes botram-scan-pop {
+  from { opacity: 0; transform: translateY(12px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.botram-scan-modal-close {
+  position: absolute;
+  top: 14px;
+  right: 15px;
+  display: grid;
+  place-items: center;
+  width: 31px;
+  height: 31px;
+  border: 0;
+  border-radius: 50%;
+  background: #f2f0f7;
+  color: #777386;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.botram-scan-result-symbol {
+  display: grid;
+  place-items: center;
+  width: 57px;
+  height: 57px;
+  margin: 0 auto 15px;
+  border-radius: 50%;
+  background: #e8f6ee;
+  color: #319667;
+  font-size: 27px;
+  font-weight: 800;
+}
+
+.botram-scan-result-modal.is-warning .botram-scan-result-symbol {
+  background: #fff4df;
+  color: #bd852d;
+}
+
+.botram-scan-result-modal.is-error .botram-scan-result-symbol {
+  background: #fff0f0;
+  color: #bd5555;
+}
+
+.botram-scan-result-kicker,
+.botram-scan-help-kicker {
+  color: var(--scan-purple);
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+}
+
+.botram-scan-result-modal h2,
+.botram-scan-help-modal h2 {
+  margin: 8px 0;
+  color: var(--scan-navy);
+  font-family: var(--font-display), sans-serif;
+  font-size: 25px;
+  letter-spacing: -0.8px;
+}
+
+.botram-scan-result-message {
+  margin: 0 auto 20px;
+  color: var(--scan-muted);
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.botram-scan-result-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 17px;
+  border: 1px solid var(--scan-border);
+  border-radius: 12px;
+  background: #faf9fd;
+  text-align: left;
+}
+
+.botram-scan-result-details > div {
+  display: grid;
+  align-content: start;
+  gap: 5px;
+  min-width: 0;
+}
+
+.botram-scan-result-details > div:first-child,
+.botram-scan-result-details > div:last-child {
+  grid-column: 1 / -1;
+}
+
+.botram-scan-result-details span {
+  color: var(--scan-muted);
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+}
+
+.botram-scan-result-details strong {
+  overflow-wrap: anywhere;
+  color: var(--scan-navy);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.botram-scan-result-done {
+  width: 100%;
+  min-height: 45px;
+  margin-top: 19px;
+  border: 0;
+  border-radius: 9px;
+  background: var(--scan-purple);
+  color: #fff;
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.botram-scan-result-done:hover {
+  background: var(--scan-purple-dark);
+}
+
+/* HELP MODAL */
+
+.botram-scan-help-modal {
+  text-align: left;
+}
+
+.botram-scan-help-modal h2 {
+  margin-bottom: 22px;
+}
+
+.botram-scan-help-modal ol {
+  display: grid;
+  gap: 17px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  counter-reset: scan-step;
+}
+
+.botram-scan-help-modal li {
+  position: relative;
+  display: grid;
+  gap: 4px;
+  padding-left: 39px;
+  counter-increment: scan-step;
+}
+
+.botram-scan-help-modal li::before {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: grid;
+  place-items: center;
+  width: 27px;
+  height: 27px;
+  border-radius: 9px;
+  background: var(--scan-purple-light);
+  color: var(--scan-purple);
+  font-size: 10px;
+  font-weight: 900;
+  content: counter(scan-step);
+}
+
+.botram-scan-help-modal li strong {
+  color: var(--scan-navy);
+  font-size: 11px;
+}
+
+.botram-scan-help-modal li span {
+  color: var(--scan-muted);
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+
+/* =========================================
+   HISTORY DRAWER
+========================================= */
+
+.botram-scan-drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 110;
+
+  display: flex;
+  justify-content: flex-end;
+  padding: 0;
+
+  background: rgba(25, 34, 70, 0.38);
+}
+
+.botram-scan-drawer {
+  position: relative;
+  z-index: 120;
+
+  display: flex;
+  flex-direction: column;
+
+  width: min(470px, 100%);
+  height: 100%;
+  min-height: 0;
+
+  overflow: hidden;
+
+  background: #fff;
+  box-shadow: -15px 0 55px rgba(20, 20, 50, 0.16);
+
+  animation: botram-scan-drawer-in 0.25s ease;
+}
+
+@keyframes botram-scan-drawer-in {
+  from {
+    transform: translateX(35px);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.botram-scan-drawer-header {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 15px;
+
+  flex-shrink: 0;
+  padding: 28px 25px 23px;
+
+  border-bottom: 1px solid var(--scan-border);
+  background: #faf9fd;
+}
+
+.botram-scan-drawer-header > div {
+  min-width: 0;
+  flex: 1;
+}
+
+.botram-scan-drawer-header > div > span {
+  color: var(--scan-purple);
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 1.3px;
+}
+
+.botram-scan-drawer-header h2 {
+  margin: 7px 0 5px;
+  color: var(--scan-navy);
+  font-family: var(--font-display), sans-serif;
+  font-size: 22px;
+}
+
+.botram-scan-drawer-header p {
+  margin: 0;
+  color: var(--scan-muted);
+  font-size: 10px;
+}
+
+.botram-scan-drawer-header button {
+  position: relative;
+  z-index: 5;
+
+  display: grid;
+  place-items: center;
+
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+
+  border: 1px solid var(--scan-border);
+  border-radius: 12px;
+
+  background: #fff;
+  color: var(--scan-navy);
+
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+
+  box-shadow: 0 4px 14px rgba(25, 34, 70, 0.07);
+}
+
+.botram-scan-drawer-header button:hover {
+  background: #f3f1fa;
+}
+
+.botram-scan-drawer-body {
+  flex: 1;
+  min-height: 0;
+  padding: 14px 22px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.botram-scan-history-empty {
+  padding: 55px 15px;
+  color: var(--scan-muted);
+  text-align: center;
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.botram-scan-history-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 17px 0;
+  border-bottom: 1px solid #f0eef5;
+}
+
+.botram-scan-history-check {
+  display: grid;
+  place-items: center;
+  width: 31px;
+  height: 31px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #e9f6ef;
+  color: #32936a;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.botram-scan-history-info {
+  display: grid;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+}
+
+.botram-scan-history-info strong {
+  color: var(--scan-navy);
+  font-size: 11px;
+}
+
+.botram-scan-history-info span {
+  overflow-wrap: anywhere;
+  color: var(--scan-muted);
+  font-size: 9px;
+}
+
+.botram-scan-history-info small {
+  color: #9995a8;
+  font-size: 9px;
+}
+
+.botram-scan-history-item time {
+  flex-shrink: 0;
+  max-width: 105px;
+  color: var(--scan-muted);
+  font-size: 9px;
+  text-align: right;
+  line-height: 1.5;
+}
+
+/* =========================================
+   LOADING
+========================================= */
+
+.botram-scan-loading {
+  display: flex;
+  min-height: 70vh;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--scan-muted);
+  font-size: 12px;
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 800px) {
+  .botram-scan-page {
+    padding: 32px 25px;
+  }
+}
+
+@media (max-width: 600px) {
+  .botram-scan-page {
+    padding: 26px 15px 30px;
+  }
+
+  .botram-scan-header {
+    margin-bottom: 22px;
+  }
+
+  .botram-scan-eyebrow {
+    font-size: 8px;
+    letter-spacing: 1.1px;
+  }
+
+  .botram-scan-header h1 {
+    margin-top: 9px;
+    font-size: 34px;
+    letter-spacing: -1.5px;
+  }
+
+  .botram-scan-header p {
+    max-width: 290px;
+    font-size: 10px;
+  }
+
+  .botram-scan-help-button {
+    width: 32px;
+    height: 32px;
+    margin-top: 3px;
+  }
+
+  .botram-scan-stats {
+    padding: 18px;
+    border-radius: 14px;
+  }
+
+  .botram-scan-stat-copy > strong {
+    font-size: 28px;
+  }
+
+  .botram-scan-stat-percent {
+    width: 56px;
+    height: 56px;
+    font-size: 14px;
+  }
+
+  .botram-scan-stat-bottom {
+    gap: 11px 17px;
+  }
+
+  .botram-scan-stat-bottom > span {
+    font-size: 9px;
+  }
+
+  .botram-scan-card {
+    padding: 20px 15px;
+    border-radius: 15px;
+  }
+
+  .botram-scan-card-heading h2 {
+    font-size: 17px;
+  }
+
+  .botram-scan-card-heading p {
+    font-size: 9px;
+  }
+
+  .botram-qr-reader-wrapper {
+    padding: 7px;
+  }
+
+  .botram-qr-reader-frame {
+    min-height: 245px;
+  }
+
+  .botram-scan-camera-placeholder {
+    padding: 16px;
+  }
+
+  .botram-scan-camera-placeholder strong {
+    font-size: 12px;
+  }
+
+  .botram-scan-or-divider {
+    gap: 8px;
+  }
+
+  .botram-scan-or-divider small {
+    font-size: 7px;
+    letter-spacing: 0.7px;
+  }
+
+  .botram-scan-history-toggle {
+    min-height: 70px;
+    padding: 12px 14px;
+  }
+
+  .botram-scan-result-modal,
+  .botram-scan-help-modal {
+    padding: 26px 19px;
+    border-radius: 17px;
+  }
+
+  .botram-scan-result-modal h2,
+  .botram-scan-help-modal h2 {
+    font-size: 22px;
+  }
+
+  .botram-scan-result-details {
+    gap: 11px;
+    padding: 13px;
+  }
+
+  .botram-scan-footer {
+    font-size: 7px;
+    letter-spacing: 0.9px;
+  }
+
+  /* MOBILE HISTORY DRAWER */
+
+  .botram-scan-drawer-backdrop {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 110 !important;
+
+    display: flex;
+    justify-content: flex-end;
+    align-items: stretch;
+
+    padding: 0;
+  }
+
+  .botram-scan-drawer {
+    position: relative !important;
+    z-index: 120 !important;
+
+    width: min(82vw, 360px) !important;
+    max-width: 360px !important;
+    height: 100dvh !important;
+    max-height: 100dvh !important;
+
+    margin: 0;
+    border-radius: 18px 0 0 18px;
+
+    overflow: hidden;
+  }
+
+  .botram-scan-drawer-header {
+    position: relative;
+    z-index: 2;
+
+    align-items: flex-start;
+    gap: 10px;
+
+    padding: 22px 16px 18px 19px;
+  }
+
+  .botram-scan-drawer-header h2 {
+    font-size: 19px;
+  }
+
+  .botram-scan-drawer-header p {
+    max-width: 210px;
+    font-size: 9px;
+    line-height: 1.5;
+  }
+
+  .botram-scan-drawer-header button {
+    position: relative !important;
+    z-index: 10 !important;
+
+    display: grid !important;
+    place-items: center;
+
+    width: 40px !important;
+    height: 40px !important;
+    flex-shrink: 0;
+
+    border: 1px solid var(--scan-border);
+    border-radius: 12px;
+
+    background: #fff;
+    color: var(--scan-navy);
+
+    font-size: 25px;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  .botram-scan-drawer-body {
+    padding: 10px 17px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .botram-scan-history-item {
+    gap: 9px;
+    padding: 15px 0;
+  }
+
+  .botram-scan-history-item time {
+    max-width: 76px;
+    font-size: 8px;
+  }
+}
+
+@media (max-width: 370px) {
+  .botram-scan-page {
+    padding-right: 11px;
+    padding-left: 11px;
+  }
+
+  .botram-scan-header h1 {
+    font-size: 30px;
+  }
+
+  .botram-scan-stat-copy > strong {
+    font-size: 25px;
+  }
+
+  .botram-scan-stat-bottom {
+    flex-direction: column;
+  }
+
+  .botram-scan-result-details {
+    grid-template-columns: 1fr;
+  }
+
+  .botram-scan-result-details > div {
+    grid-column: auto;
+  }
+
+  .botram-scan-drawer {
+    width: min(86vw, 330px) !important;
+  }
+}
+
+/* =========================================
+   MODAL / POPUP RIWAYAT REDEEM DI TENGAH
+========================================= */
+
+.botram-scan-history-subtitle {
+  color: var(--shell-muted, #8a8da0);
+  font-size: 13px;
+  margin-top: -4px;
+  margin-bottom: 16px;
+}
+
+.botram-scan-history-modal {
+  max-width: 480px;
+  width: 90%;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.botram-scan-history-modal-body {
+  overflow-y: auto;
+  max-height: 50vh;
+  margin-bottom: 20px;
+  padding-right: 4px;
+  display: grid;
+  gap: 10px;
+}
+
+/* Kustomisasi tampilan item riwayat di dalam modal */
+.botram-scan-history-modal-body .botram-scan-history-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 10px;
+  background: #f8f9fc;
+  border: 1px solid #eef0f6;
+  text-align: left;
+}
+
+.botram-scan-history-modal-body .botram-scan-history-check {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #e6f4ea;
+  color: #137333;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.botram-scan-history-modal-body .botram-scan-history-info {
+  display: grid;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.botram-scan-history-modal-body .botram-scan-history-info strong {
+  font-size: 13px;
+  color: var(--shell-navy, #192246);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.botram-scan-history-modal-body .botram-scan-history-info span {
+  font-size: 11px;
+  color: #555;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.botram-scan-history-modal-body .botram-scan-history-info small {
+  font-size: 10px;
+  color: var(--shell-muted, #8a8da0);
+}
+
+.botram-scan-history-modal-body time {
+  font-size: 10px;
+  color: var(--shell-muted, #8a8da0);
+  flex-shrink: 0;
+  text-align: right;
+}
+
+/* =========================================
+   INLINE RESULT BOX (DIPERBAIKI AGAR RAPI)
+========================================= */
+
+.botram-inline-result-box {
+  margin: 15px 0;
+  padding: 18px;
+  border: 2px solid #7569b8;
+  border-radius: 16px;
+  background: #fbfbfe;
+  box-shadow: 0 8px 25px rgba(117, 105, 184, 0.12);
+  text-align: left;
+  animation: botram-fadeIn 0.3s ease;
+}
+
+.botram-inline-result-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.botram-inline-symbol {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #e6f4ea;
+  color: #137333;
+  font-weight: 800;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.botram-inline-result-box.is-warning .botram-inline-symbol {
+  background: #fef7e0;
+  color: #b06000;
+}
+
+.botram-inline-result-box.is-error .botram-inline-symbol {
+  background: #fce8e6;
+  color: #c5221f;
+}
+
+.botram-inline-kicker {
+  display: block;
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 1.2px;
+  color: var(--scan-purple, #7569b8);
+  margin-bottom: 2px;
+}
+
+.botram-inline-title {
+  margin: 0;
+  font-family: var(--font-display), sans-serif;
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--scan-navy, #192246);
+}
+
+.botram-inline-message {
+  font-size: 11px;
+  color: var(--scan-muted, #77798a);
+  margin-bottom: 14px;
+  line-height: 1.5;
+}
+
+.botram-inline-details {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  background: #ffffff;
+  border: 1px solid var(--scan-border, #e8e5f0);
+  border-radius: 12px;
+  margin-bottom: 14px;
+}
+
+.botram-inline-detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+}
+
+.botram-inline-detail-row span {
+  color: var(--scan-muted, #77798a);
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  flex-shrink: 0;
+}
+
+.botram-inline-detail-row strong {
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+/* Teks dan menu dibuat tebal/bold dan rapi */
+.botram-bold-text {
+  font-weight: 800;
+  color: var(--scan-navy, #192246);
+  font-size: 12px;
+}
+
+.botram-bold-menu {
+  font-weight: 800;
+  color: var(--scan-blue, #6187f3);
+  font-size: 13px;
+}
+
+@keyframes botram-fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================================
+   EFEK FLASH / KEDIP KELAS KAMERA SAAT SCAN
+========================================= */
+
+@keyframes botram-camera-flash {
+  0% {
+    border-color: rgba(117, 105, 184, 0.3);
+    background-color: #f0edf8;
+    box-shadow: 0 0 0 0 rgba(117, 105, 184, 0.7);
+  }
+  50% {
+    border-color: #7569b8;
+    background-color: #e2defa;
+    box-shadow: 0 0 0 8px rgba(117, 105, 184, 0.4);
+  }
+  100% {
+    border-color: rgba(117, 105, 184, 0.3);
+    background-color: #f0edf8;
+    box-shadow: 0 0 0 0 rgba(117, 105, 184, 0);
+  }
+}
+
+.is-camera-flash {
+  animation: botram-camera-flash 0.4s ease-in-out;
+}

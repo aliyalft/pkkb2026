@@ -15,9 +15,7 @@ export default function AdminLoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  async function handleLogin(
-    event: FormEvent<HTMLFormElement>
-  ) {
+  async function handleLogin(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     if (loading) return;
@@ -47,7 +45,17 @@ export default function AdminLoginPage() {
         throw new Error("Akun ini tidak memiliki akses admin.");
       }
 
-      router.replace("/admin");
+      // Kembali ke halaman yang sebelumnya ingin dibuka.
+      const params = new URLSearchParams(window.location.search);
+      const next = params.get("next");
+
+      const redirectTo =
+        next === "/admin" ||
+        (next?.startsWith("/admin/") && next !== "/admin/login")
+          ? next
+          : "/admin";
+
+      router.replace(redirectTo);
     } catch (err) {
       setError(
         err instanceof Error
@@ -92,9 +100,7 @@ export default function AdminLoginPage() {
               type="email"
               placeholder="admin@email.com"
               value={email}
-              onChange={(event) =>
-                setEmail(event.target.value)
-              }
+              onChange={(event) => setEmail(event.target.value)}
               autoComplete="username"
               required
             />
@@ -106,9 +112,7 @@ export default function AdminLoginPage() {
               type="password"
               placeholder="Masukkan password"
               value={password}
-              onChange={(event) =>
-                setPassword(event.target.value)
-              }
+              onChange={(event) => setPassword(event.target.value)}
               autoComplete="current-password"
               required
             />

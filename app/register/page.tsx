@@ -8,11 +8,22 @@ import {
   useRef,
   useState,
 } from "react";
-import type {
-  ChangeEvent,
-  FormEvent,
-} from "react";
+import type { ChangeEvent, FormEvent } from "react";
+import { useRouter } from "next/navigation";
 import "./register.css";
+import {
+  Apple,
+  ArrowLeft,
+  Check,
+  CupSoda,
+  Fish,
+  Leaf,
+  Wheat,
+  Utensils,
+  Upload,
+  Soup,
+  Candy,
+} from "lucide-react";
 
 type Region = {
   id: string;
@@ -29,6 +40,15 @@ type RegistrationData = {
   districtId: string;
 };
 
+type MenuItem = {
+  code: string;
+  name: string;
+  store: string;
+  quota: number;
+  claimed: number;
+  available: number;
+};
+
 const REGION_API =
   "https://www.emsifa.com/api-wilayah-indonesia/api";
 
@@ -41,6 +61,68 @@ const INITIAL_DATA: RegistrationData = {
   district: "",
   districtId: "",
 };
+
+/* ICON MAKANAN BERDASARKAN JENIS MENU */
+function FoodIcon({ name }: { name?: string }) {
+  const lowerName = name?.toLowerCase() ?? "";
+
+  if (lowerName.includes("ikan") || lowerName.includes("fish")) {
+    return <Fish size={22} strokeWidth={1.7} aria-hidden="true" />;
+  }
+
+  if (lowerName.includes("sayur") || lowerName.includes("vegetable") || lowerName.includes("leaf")) {
+    return <Leaf size={22} strokeWidth={1.7} aria-hidden="true" />;
+  }
+
+  if (lowerName.includes("gandum") || lowerName.includes("wheat") || lowerName.includes("roti") || lowerName.includes("bread")) {
+    return <Wheat size={22} strokeWidth={1.7} aria-hidden="true" />;
+  }
+
+  if (lowerName.includes("makanan") || lowerName.includes("nasi") || lowerName.includes("bakso") || lowerName.includes("rice") || lowerName.includes("noodle")) {
+    return <Soup size={22} strokeWidth={1.7} aria-hidden="true" />;
+  }
+
+  if (lowerName.includes("manis") || lowerName.includes("cake") || lowerName.includes("dessert") || lowerName.includes("candy") || lowerName.includes("sweet")) {
+    return <Candy size={22} strokeWidth={1.7} aria-hidden="true" />;
+  }
+
+  return (
+    <Utensils
+      size={22}
+      strokeWidth={1.7}
+      aria-hidden="true"
+    />
+  );
+}
+
+      
+function CheckIcon() {
+  return (
+    <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+      <path
+        d="m4 10 4 4 8-8"
+        stroke="currentColor"
+        strokeWidth="2.4"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function ArrowLeftIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        d="M19 12H5m0 0 6.5-6.5M5 12l6.5 6.5"
+        stroke="currentColor"
+        strokeWidth="2.3"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
 
 function AppleIcon() {
   return (
@@ -66,11 +148,7 @@ function GooglePlayIcon() {
 
 function UploadIcon() {
   return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      aria-hidden="true"
-    >
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
       <path
         d="M12 15V3m0 0L7.5 7.5M12 3l4.5 4.5"
         stroke="currentColor"
@@ -112,7 +190,6 @@ function SearchableRegionField({
 
   const filteredOptions = useMemo(() => {
     const keyword = value.trim().toLowerCase();
-
     if (!keyword) return options.slice(0, 30);
 
     return options
@@ -133,10 +210,8 @@ function SearchableRegionField({
     }
 
     document.addEventListener("mousedown", handleOutsideClick);
-
-    return () => {
+    return () =>
       document.removeEventListener("mousedown", handleOutsideClick);
-    };
   }, []);
 
   return (
@@ -214,7 +289,9 @@ function SearchableRegionField({
                   >
                     <span>{option.name}</span>
                     {value === option.name && (
-                      <span className="botram-option-check">✓</span>
+                      <span className="botram-option-check">
+                        <CheckIcon />
+                      </span>
                     )}
                   </button>
                 ))}
@@ -232,27 +309,31 @@ function SearchableRegionField({
 }
 
 export default function RegisterPage() {
+  const router = useRouter();
+
   const [step, setStep] = useState(1);
   const [data, setData] = useState(INITIAL_DATA);
 
   const [cities, setCities] = useState<Region[]>([]);
   const [districts, setDistricts] = useState<Region[]>([]);
-
   const [loadingCities, setLoadingCities] = useState(true);
   const [loadingDistricts, setLoadingDistricts] = useState(false);
 
   const [proof, setProof] = useState<File | null>(null);
   const [downloadConfirmed, setDownloadConfirmed] = useState(false);
 
+  const [menus, setMenus] = useState<MenuItem[]>([]);
+  const [selectedMenu, setSelectedMenu] = useState("");
+  const [loadingMenus, setLoadingMenus] = useState(false);
+  const [menuLoadError, setMenuLoadError] = useState("");
+
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
 
   const fileRef = useRef<HTMLInputElement>(null);
   const stepPanelRef = useRef<HTMLElement>(null);
   const isFirstRender = useRef(true);
 
-  // Arahkan layar ke panel yang aktif, bukan ke bagian paling atas halaman.
   useEffect(() => {
     if (isFirstRender.current) {
       isFirstRender.current = false;
@@ -267,6 +348,48 @@ export default function RegisterPage() {
     });
   }, [step]);
 
+  const fetchMenuStock = useCallback(async () => {
+    setLoadingMenus(true);
+    setMenuLoadError("");
+
+    try {
+      const response = await fetch("/api/botram/menu-stock", {
+        cache: "no-store",
+      });
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || "Stok menu gagal dimuat.");
+      }
+
+      setMenus(Array.isArray(result.menus) ? result.menus : []);
+    } catch (err) {
+      setMenuLoadError(
+        err instanceof Error
+          ? err.message
+          : "Stok menu gagal dimuat. Silakan coba kembali."
+      );
+    } finally {
+      setLoadingMenus(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (step !== 3) return;
+
+    fetchMenuStock();
+
+    const interval = window.setInterval(fetchMenuStock, 15000);
+    const handleFocus = () => fetchMenuStock();
+
+    window.addEventListener("focus", handleFocus);
+
+    return () => {
+      window.clearInterval(interval);
+      window.removeEventListener("focus", handleFocus);
+    };
+  }, [step, fetchMenuStock]);
+
   const updateField = useCallback(
     (field: keyof RegistrationData, value: string) => {
       setData((previous) => ({
@@ -277,7 +400,6 @@ export default function RegisterPage() {
     []
   );
 
-  // Ambil seluruh kabupaten/kota di Indonesia.
   useEffect(() => {
     const controller = new AbortController();
 
@@ -305,26 +427,20 @@ export default function RegisterPage() {
             );
 
             if (!response.ok) {
-              throw new Error(
-                `Gagal mengambil wilayah ${province.name}.`
-              );
+              throw new Error(`Gagal mengambil wilayah ${province.name}.`);
             }
 
-            const result: Region[] = await response.json();
-            return result;
+            return (await response.json()) as Region[];
           })
         );
 
-        const allCities = regencyResults
-          .flat()
-          .sort((a, b) => a.name.localeCompare(b.name, "id"));
-
-        setCities(allCities);
+        setCities(
+          regencyResults
+            .flat()
+            .sort((a, b) => a.name.localeCompare(b.name, "id"))
+        );
       } catch (err) {
-        if (
-          err instanceof Error &&
-          err.name !== "AbortError"
-        ) {
+        if (err instanceof Error && err.name !== "AbortError") {
           setError(
             "Data kota/kabupaten gagal dimuat. Silakan refresh halaman."
           );
@@ -337,11 +453,9 @@ export default function RegisterPage() {
     }
 
     fetchCities();
-
     return () => controller.abort();
   }, []);
 
-  // Ambil kecamatan berdasarkan kabupaten/kota terpilih.
   useEffect(() => {
     if (!data.cityId) {
       setDistricts([]);
@@ -368,15 +482,10 @@ export default function RegisterPage() {
         const result: Region[] = await response.json();
 
         setDistricts(
-          result.sort((a, b) =>
-            a.name.localeCompare(b.name, "id")
-          )
+          result.sort((a, b) => a.name.localeCompare(b.name, "id"))
         );
       } catch (err) {
-        if (
-          err instanceof Error &&
-          err.name !== "AbortError"
-        ) {
+        if (err instanceof Error && err.name !== "AbortError") {
           setError("Data kecamatan gagal dimuat. Coba kembali.");
         }
       } finally {
@@ -387,7 +496,6 @@ export default function RegisterPage() {
     }
 
     fetchDistricts();
-
     return () => controller.abort();
   }, [data.cityId]);
 
@@ -399,7 +507,6 @@ export default function RegisterPage() {
       district: "",
       districtId: "",
     }));
-
     setDistricts([]);
     setError("");
   }
@@ -412,7 +519,6 @@ export default function RegisterPage() {
       district: "",
       districtId: "",
     }));
-
     setError("");
   }
 
@@ -422,7 +528,6 @@ export default function RegisterPage() {
       district: value,
       districtId: "",
     }));
-
     setError("");
   }
 
@@ -432,7 +537,6 @@ export default function RegisterPage() {
       district: option.name,
       districtId: option.id,
     }));
-
     setError("");
   }
 
@@ -474,21 +578,36 @@ export default function RegisterPage() {
     setStep(2);
   }
 
+  function nextToMenuStep() {
+    if (!proof) {
+      setError("Silakan upload bukti download TactLink.");
+      return;
+    }
+
+    if (!downloadConfirmed) {
+      setError("Silakan konfirmasi download TactLink.");
+      return;
+    }
+
+    setError("");
+    setStep(3);
+  }
+
   function previousStep() {
     setError("");
     setStep(1);
   }
 
+  function previousToTactLink() {
+    setError("");
+    setStep(2);
+  }
+
   function handleFile(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
-
     if (!file) return;
 
-    const allowedTypes = [
-      "image/jpeg",
-      "image/png",
-      "image/webp",
-    ];
+    const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
 
     if (!allowedTypes.includes(file.type)) {
       setError("Gunakan format JPG, PNG, atau WEBP.");
@@ -508,11 +627,8 @@ export default function RegisterPage() {
     setProof(file);
   }
 
-  async function handleSubmit(
-    event: FormEvent<HTMLFormElement>
-  ) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-
     if (isSubmitting) return;
 
     if (!proof) {
@@ -522,6 +638,11 @@ export default function RegisterPage() {
 
     if (!downloadConfirmed) {
       setError("Silakan konfirmasi download TactLink.");
+      return;
+    }
+
+    if (!selectedMenu) {
+      setError("Silakan pilih satu menu makanan Botram.");
       return;
     }
 
@@ -539,6 +660,7 @@ export default function RegisterPage() {
       formData.append("district", data.district);
       formData.append("districtId", data.districtId);
       formData.append("proof", proof);
+      formData.append("menuCode", selectedMenu);
 
       const response = await fetch("/api/botram/register", {
         method: "POST",
@@ -549,13 +671,17 @@ export default function RegisterPage() {
 
       if (!response.ok) {
         throw new Error(
-          result.message ||
-            "Registrasi gagal. Silakan coba kembali."
+          result.message || "Registrasi gagal. Silakan coba kembali."
         );
       }
 
-      setSubmitted(true);
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      if (!result.id) {
+        throw new Error(
+          "ID tiket tidak ditemukan pada respons server. Silakan hubungi panitia."
+        );
+      }
+
+      router.push(`/ticket/${encodeURIComponent(String(result.id))}`);
     } catch (err) {
       setError(
         err instanceof Error
@@ -567,54 +693,14 @@ export default function RegisterPage() {
     }
   }
 
-  if (submitted) {
-    return (
-      <main className="botram-register-page botram-success-page">
-        <div className="botram-success-orb" />
-
-        
-
-        <section className="botram-success-card">
-          <div className="botram-success-mark">✓</div>
-
-          <span className="botram-eyebrow">
-            REGISTRATION COMPLETE
-          </span>
-
-          <h1>
-            Sampai
-            <br />
-            <em style={{ display: "inline-block", marginTop: "0.08em" }}>
-              jumpa.
-            </em>
-          </h1>
-
-          <p>
-            Registrasimu berhasil diterima.
-            Terima kasih telah menjadi bagian dari
-            Botram PKKB 2026. Kami tunggu kehadiranmu
-            di perayaan kebudayaan Kota Bandung!
-          </p>
-
-          <a href="/" className="botram-button botram-button-dark">
-            KEMBALI KE BERANDA
-          </a>
-
-          <span className="botram-success-note">
-            PEKAN KEBUDAYAAN KOTA BANDUNG · 2026
-          </span>
-        </section>
-      </main>
-    );
-  }
-
   return (
     <main className="botram-register-page">
       <div className="botram-bg-orb botram-bg-orb-top" />
       <div className="botram-bg-orb botram-bg-orb-bottom" />
 
       <a href="/" className="botram-back-link">
-        <span>←</span> BACK TO PKKB
+        <ArrowLeftIcon />
+        <span>BACK TO PKKB</span>
       </a>
 
       <div className="botram-register-shell">
@@ -627,14 +713,11 @@ export default function RegisterPage() {
           <h1>
             Sampai
             <br />
-            <em style={{ display: "inline-block", marginTop: "0.08em" }}>
-              jumpa.
-            </em>
+            <em>jumpa.</em>
           </h1>
 
           <p>
-            Isi data singkat berikut untuk menjadi
-            bagian dari Botram PKKB 2026.
+            Isi data singkat berikut untuk menjadi bagian dari Botram PKKB 2026.
           </p>
         </header>
 
@@ -643,32 +726,32 @@ export default function RegisterPage() {
             <div className="botram-stepper-track">
               <div
                 className={`botram-stepper-progress ${
-                  step === 2 ? "step-two" : ""
+                  step === 2 ? "step-two" : step === 3 ? "step-three" : ""
                 }`}
               />
             </div>
 
             <div className="botram-stepper-items">
-              <div
-                className={`botram-step ${
-                  step === 1 ? "active" : "completed"
-                }`}
-              >
+              <div className={`botram-step ${step === 1 ? "active" : "completed"}`}>
                 <div className="botram-step-number">
-                  {step === 2 ? "✓" : "01"}
+                  {step > 1 ? <CheckIcon /> : "01"}
                 </div>
                 <strong>Data Pengunjung</strong>
                 <span>Informasi dasar</span>
               </div>
 
-              <div
-                className={`botram-step ${
-                  step === 2 ? "active" : ""
-                }`}
-              >
-                <div className="botram-step-number">02</div>
+              <div className={`botram-step ${step === 2 ? "active" : step > 2 ? "completed" : ""}`}>
+                <div className="botram-step-number">
+                  {step > 2 ? <CheckIcon /> : "02"}
+                </div>
                 <strong>TactLink</strong>
                 <span>Download & Upload Bukti</span>
+              </div>
+
+              <div className={`botram-step ${step === 3 ? "active" : ""}`}>
+                <div className="botram-step-number">03</div>
+                <strong>Menu Botram</strong>
+                <span>Pilih makanan</span>
               </div>
             </div>
           </div>
@@ -681,48 +764,37 @@ export default function RegisterPage() {
             >
               <div className="botram-section-heading">
                 <span className="botram-section-number">01</span>
-
                 <div>
-                  <span className="botram-eyebrow">
-                    DATA PENGUNJUNG
-                  </span>
+                  <span className="botram-eyebrow">DATA PENGUNJUNG</span>
                   <h2>Kenali pengunjung.</h2>
                   <p>
-                    Lengkapi informasi diri untuk kebutuhan
-                    pendataan kehadiran Botram PKKB 2026.
+                    Lengkapi informasi diri untuk kebutuhan pendataan kehadiran
+                    Botram PKKB 2026.
                   </p>
                 </div>
               </div>
 
               <div className="botram-fields">
                 <label className="botram-field">
-                  <span className="botram-label">
-                    NAMA LENGKAP <b>*</b>
-                  </span>
+                  <span className="botram-label">NAMA LENGKAP <b>*</b></span>
                   <input
                     type="text"
                     name="name"
                     placeholder="Masukkan nama lengkap"
                     value={data.name}
-                    onChange={(event) =>
-                      updateField("name", event.target.value)
-                    }
+                    onChange={(event) => updateField("name", event.target.value)}
                     required
                   />
                 </label>
 
                 <label className="botram-field">
-                  <span className="botram-label">
-                    NOMOR WHATSAPP <b>*</b>
-                  </span>
+                  <span className="botram-label">NOMOR WHATSAPP <b>*</b></span>
                   <input
                     type="tel"
                     name="phone"
                     placeholder="Contoh: 081234567890"
                     value={data.phone}
-                    onChange={(event) =>
-                      updateField("phone", event.target.value)
-                    }
+                    onChange={(event) => updateField("phone", event.target.value)}
                     required
                   />
                 </label>
@@ -736,9 +808,7 @@ export default function RegisterPage() {
                     name="email"
                     placeholder="nama@email.com"
                     value={data.email}
-                    onChange={(event) =>
-                      updateField("email", event.target.value)
-                    }
+                    onChange={(event) => updateField("email", event.target.value)}
                   />
                 </label>
 
@@ -779,10 +849,7 @@ export default function RegisterPage() {
               )}
 
               <div className="botram-form-actions">
-                <p>
-                  Pastikan informasi yang kamu masukkan
-                  sudah benar.
-                </p>
+                <p>Pastikan informasi yang kamu masukkan sudah benar.</p>
                 <button
                   type="button"
                   onClick={nextStep}
@@ -802,16 +869,12 @@ export default function RegisterPage() {
             >
               <div className="botram-section-heading">
                 <span className="botram-section-number">02</span>
-
                 <div>
-                  <span className="botram-eyebrow">
-                    TACTLINK APPLICATION
-                  </span>
+                  <span className="botram-eyebrow">TACTLINK APPLICATION</span>
                   <h2>Satu langkah lagi.</h2>
                   <p>
-                    Download aplikasi TactLink dan unggah
-                    bukti sebagai bagian dari proses
-                    registrasi Botram.
+                    Download aplikasi TactLink dan unggah bukti sebagai bagian
+                    dari proses registrasi Botram.
                   </p>
                 </div>
               </div>
@@ -819,19 +882,12 @@ export default function RegisterPage() {
               <div className="botram-download-card">
                 <div className="botram-download-brand">
                   <div className="botram-app-logo">
-                    <img
-                      src="/image/tactlink.png"
-                      alt="TactLink Logo"
-                    />
+                    <img src="/image/tactlink.png" alt="TactLink Logo" />
                   </div>
-
                   <div className="botram-download-info">
                     <span>PKKB OFFICIAL APPLICATION</span>
                     <h3>Download TactLink</h3>
-                    <p>
-                      Akses aplikasi melalui perangkat
-                      yang kamu gunakan.
-                    </p>
+                    <p>Akses aplikasi melalui perangkat yang kamu gunakan.</p>
                   </div>
                 </div>
 
@@ -873,13 +929,9 @@ export default function RegisterPage() {
                 <span className="botram-tutorial-icon">?</span>
                 <span>
                   <strong>Butuh bantuan?</strong>
-                  <small>
-                    Pelajari cara download aplikasi TactLink.
-                  </small>
+                  <small>Pelajari cara download aplikasi TactLink.</small>
                 </span>
-                <span className="botram-tutorial-action">
-                  LIHAT TUTORIAL
-                </span>
+                <span className="botram-tutorial-action">LIHAT TUTORIAL</span>
               </a>
 
               <div className="botram-upload-section">
@@ -887,13 +939,11 @@ export default function RegisterPage() {
                   <div>
                     <h3>Upload bukti download</h3>
                     <p>
-                      Unggah screenshot aplikasi TactLink
-                      yang sudah terpasang di perangkatmu.
+                      Unggah screenshot aplikasi TactLink yang sudah terpasang
+                      di perangkatmu.
                     </p>
                   </div>
-                  <span className="botram-required-tag">
-                    WAJIB
-                  </span>
+                  <span className="botram-required-tag">WAJIB</span>
                 </div>
 
                 <input
@@ -906,28 +956,18 @@ export default function RegisterPage() {
 
                 <button
                   type="button"
-                  className={`botram-upload-box ${
-                    proof ? "has-file" : ""
-                  }`}
+                  className={`botram-upload-box ${proof ? "has-file" : ""}`}
                   onClick={() => fileRef.current?.click()}
                 >
                   {proof ? (
                     <>
                       <span className="botram-upload-symbol">
-                        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                          <path
-                            d="m5 12 4.5 4.5L19 7"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
+                        <CheckIcon />
                       </span>
                       <strong>{proof.name}</strong>
                       <small>
-                        {(proof.size / 1024 / 1024).toFixed(2)} MB
-                        · Klik untuk mengganti gambar
+                        {(proof.size / 1024 / 1024).toFixed(2)} MB · Klik untuk
+                        mengganti gambar
                       </small>
                     </>
                   ) : (
@@ -935,12 +975,8 @@ export default function RegisterPage() {
                       <span className="botram-upload-symbol">
                         <UploadIcon />
                       </span>
-                      <strong>
-                        Klik untuk mengunggah bukti
-                      </strong>
-                      <small>
-                        JPG, PNG, atau WEBP · Maksimal 5 MB
-                      </small>
+                      <strong>Klik untuk mengunggah bukti</strong>
+                      <small>JPG, PNG, atau WEBP · Maksimal 5 MB</small>
                     </>
                   )}
                 </button>
@@ -955,9 +991,8 @@ export default function RegisterPage() {
                   }
                 />
                 <span>
-                  Saya menyatakan bahwa aplikasi TactLink
-                  telah berhasil diunduh dan bukti yang
-                  saya unggah sesuai dengan kondisi sebenarnya.
+                  Saya menyatakan bahwa aplikasi TactLink telah berhasil diunduh
+                  dan bukti yang saya unggah sesuai dengan kondisi sebenarnya.
                 </span>
               </label>
 
@@ -976,10 +1011,135 @@ export default function RegisterPage() {
                 >
                   KEMBALI
                 </button>
+                <button
+                  type="button"
+                  onClick={nextToMenuStep}
+                  className="botram-button botram-button-dark"
+                >
+                  PILIH MENU
+                </button>
+              </div>
+            </section>
+          )}
 
+          {step === 3 && (
+            <section
+              ref={stepPanelRef}
+              className="botram-panel-card"
+              style={{ scrollMarginTop: "24px" }}
+            >
+              <div className="botram-section-heading">
+                <span className="botram-section-number">03</span>
+                <div>
+                  <span className="botram-eyebrow">MENU BOTRAM</span>
+                  <h2>Pilih sajianmu.</h2>
+                  <p>
+                    Pilih satu menu makanan untuk dinikmati saat Botram. Setiap
+                    pengunjung hanya dapat memilih satu porsi.
+                  </p>
+                </div>
+              </div>
+
+              <div className="botram-menu-heading">
+                <div>
+                  <strong>MENU MAKANAN</strong>
+                  <span>Pilih satu sajian Botram yang tersedia.</span>
+                </div>
+                <span className="botram-menu-counter">
+                  {selectedMenu ? "1 MENU DIPILIH" : "PILIH 1 MENU"}
+                </span>
+              </div>
+
+              {loadingMenus && menus.length === 0 ? (
+                <div className="botram-menu-status">
+                  Memuat ketersediaan menu...
+                </div>
+              ) : menuLoadError ? (
+                <div className="botram-menu-status is-error">
+                  <span>{menuLoadError}</span>
+                  <button type="button" onClick={fetchMenuStock}>
+                    Coba lagi
+                  </button>
+                </div>
+              ) : (
+                <div className="botram-menu-grid">
+                  {menus.map((menu) => {
+                    const soldOut = menu.available <= 0;
+                    const isSelected = selectedMenu === menu.code;
+
+                    return (
+                      <button
+                        type="button"
+                        key={menu.code}
+                        disabled={soldOut}
+                        aria-pressed={isSelected}
+                        className={`botram-menu-card ${
+                          isSelected ? "is-selected" : ""
+                        } ${soldOut ? "is-sold-out" : ""}`}
+                        onClick={() => {
+                          setSelectedMenu(menu.code);
+                          setError("");
+                        }}
+                      >
+                        <span className="botram-menu-icon">
+  <FoodIcon name={menu.name} />
+</span>
+
+                        <span className="botram-menu-copy">
+                          <strong>{menu.name}</strong>
+                          <small>{menu.store}</small>
+                          <span className="botram-menu-stock">
+                            {soldOut
+                              ? "Stok habis"
+                              : `${menu.available}/${menu.quota} tersedia`}
+                          </span>
+                        </span>
+
+                        <span className="botram-menu-check">
+                          {soldOut ? (
+                            <span className="botram-menu-sold-label">HABIS</span>
+                          ) : isSelected ? (
+                            <span className="botram-menu-selected-mark">
+                              <CheckIcon />
+                            </span>
+                          ) : (
+                            <span className="botram-menu-radio" />
+                          )}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+
+              <p className="botram-menu-note">
+                Ketersediaan menu diperbarui otomatis. Pilihan akan dikonfirmasi
+                saat registrasi berhasil dikirim.
+              </p>
+
+              {error && (
+                <div className="botram-error">
+                  <span>!</span> {error}
+                </div>
+              )}
+
+              <div className="botram-form-actions botram-step-two-actions">
+                <button
+                  type="button"
+                  onClick={previousToTactLink}
+                  className="botram-button botram-button-outline"
+                  disabled={isSubmitting}
+                >
+                  KEMBALI
+                </button>
                 <button
                   type="submit"
-                  disabled={isSubmitting}
+                  disabled={
+                    isSubmitting ||
+                    !selectedMenu ||
+                    loadingMenus ||
+                    !!menuLoadError
+                  }
                   className="botram-button botram-button-dark"
                 >
                   {isSubmitting ? "MENGIRIM..." : "KIRIM REGISTRASI"}
@@ -990,45 +1150,44 @@ export default function RegisterPage() {
         </form>
 
         <footer className="botram-register-footer">
-  <div className="botram-footer-main">
-    <div>
-      <span className="botram-footer-eyebrow">
-        PEKAN KEBUDAYAAN KOTA BANDUNG
-      </span>
-      <h2>
-        NGAMUMULE BUDAYA,
-        <br />
-        NGAWANGUN KOTA.
-      </h2>
-    </div>
-    <span className="botram-footer-year">2026</span>
-  </div>
+          <div className="botram-footer-main">
+            <div>
+              <span className="botram-footer-eyebrow">
+                PEKAN KEBUDAYAAN KOTA BANDUNG
+              </span>
+              <h2>
+                NGAMUMULE BUDAYA,
+                <br />
+                NGAWANGUN KOTA.
+              </h2>
+            </div>
+            <span className="botram-footer-year">2026</span>
+          </div>
 
-  <div className="botram-footer-bottom">
-  <span>
-    © 2026 PEKAN KEBUDAYAAN KOTA BANDUNG
-  </span>
+          <div className="botram-footer-bottom">
+            <span className="botram-footer-copyright">
+              © 2026 PEKAN KEBUDAYAAN KOTA BANDUNG
+            </span>
 
-  <div className="botram-footer-credits">
-    <div className="botram-footer-powered">
-      <span>POWERED BY</span>
-      <img src="/image/tactlink.png" alt="TactLink" />
-    </div>
+            <div className="botram-footer-credits">
+              <div className="botram-footer-powered">
+                <span>POWERED BY</span>
+                <img src="/image/tactlink.png" alt="TactLink" />
+              </div>
 
-    <div className="botram-footer-developed">
-      <span>DEVELOPED BY</span>
-      <a
-        href="https://www.linkedin.com/in/aliyahalfitarossa/"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        ALIYAH ALFITA ROSSA
-      </a>
-    </div>
-  </div>
-</div>
-</footer>
-        
+              <div className="botram-footer-developed">
+                <span>DEVELOPED BY</span>
+                <a
+                  href="https://www.linkedin.com/in/aliyahalfitarossa/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  ALIYAH ALFITA ROSSA
+                </a>
+              </div>
+            </div>
+          </div>
+        </footer>
       </div>
     </main>
   );

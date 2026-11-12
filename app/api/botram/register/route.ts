@@ -1,9 +1,12 @@
+
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 const BUCKET_NAME = "botram-proofs";
+const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
 const ALLOWED_TYPES = [
   "image/jpeg",
@@ -11,7 +14,11 @@ const ALLOWED_TYPES = [
   "image/webp",
 ];
 
-const MAX_FILE_SIZE = 5 * 1024 * 1024;
+const EXTENSION_MAP: Record<string, string> = {
+  "image/jpeg": "jpg",
+  "image/png": "png",
+  "image/webp": "webp",
+};
 
 export async function POST(request: Request) {
   let uploadedPath = "";
@@ -26,8 +33,13 @@ export async function POST(request: Request) {
     const cityId = String(formData.get("cityId") || "").trim();
     const district = String(formData.get("district") || "").trim();
 
+    const menuCode = String(formData.get("menuCode") || "")
+      .trim()
+      .toUpperCase();
+
     const proof = formData.get("proof");
 
+    // Validasi data peserta
     if (!name || !phone || !city || !cityId || !district) {
       return NextResponse.json(
         { message: "Data pendaftaran belum lengkap." },
@@ -42,16 +54,61 @@ export async function POST(request: Request) {
       );
     }
 
-    if (
-      email &&
-      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
-    ) {
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return NextResponse.json(
         { message: "Format email tidak valid." },
         { status: 400 }
       );
     }
 
+    // Validasi kode menu
+    if (!menuCode) {
+      return NextResponse.json(
+        { message: "Silakan pilih menu makanan." },
+        { status: 400 }
+      );
+    }
+
+    // Ambil menu langsung dari database
+    const { data: menu, error: menuError } = await supabase
+      .from("botram_menu_stock")
+      .select("menu_code, menu_name, quota, claimed_count, is_active")
+      .eq("menu_code", menuCode)
+      .maybeSingle();
+
+    if (menuError) {
+      console.error("BOTRAM MENU VALIDATION ERROR:", menuError);
+
+      return NextResponse.json(
+        { message: "Gagal memeriksa ketersediaan menu." },
+        { status: 500 }
+      );
+    }
+
+    if (!menu || !menu.is_active) {
+      return NextResponse.json(
+        {
+          message:
+            "Menu tersebut sudah tidak tersedia. Silakan pilih menu lainnya.",
+        },
+        { status: 400 }
+      );
+    }
+
+    const available =
+      Number(menu.quota) - Number(menu.claimed_count);
+
+    if (available <= 0) {
+      return NextResponse.json(
+        {
+          message:
+            "Maaf, stok menu tersebut sudah habis. Silakan pilih menu lainnya.",
+        },
+        { status: 409 }
+      );
+    }
+
+    // Validasi bukti download
     if (!(proof instanceof File) || proof.size === 0) {
       return NextResponse.json(
         { message: "Bukti download wajib diunggah." },
@@ -73,18 +130,12 @@ export async function POST(request: Request) {
       );
     }
 
-    const extensionMap: Record<string, string> = {
-      "image/jpeg": "jpg",
-      "image/png": "png",
-      "image/webp": "webp",
-    };
-
-    const extension = extensionMap[proof.type];
+    // Upload bukti ke Supabase Storage
+    const extension = EXTENSION_MAP[proof.type];
     const fileName = `${crypto.randomUUID()}.${extension}`;
 
     uploadedPath = `registrations/${fileName}`;
 
-    // Upload bukti ke Supabase Storage.
     const { error: uploadError } = await supabase.storage
       .from(BUCKET_NAME)
       .upload(uploadedPath, proof, {
@@ -98,27 +149,78 @@ export async function POST(request: Request) {
       );
     }
 
-    // Simpan data pendaftaran ke database.
-    const { error: insertError } = await supabase
-      .from("botram_registrations")
-      .insert({
-        name,
-        phone,
-        email: email || null,
-        city,
-        city_id: cityId,
-        district,
-        proof_path: uploadedPath,
+    // RPC mengklaim kuota dan menyimpan registrasi
+    // dalam satu transaksi database.
+    const { data: registration, error: registrationError } =
+      await supabase.rpc("register_botram_with_menu", {
+        p_name: name,
+        p_phone: phone,
+        p_email: email || null,
+        p_city: city,
+        p_city_id: cityId,
+        p_district: district,
+        p_proof_path: uploadedPath,
+        p_menu_code: menuCode,
       });
 
-    if (insertError) {
-      // Hapus file jika penyimpanan data gagal.
+    if (registrationError) {
       await supabase.storage
         .from(BUCKET_NAME)
         .remove([uploadedPath]);
 
-      throw new Error(
-        `Penyimpanan data gagal: ${insertError.message}`
+      uploadedPath = "";
+
+      if (
+        registrationError.message.includes(
+          "MENU_STOCK_UNAVAILABLE"
+        )
+      ) {
+        return NextResponse.json(
+          {
+            message:
+              "Menu sudah tidak tersedia atau stoknya baru saja habis. Silakan pilih menu lainnya.",
+          },
+          { status: 409 }
+        );
+      }
+
+      console.error(
+        "BOTRAM REGISTRATION RPC ERROR:",
+        registrationError
+      );
+
+      return NextResponse.json(
+        {
+          message:
+            "Registrasi gagal disimpan. Silakan coba kembali.",
+        },
+        { status: 500 }
+      );
+    }
+
+    // Pastikan RPC mengembalikan identitas tiket
+    if (
+      !registration ||
+      !registration.id ||
+      !registration.ticketCode
+    ) {
+      await supabase.storage
+        .from(BUCKET_NAME)
+        .remove([uploadedPath]);
+
+      uploadedPath = "";
+
+      console.error(
+        "BOTRAM REGISTRATION RESPONSE INVALID:",
+        registration
+      );
+
+      return NextResponse.json(
+        {
+          message:
+            "Registrasi tersimpan tetapi data tiket tidak lengkap. Silakan hubungi panitia.",
+        },
+        { status: 500 }
       );
     }
 
@@ -126,10 +228,20 @@ export async function POST(request: Request) {
       {
         success: true,
         message: "Registrasi berhasil disimpan.",
+        id: registration.id,
+        ticketCode: registration.ticketCode,
+        menuCode: registration.menuCode,
+        menuName: registration.menuName,
       },
       { status: 201 }
     );
   } catch (error) {
+    if (uploadedPath) {
+      await supabase.storage
+        .from(BUCKET_NAME)
+        .remove([uploadedPath]);
+    }
+
     console.error("BOTRAM REGISTRATION ERROR:", error);
 
     return NextResponse.json(

@@ -10,6 +10,7 @@ import {
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 
+import AdminShell from "./components/AdminShell";
 import "./admin.css";
 
 type Registration = {
@@ -44,7 +45,7 @@ export default function AdminDashboardPage() {
         await supabase.auth.getUser();
 
       if (authError || !authData.user) {
-        router.replace("/admin/login");
+        router.replace("/admin/login?next=%2Fadmin");
         return;
       }
 
@@ -95,9 +96,7 @@ export default function AdminDashboardPage() {
           item.email || "",
           item.city,
           item.district,
-        ].some((value) =>
-          value.toLowerCase().includes(keyword)
-        );
+        ].some((value) => value.toLowerCase().includes(keyword));
 
       const created = new Date(item.created_at);
       const today = new Date();
@@ -121,8 +120,7 @@ export default function AdminDashboardPage() {
     const today = new Date().toDateString();
 
     return registrations.filter(
-      (item) =>
-        new Date(item.created_at).toDateString() === today
+      (item) => new Date(item.created_at).toDateString() === today
     ).length;
   }, [registrations]);
 
@@ -142,6 +140,7 @@ export default function AdminDashboardPage() {
     setSelected(item);
     setProofUrl("");
     setProofLoading(true);
+    setError("");
 
     try {
       const { data, error } = await supabase.storage
@@ -175,10 +174,7 @@ export default function AdminDashboardPage() {
     ];
 
     const escapeCSV = (value: string) => {
-      const safeValue = /^[=+\-@]/.test(value)
-        ? `'${value}`
-        : value;
-
+      const safeValue = /^[=+\-@]/.test(value) ? `'${value}` : value;
       return `"${safeValue.replace(/"/g, '""')}"`;
     };
 
@@ -214,49 +210,16 @@ export default function AdminDashboardPage() {
   }
 
   return (
-    <main className="admin-dashboard">
-      <aside className="admin-sidebar">
-        <a href="/" className="admin-sidebar-brand">
-          <span className="admin-brand-mark">P</span>
-          <span>
-            <strong>PKKB</strong>
-            <small>ADMIN PORTAL</small>
-          </span>
-        </a>
-
-        <div className="admin-sidebar-label">MENU UTAMA</div>
-
-        <a href="/admin" className="admin-nav-item active">
-          <span>▦</span>
-          Dashboard
-        </a>
-
-        <div className="admin-sidebar-label admin-sidebar-bottom-label">
-          SISTEM
-        </div>
-
-        <button
-          className="admin-nav-item admin-logout"
-          onClick={handleLogout}
-        >
-          <span>↪</span>
-          Keluar
-        </button>
-
-        <div className="admin-sidebar-footer">
-          <strong>BOTRAM</strong>
-          <span>PEKAN KEBUDAYAAN KOTA BANDUNG</span>
-          <span>2026</span>
-        </div>
-      </aside>
-
-      <section className="admin-main">
+    <AdminShell onLogout={handleLogout}>
+      <main className="admin-main">
         <header className="admin-topbar">
-          <div>
-            <span className="admin-eyebrow">
-              PKKB 2026 / MANAGEMENT
-            </span>
-            <h1>Dashboard.</h1>
+          <div className="admin-topbar-heading">
+            <div>
+              <span className="admin-eyebrow">
+                PKKB 2026 / MANAGEMENT
+              </span>
+              <h1>Dashboard.</h1>
+            </div>
           </div>
 
           <button
@@ -264,7 +227,7 @@ export default function AdminDashboardPage() {
             onClick={loadRegistrations}
             disabled={loading}
           >
-            ↻ <span>Refresh data</span>
+            <span>Refresh data</span>
           </button>
         </header>
 
@@ -274,13 +237,12 @@ export default function AdminDashboardPage() {
           </div>
         )}
 
-        <div className="admin-welcome">
+        <div className="admin-welcome" id="overview">
           <div>
             <span>REGISTRATION MANAGEMENT</span>
             <h2>Selamat datang, Admin.</h2>
             <p>
-              Pantau dan kelola data pengunjung
-              Botram PKKB 2026.
+              Pantau dan kelola data pengunjung Botram PKKB 2026.
             </p>
           </div>
           <div className="admin-welcome-year">2026</div>
@@ -312,7 +274,7 @@ export default function AdminDashboardPage() {
           </article>
         </section>
 
-        <section className="admin-data-card">
+        <section className="admin-data-card" id="registrations">
           <div className="admin-data-heading">
             <div>
               <span className="admin-eyebrow">
@@ -320,8 +282,7 @@ export default function AdminDashboardPage() {
               </span>
               <h2>Data pengunjung</h2>
               <p>
-                Daftar pengunjung yang sudah mengirim
-                formulir Botram.
+                Daftar pengunjung yang sudah mengirim formulir Botram.
               </p>
             </div>
 
@@ -330,7 +291,7 @@ export default function AdminDashboardPage() {
               onClick={exportCSV}
               disabled={filteredRegistrations.length === 0}
             >
-              ↓ EXPORT CSV
+              EXPORT CSV
             </button>
           </div>
 
@@ -429,7 +390,7 @@ export default function AdminDashboardPage() {
         <footer className="admin-page-footer">
           PEKAN KEBUDAYAAN KOTA BANDUNG · 2026
         </footer>
-      </section>
+      </main>
 
       {selected && (
         <div
@@ -517,6 +478,6 @@ export default function AdminDashboardPage() {
           </section>
         </div>
       )}
-    </main>
+    </AdminShell>
   );
 }

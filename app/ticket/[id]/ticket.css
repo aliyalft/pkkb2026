@@ -1,0 +1,852 @@
+
+/* =========================================================
+   BOTRAM TICKET — PKKB 2026 DESIGN SYSTEM
+========================================================= */
+
+.botram-ticket-page {
+  --ticket-navy: var(--pkkb-navy, #192246);
+  --ticket-blue: var(--pkkb-blue, #6187f3);
+  --ticket-lavender: var(--pkkb-lavender, #7569b8);
+  --ticket-bg: var(--pkkb-background, #f9f9f9);
+  --ticket-white: #ffffff;
+  --ticket-text: #1a1c1c;
+  --ticket-muted: #77798a;
+  --ticket-border: #e7e7ed;
+  --ticket-soft: #f1f3ff;
+
+  min-height: 100vh;
+  padding: 85px 24px 0;
+  background: var(--ticket-bg);
+  color: var(--ticket-navy);
+  font-family: var(--font-body), sans-serif;
+  overflow: hidden;
+}
+
+/* =========================================================
+   CONTAINER
+========================================================= */
+
+.botram-ticket-container {
+  width: min(100%, 680px);
+  margin: 0 auto;
+}
+
+/* =========================================================
+   INTRO
+========================================================= */
+
+.botram-ticket-intro {
+  max-width: 620px;
+  margin: 0 auto 42px;
+  text-align: center;
+}
+
+.botram-ticket-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  color: var(--ticket-blue);
+  font-family: var(--font-body), sans-serif;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  line-height: 1.6;
+}
+
+.botram-ticket-intro h1 {
+  margin: 24px 0 16px;
+
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(48px, 7vw, 72px);
+  line-height: 0.98;
+  font-weight: 800;
+  letter-spacing: -0.055em;
+  color: var(--ticket-navy);
+}
+
+.botram-ticket-intro h1 span {
+  display: inline-block;
+  color: var(--ticket-blue);
+}
+
+.botram-ticket-intro p {
+  max-width: 440px;
+  margin: 0 auto;
+
+  color: var(--ticket-muted);
+  font-family: var(--font-body), sans-serif;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+/* =========================================================
+   TICKET BODY
+========================================================= */
+
+.botram-ticket-card {
+  position: relative;
+  width: 100%;
+  padding: 0 34px 28px;
+
+  overflow: hidden;
+
+  background: var(--ticket-white);
+  border: 1px solid rgba(25, 34, 70, 0.08);
+  border-radius: 25px;
+
+  box-shadow:
+    0 25px 65px rgba(25, 34, 70, 0.09),
+    0 5px 18px rgba(25, 34, 70, 0.035);
+}
+
+/* =========================================================
+   TICKET HEADER
+========================================================= */
+
+.botram-ticket-card-header {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+
+  margin: 0 -34px;
+  padding: 27px 34px;
+
+  background:
+    linear-gradient(
+      120deg,
+      #192246 0%,
+      #293766 60%,
+      #3c4d91 100%
+    );
+
+  color: white;
+}
+
+.botram-ticket-card-header > div > span {
+  display: block;
+  margin-bottom: 7px;
+
+  color: rgba(255, 255, 255, 0.62);
+  font-family: var(--font-body), sans-serif;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.17em;
+}
+
+.botram-ticket-card-header h2 {
+  margin: 0;
+
+  color: #ffffff;
+  font-family: var(--font-display), sans-serif;
+  font-size: 23px;
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+}
+
+.botram-ticket-edition {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 56px;
+  padding: 10px 13px;
+
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 9px;
+
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+
+  font-family: var(--font-display), sans-serif;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+/* =========================================================
+   TICKET TITLE
+========================================================= */
+
+.botram-ticket-card-title {
+  padding: 30px 0 24px;
+}
+
+.botram-ticket-card-title > span {
+  color: var(--ticket-blue);
+  font-family: var(--font-body), sans-serif;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.17em;
+}
+
+.botram-ticket-card-title h3 {
+  margin: 8px 0 0;
+
+  color: var(--ticket-navy);
+  font-family: var(--font-display), sans-serif;
+  font-size: 35px;
+  line-height: 1.05;
+  font-weight: 800;
+  letter-spacing: -0.045em;
+}
+
+/* =========================================================
+   PERFORATED DIVIDER
+========================================================= */
+
+.botram-ticket-divider {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
+  height: 1px;
+  margin: 0 -34px 30px;
+
+  border-top: 2px dashed #dfe1eb;
+}
+
+.botram-ticket-divider span {
+  position: absolute;
+  top: -12px;
+
+  width: 24px;
+  height: 24px;
+
+  border-radius: 50%;
+  background: var(--ticket-bg);
+}
+
+.botram-ticket-divider span:first-child {
+  left: -12px;
+}
+
+.botram-ticket-divider span:last-child {
+  right: -12px;
+}
+
+/* =========================================================
+   LABELS
+========================================================= */
+
+.botram-ticket-label {
+  display: block;
+
+  color: var(--ticket-muted);
+  font-family: var(--font-body), sans-serif;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+  line-height: 1.5;
+}
+
+/* =========================================================
+   PARTICIPANT
+========================================================= */
+
+.botram-ticket-participant h4 {
+  margin: 9px 0 25px;
+
+  color: var(--ticket-navy);
+  font-family: var(--font-display), sans-serif;
+  font-size: 27px;
+  line-height: 1.15;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+
+  overflow-wrap: anywhere;
+}
+
+.botram-ticket-location {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+}
+
+.botram-ticket-location strong {
+  display: block;
+  margin-top: 8px;
+
+  color: var(--ticket-navy);
+  font-family: var(--font-body), sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  font-weight: 700;
+
+  overflow-wrap: anywhere;
+}
+
+/* =========================================================
+   MENU SELECTED
+========================================================= */
+
+.botram-ticket-menu {
+  position: relative;
+
+  margin-top: 29px;
+  padding: 21px 22px;
+
+  border: 1px solid rgba(97, 135, 243, 0.13);
+  border-radius: 15px;
+
+  background:
+    linear-gradient(
+      125deg,
+      #f1f3ff 0%,
+      #f7f7ff 100%
+    );
+}
+
+.botram-ticket-menu-info {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  margin-top: 13px;
+}
+
+.botram-ticket-menu-info > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 46px;
+  height: 46px;
+  flex: 0 0 46px;
+
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--ticket-lavender),
+      var(--ticket-blue)
+    );
+
+  color: #ffffff;
+  box-shadow: 0 5px 14px rgba(97, 135, 243, 0.2);
+}
+
+.botram-ticket-menu-info > div span {
+  font-family: var(--font-display), sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.botram-ticket-menu-info strong {
+  color: var(--ticket-navy);
+  font-family: var(--font-display), sans-serif;
+  font-size: 19px;
+  line-height: 1.25;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+
+  overflow-wrap: anywhere;
+}
+
+/* =========================================================
+   QR CODE
+========================================================= */
+
+.botram-ticket-qr-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding: 34px 0 27px;
+  text-align: center;
+}
+
+.botram-ticket-qr {
+  display: grid;
+  place-items: center;
+
+  padding: 15px;
+  margin-bottom: 20px;
+
+  border: 1px solid #e4e7f1;
+  border-radius: 18px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 8px 25px rgba(25, 34, 70, 0.055);
+}
+
+.botram-ticket-qr svg {
+  display: block;
+  width: 190px;
+  height: 190px;
+  max-width: 100%;
+}
+
+.botram-ticket-qr-section > .botram-ticket-label {
+  max-width: 280px;
+  color: var(--ticket-muted);
+  line-height: 1.7;
+}
+
+.botram-ticket-code {
+  display: block;
+  margin-top: 12px;
+
+  color: var(--ticket-navy);
+  font-family: var(--font-display), sans-serif;
+  font-size: 17px;
+  line-height: 1.3;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+
+  overflow-wrap: anywhere;
+}
+
+/* =========================================================
+   TICKET FOOTER
+========================================================= */
+
+.botram-ticket-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  padding-top: 19px;
+
+  border-top: 1px solid var(--ticket-border);
+
+  color: var(--ticket-muted);
+  font-family: var(--font-body), sans-serif;
+  font-size: 9px;
+  line-height: 1.5;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+/* =========================================================
+   DOWNLOAD ACTION
+========================================================= */
+
+.botram-ticket-actions {
+  margin-top: 27px;
+  text-align: center;
+}
+
+.botram-ticket-actions button {
+  width: 100%;
+  min-height: 58px;
+  padding: 16px 24px;
+
+  border: none;
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      120deg,
+      var(--ticket-blue),
+      var(--ticket-lavender)
+    );
+
+  color: #ffffff;
+  font-family: var(--font-body), sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+
+  box-shadow:
+    0 10px 25px rgba(97, 135, 243, 0.22);
+
+  cursor: pointer;
+  transition:
+    transform 200ms ease,
+    box-shadow 200ms ease,
+    opacity 200ms ease;
+}
+
+.botram-ticket-actions button:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 15px 30px rgba(97, 135, 243, 0.28);
+}
+
+.botram-ticket-actions button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+  transform: none;
+}
+
+.botram-ticket-actions p {
+  max-width: 400px;
+  margin: 13px auto 0;
+
+  color: var(--ticket-muted);
+  font-family: var(--font-body), sans-serif;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+/* =========================================================
+   IMPORTANT NOTE
+========================================================= */
+
+.botram-ticket-note {
+  margin: 30px 0 75px;
+  padding: 23px 24px;
+
+  border: 1px solid rgba(117, 105, 184, 0.16);
+  border-radius: 16px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 8px 25px rgba(25, 34, 70, 0.035);
+}
+
+.botram-ticket-note > span {
+  color: var(--ticket-lavender);
+  font-family: var(--font-body), sans-serif;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+}
+
+.botram-ticket-note p {
+  margin: 10px 0 0;
+
+  color: var(--ticket-muted);
+  font-family: var(--font-body), sans-serif;
+  font-size: 12px;
+  line-height: 1.85;
+}
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.botram-ticket-loading,
+.botram-ticket-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 65vh;
+  text-align: center;
+}
+
+.botram-ticket-loading p {
+  margin-top: 18px;
+  color: var(--ticket-muted);
+  font-family: var(--font-body), sans-serif;
+  font-size: 13px;
+}
+
+.botram-ticket-spinner {
+  width: 38px;
+  height: 38px;
+
+  border: 3px solid #e5e9f8;
+  border-top-color: var(--ticket-blue);
+  border-radius: 50%;
+
+  animation: botram-ticket-spin 0.8s linear infinite;
+}
+
+@keyframes botram-ticket-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================================================
+   ERROR
+========================================================= */
+
+.botram-ticket-error h1 {
+  margin: 18px 0 9px;
+
+  color: var(--ticket-navy);
+  font-family: var(--font-display), sans-serif;
+  font-size: 36px;
+  font-weight: 800;
+  letter-spacing: -0.045em;
+}
+
+.botram-ticket-error p {
+  color: var(--ticket-muted);
+  font-family: var(--font-body), sans-serif;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.botram-ticket-error a {
+  margin-top: 15px;
+
+  color: var(--ticket-blue);
+  font-family: var(--font-body), sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 768px) {
+  .botram-ticket-page {
+    padding-top: 65px;
+  }
+
+  .botram-ticket-container {
+    width: min(100%, 620px);
+  }
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+  .botram-ticket-page {
+    padding: 48px 16px 0;
+  }
+
+  .botram-ticket-intro {
+    margin-bottom: 30px;
+  }
+
+  .botram-ticket-eyebrow {
+    font-size: 9px;
+    letter-spacing: 0.12em;
+  }
+
+  .botram-ticket-intro h1 {
+    margin: 20px 0 13px;
+    font-size: clamp(42px, 11vw, 58px);
+    line-height: 1.02;
+    letter-spacing: -0.045em;
+  }
+
+  .botram-ticket-intro p {
+    max-width: 340px;
+    font-size: 13px;
+    line-height: 1.75;
+  }
+
+  .botram-ticket-card {
+    padding: 0 21px 23px;
+    border-radius: 20px;
+  }
+
+  .botram-ticket-card-header {
+    margin: 0 -21px;
+    padding: 23px 21px;
+  }
+
+  .botram-ticket-card-header h2 {
+    font-size: 20px;
+  }
+
+  .botram-ticket-card-header > div > span {
+    font-size: 8px;
+  }
+
+  .botram-ticket-edition {
+    min-width: 48px;
+    padding: 9px 11px;
+    font-size: 13px;
+  }
+
+  .botram-ticket-card-title {
+    padding: 25px 0 21px;
+  }
+
+  .botram-ticket-card-title h3 {
+    font-size: 30px;
+  }
+
+  .botram-ticket-divider {
+    margin-right: -21px;
+    margin-left: -21px;
+    margin-bottom: 27px;
+  }
+
+  .botram-ticket-participant h4 {
+    margin-bottom: 22px;
+    font-size: 23px;
+  }
+
+  .botram-ticket-location {
+    gap: 14px;
+  }
+
+  .botram-ticket-location strong {
+    font-size: 12px;
+  }
+
+  .botram-ticket-menu {
+    margin-top: 25px;
+    padding: 18px;
+  }
+
+  .botram-ticket-menu-info {
+    gap: 11px;
+  }
+
+  .botram-ticket-menu-info > div {
+    width: 42px;
+    height: 42px;
+    flex-basis: 42px;
+  }
+
+  .botram-ticket-menu-info strong {
+    font-size: 16px;
+  }
+
+  .botram-ticket-qr-section {
+    padding: 29px 0 23px;
+  }
+
+  .botram-ticket-qr {
+    padding: 12px;
+    border-radius: 15px;
+  }
+
+  .botram-ticket-qr svg {
+    width: 165px;
+    height: 165px;
+  }
+
+  .botram-ticket-code {
+    font-size: 15px;
+    letter-spacing: 0.07em;
+  }
+
+  .botram-ticket-card-footer {
+    gap: 8px;
+    font-size: 7px;
+    letter-spacing: 0.04em;
+  }
+
+  .botram-ticket-note {
+    margin: 25px 0 55px;
+    padding: 20px;
+  }
+
+  .botram-ticket-note p {
+    font-size: 11px;
+    line-height: 1.8;
+  }
+}
+
+/* =========================================================
+   EXTRA SMALL MOBILE
+========================================================= */
+
+@media (max-width: 360px) {
+  .botram-ticket-page {
+    padding-right: 12px;
+    padding-left: 12px;
+  }
+
+  .botram-ticket-card {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+
+  .botram-ticket-card-header {
+    margin-right: -16px;
+    margin-left: -16px;
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+
+  .botram-ticket-divider {
+    margin-right: -16px;
+    margin-left: -16px;
+  }
+
+  .botram-ticket-location {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .botram-ticket-card-title h3 {
+    font-size: 27px;
+  }
+}
+/* =========================================
+   PURPLE BACKGROUND + DECORATIVE CIRCLES
+========================================= */
+
+.botram-ticket-page {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at 8% 12%,
+      rgba(117, 105, 184, 0.18),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 92% 35%,
+      rgba(177, 157, 226, 0.2),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 45% 95%,
+      rgba(97, 135, 243, 0.12),
+      transparent 32%
+    ),
+    #f7f6fc;
+}
+
+.botram-ticket-page::before,
+.botram-ticket-page::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  border-radius: 50%;
+  filter: blur(2px);
+}
+
+.botram-ticket-page::before {
+  width: 380px;
+  height: 380px;
+  top: 100px;
+  left: -190px;
+  border: 1px solid rgba(117, 105, 184, 0.2);
+  box-shadow:
+    0 0 0 35px rgba(117, 105, 184, 0.035),
+    0 0 0 75px rgba(117, 105, 184, 0.025);
+}
+
+.botram-ticket-page::after {
+  width: 460px;
+  height: 460px;
+  right: -230px;
+  bottom: 80px;
+  border: 1px solid rgba(97, 135, 243, 0.2);
+  box-shadow:
+    0 0 0 40px rgba(97, 135, 243, 0.035),
+    0 0 0 85px rgba(97, 135, 243, 0.025);
+}
+
+/* =========================================
+   TITLE SHADOW
+========================================= */
+
+.botram-ticket-intro h1 {
+  text-shadow:
+    0 4px 0 rgba(117, 105, 184, 0.16),
+    0 8px 20px rgba(66, 48, 120, 0.24);
+}

@@ -1,7 +1,8 @@
-import { createClient } from "@supabase/supabase-js";
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+import { createBrowserClient } from "@supabase/ssr";
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
 if (!supabaseUrl || !supabaseKey) {
   throw new Error(
@@ -9,15 +10,7 @@ if (!supabaseUrl || !supabaseKey) {
   );
 }
 
-try {
-  new URL(supabaseUrl);
-} catch {
-  throw new Error(
-    "Supabase Project URL tidak valid. Periksa kembali .env.local"
-  );
-}
-
-export const supabase = createClient(
+export const supabase = createBrowserClient(
   supabaseUrl,
   supabaseKey
 );
