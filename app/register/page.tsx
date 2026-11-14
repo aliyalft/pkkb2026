@@ -12,15 +12,11 @@ import type { ChangeEvent, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import "./register.css";
 import {
-  Apple,
-  ArrowLeft,
   Check,
-  CupSoda,
   Fish,
   Leaf,
   Wheat,
   Utensils,
-  Upload,
   Soup,
   Candy,
 } from "lucide-react";
@@ -49,8 +45,24 @@ type MenuItem = {
   available: number;
 };
 
+type ApiResponse = {
+  success?: boolean;
+  message?: string;
+  id?: string;
+  ticketCode?: string;
+  menus?: MenuItem[];
+};
+
 const REGION_API =
   "https://www.emsifa.com/api-wilayah-indonesia/api";
+
+const MAX_FILE_SIZE = 3 * 1024 * 1024;
+
+const ALLOWED_TYPES = [
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+];
 
 const INITIAL_DATA: RegistrationData = {
   name: "",
@@ -63,6 +75,7 @@ const INITIAL_DATA: RegistrationData = {
 };
 
 /* ICON MAKANAN BERDASARKAN JENIS MENU */
+
 function FoodIcon({ name }: { name?: string }) {
   const lowerName = name?.toLowerCase() ?? "";
 
@@ -70,19 +83,40 @@ function FoodIcon({ name }: { name?: string }) {
     return <Fish size={22} strokeWidth={1.7} aria-hidden="true" />;
   }
 
-  if (lowerName.includes("sayur") || lowerName.includes("vegetable") || lowerName.includes("leaf")) {
+  if (
+    lowerName.includes("sayur") ||
+    lowerName.includes("vegetable") ||
+    lowerName.includes("leaf")
+  ) {
     return <Leaf size={22} strokeWidth={1.7} aria-hidden="true" />;
   }
 
-  if (lowerName.includes("gandum") || lowerName.includes("wheat") || lowerName.includes("roti") || lowerName.includes("bread")) {
+  if (
+    lowerName.includes("gandum") ||
+    lowerName.includes("wheat") ||
+    lowerName.includes("roti") ||
+    lowerName.includes("bread")
+  ) {
     return <Wheat size={22} strokeWidth={1.7} aria-hidden="true" />;
   }
 
-  if (lowerName.includes("makanan") || lowerName.includes("nasi") || lowerName.includes("bakso") || lowerName.includes("rice") || lowerName.includes("noodle")) {
+  if (
+    lowerName.includes("makanan") ||
+    lowerName.includes("nasi") ||
+    lowerName.includes("bakso") ||
+    lowerName.includes("rice") ||
+    lowerName.includes("noodle")
+  ) {
     return <Soup size={22} strokeWidth={1.7} aria-hidden="true" />;
   }
 
-  if (lowerName.includes("manis") || lowerName.includes("cake") || lowerName.includes("dessert") || lowerName.includes("candy") || lowerName.includes("sweet")) {
+  if (
+    lowerName.includes("manis") ||
+    lowerName.includes("cake") ||
+    lowerName.includes("dessert") ||
+    lowerName.includes("candy") ||
+    lowerName.includes("sweet")
+  ) {
     return <Candy size={22} strokeWidth={1.7} aria-hidden="true" />;
   }
 
@@ -95,7 +129,6 @@ function FoodIcon({ name }: { name?: string }) {
   );
 }
 
-      
 function CheckIcon() {
   return (
     <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
@@ -190,6 +223,7 @@ function SearchableRegionField({
 
   const filteredOptions = useMemo(() => {
     const keyword = value.trim().toLowerCase();
+
     if (!keyword) return options.slice(0, 30);
 
     return options
@@ -210,6 +244,7 @@ function SearchableRegionField({
     }
 
     document.addEventListener("mousedown", handleOutsideClick);
+
     return () =>
       document.removeEventListener("mousedown", handleOutsideClick);
   }, []);
@@ -288,6 +323,7 @@ function SearchableRegionField({
                     }}
                   >
                     <span>{option.name}</span>
+
                     {value === option.name && (
                       <span className="botram-option-check">
                         <CheckIcon />
@@ -333,6 +369,7 @@ export default function RegisterPage() {
   const fileRef = useRef<HTMLInputElement>(null);
   const stepPanelRef = useRef<HTMLElement>(null);
   const isFirstRender = useRef(true);
+  const submitLockRef = useRef(false);
 
   useEffect(() => {
     if (isFirstRender.current) {
@@ -348,6 +385,10 @@ export default function RegisterPage() {
     });
   }, [step]);
 
+  // ==========================================
+  // FETCH MENU STOCK
+  // ==========================================
+
   const fetchMenuStock = useCallback(async () => {
     setLoadingMenus(true);
     setMenuLoadError("");
@@ -356,10 +397,23 @@ export default function RegisterPage() {
       const response = await fetch("/api/botram/menu-stock", {
         cache: "no-store",
       });
-      const result = await response.json();
+
+      const responseText = await response.text();
+
+      let result: ApiResponse = {};
+
+      try {
+        result = responseText ? JSON.parse(responseText) : {};
+      } catch {
+        throw new Error(
+          `Respons server stok menu tidak valid (HTTP ${response.status}).`
+        );
+      }
 
       if (!response.ok) {
-        throw new Error(result.message || "Stok menu gagal dimuat.");
+        throw new Error(
+          result.message || "Stok menu gagal dimuat."
+        );
       }
 
       setMenus(Array.isArray(result.menus) ? result.menus : []);
@@ -400,6 +454,10 @@ export default function RegisterPage() {
     []
   );
 
+  // ==========================================
+  // FETCH CITY DATA
+  // ==========================================
+
   useEffect(() => {
     const controller = new AbortController();
 
@@ -427,18 +485,22 @@ export default function RegisterPage() {
             );
 
             if (!response.ok) {
-              throw new Error(`Gagal mengambil wilayah ${province.name}.`);
+              throw new Error(
+                `Gagal mengambil wilayah ${province.name}.`
+              );
             }
 
             return (await response.json()) as Region[];
           })
         );
 
-        setCities(
-          regencyResults
-            .flat()
-            .sort((a, b) => a.name.localeCompare(b.name, "id"))
-        );
+        if (!controller.signal.aborted) {
+          setCities(
+            regencyResults
+              .flat()
+              .sort((a, b) => a.name.localeCompare(b.name, "id"))
+          );
+        }
       } catch (err) {
         if (err instanceof Error && err.name !== "AbortError") {
           setError(
@@ -453,8 +515,13 @@ export default function RegisterPage() {
     }
 
     fetchCities();
+
     return () => controller.abort();
   }, []);
+
+  // ==========================================
+  // FETCH DISTRICT DATA
+  // ==========================================
 
   useEffect(() => {
     if (!data.cityId) {
@@ -481,9 +548,11 @@ export default function RegisterPage() {
 
         const result: Region[] = await response.json();
 
-        setDistricts(
-          result.sort((a, b) => a.name.localeCompare(b.name, "id"))
-        );
+        if (!controller.signal.aborted) {
+          setDistricts(
+            result.sort((a, b) => a.name.localeCompare(b.name, "id"))
+          );
+        }
       } catch (err) {
         if (err instanceof Error && err.name !== "AbortError") {
           setError("Data kecamatan gagal dimuat. Coba kembali.");
@@ -496,8 +565,13 @@ export default function RegisterPage() {
     }
 
     fetchDistricts();
+
     return () => controller.abort();
   }, [data.cityId]);
+
+  // ==========================================
+  // REGION HANDLERS
+  // ==========================================
 
   function handleCityInput(value: string) {
     setData((previous) => ({
@@ -507,6 +581,7 @@ export default function RegisterPage() {
       district: "",
       districtId: "",
     }));
+
     setDistricts([]);
     setError("");
   }
@@ -519,6 +594,7 @@ export default function RegisterPage() {
       district: "",
       districtId: "",
     }));
+
     setError("");
   }
 
@@ -528,6 +604,7 @@ export default function RegisterPage() {
       district: value,
       districtId: "",
     }));
+
     setError("");
   }
 
@@ -537,8 +614,13 @@ export default function RegisterPage() {
       district: option.name,
       districtId: option.id,
     }));
+
     setError("");
   }
+
+  // ==========================================
+  // STEP VALIDATION
+  // ==========================================
 
   function nextStep() {
     if (!data.name.trim()) {
@@ -603,21 +685,26 @@ export default function RegisterPage() {
     setStep(2);
   }
 
+  // ==========================================
+  // FILE VALIDATION
+  // ==========================================
+
   function handleFile(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
+
     if (!file) return;
 
-    const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
-
-    if (!allowedTypes.includes(file.type)) {
+    if (!ALLOWED_TYPES.includes(file.type)) {
       setError("Gunakan format JPG, PNG, atau WEBP.");
       event.target.value = "";
       setProof(null);
       return;
     }
 
-    if (file.size > 5 * 1024 * 1024) {
-      setError("Ukuran gambar maksimal 5 MB.");
+    if (file.size > MAX_FILE_SIZE) {
+      setError(
+        "Ukuran gambar maksimal 3 MB. Silakan kompres foto terlebih dahulu."
+      );
       event.target.value = "";
       setProof(null);
       return;
@@ -627,9 +714,14 @@ export default function RegisterPage() {
     setProof(file);
   }
 
+  // ==========================================
+  // REGISTER SUBMISSION
+  // ==========================================
+
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (isSubmitting) return;
+
+    if (submitLockRef.current || isSubmitting) return;
 
     if (!proof) {
       setError("Silakan upload bukti download TactLink.");
@@ -646,6 +738,7 @@ export default function RegisterPage() {
       return;
     }
 
+    submitLockRef.current = true;
     setIsSubmitting(true);
     setError("");
 
@@ -667,7 +760,28 @@ export default function RegisterPage() {
         body: formData,
       });
 
-      const result = await response.json();
+      const responseText = await response.text();
+
+      let result: ApiResponse = {};
+
+      try {
+        result = responseText ? JSON.parse(responseText) : {};
+      } catch {
+        console.error("BOTRAM INVALID API RESPONSE:", {
+          status: response.status,
+          body: responseText,
+        });
+
+        if (response.status === 413) {
+          throw new Error(
+            "Ukuran request terlalu besar. Silakan gunakan foto maksimal 3 MB."
+          );
+        }
+
+        throw new Error(
+          `Server memberikan respons tidak valid (HTTP ${response.status}). Silakan coba kembali.`
+        );
+      }
 
       if (!response.ok) {
         throw new Error(
@@ -675,20 +789,35 @@ export default function RegisterPage() {
         );
       }
 
-      if (!result.id) {
+      if (!result.success || !result.id) {
         throw new Error(
-          "ID tiket tidak ditemukan pada respons server. Silakan hubungi panitia."
+          result.message ||
+            "Data tiket tidak ditemukan. Silakan hubungi panitia."
         );
       }
 
-      router.push(`/ticket/${encodeURIComponent(String(result.id))}`);
-    } catch (err) {
-      setError(
-        err instanceof Error
-          ? err.message
-          : "Terjadi kesalahan. Silakan coba kembali."
+      router.push(
+        `/ticket/${encodeURIComponent(String(result.id))}`
       );
+    } catch (err) {
+      console.error("BOTRAM FRONTEND REGISTRATION ERROR:", err);
+
+      if (
+        err instanceof TypeError &&
+        err.message.toLowerCase().includes("fetch")
+      ) {
+        setError(
+          "Koneksi ke server gagal. Periksa internet kamu dan coba kembali."
+        );
+      } else {
+        setError(
+          err instanceof Error
+            ? err.message
+            : "Terjadi kesalahan. Silakan coba kembali."
+        );
+      }
     } finally {
+      submitLockRef.current = false;
       setIsSubmitting(false);
     }
   }
@@ -726,13 +855,21 @@ export default function RegisterPage() {
             <div className="botram-stepper-track">
               <div
                 className={`botram-stepper-progress ${
-                  step === 2 ? "step-two" : step === 3 ? "step-three" : ""
+                  step === 2
+                    ? "step-two"
+                    : step === 3
+                      ? "step-three"
+                      : ""
                 }`}
               />
             </div>
 
             <div className="botram-stepper-items">
-              <div className={`botram-step ${step === 1 ? "active" : "completed"}`}>
+              <div
+                className={`botram-step ${
+                  step === 1 ? "active" : "completed"
+                }`}
+              >
                 <div className="botram-step-number">
                   {step > 1 ? <CheckIcon /> : "01"}
                 </div>
@@ -740,7 +877,15 @@ export default function RegisterPage() {
                 <span>Informasi dasar</span>
               </div>
 
-              <div className={`botram-step ${step === 2 ? "active" : step > 2 ? "completed" : ""}`}>
+              <div
+                className={`botram-step ${
+                  step === 2
+                    ? "active"
+                    : step > 2
+                      ? "completed"
+                      : ""
+                }`}
+              >
                 <div className="botram-step-number">
                   {step > 2 ? <CheckIcon /> : "02"}
                 </div>
@@ -748,13 +893,19 @@ export default function RegisterPage() {
                 <span>Download & Upload Bukti</span>
               </div>
 
-              <div className={`botram-step ${step === 3 ? "active" : ""}`}>
+              <div
+                className={`botram-step ${
+                  step === 3 ? "active" : ""
+                }`}
+              >
                 <div className="botram-step-number">03</div>
                 <strong>Menu Botram</strong>
                 <span>Pilih makanan</span>
               </div>
             </div>
           </div>
+
+          {/* STEP 1: DATA PENGUNJUNG */}
 
           {step === 1 && (
             <section
@@ -776,25 +927,33 @@ export default function RegisterPage() {
 
               <div className="botram-fields">
                 <label className="botram-field">
-                  <span className="botram-label">NAMA LENGKAP <b>*</b></span>
+                  <span className="botram-label">
+                    NAMA LENGKAP <b>*</b>
+                  </span>
                   <input
                     type="text"
                     name="name"
                     placeholder="Masukkan nama lengkap"
                     value={data.name}
-                    onChange={(event) => updateField("name", event.target.value)}
+                    onChange={(event) =>
+                      updateField("name", event.target.value)
+                    }
                     required
                   />
                 </label>
 
                 <label className="botram-field">
-                  <span className="botram-label">NOMOR WHATSAPP <b>*</b></span>
+                  <span className="botram-label">
+                    NOMOR WHATSAPP <b>*</b>
+                  </span>
                   <input
                     type="tel"
                     name="phone"
                     placeholder="Contoh: 081234567890"
                     value={data.phone}
-                    onChange={(event) => updateField("phone", event.target.value)}
+                    onChange={(event) =>
+                      updateField("phone", event.target.value)
+                    }
                     required
                   />
                 </label>
@@ -808,7 +967,9 @@ export default function RegisterPage() {
                     name="email"
                     placeholder="nama@email.com"
                     value={data.email}
-                    onChange={(event) => updateField("email", event.target.value)}
+                    onChange={(event) =>
+                      updateField("email", event.target.value)
+                    }
                   />
                 </label>
 
@@ -861,6 +1022,8 @@ export default function RegisterPage() {
             </section>
           )}
 
+          {/* STEP 2: TACTLINK */}
+
           {step === 2 && (
             <section
               ref={stepPanelRef}
@@ -870,7 +1033,9 @@ export default function RegisterPage() {
               <div className="botram-section-heading">
                 <span className="botram-section-number">02</span>
                 <div>
-                  <span className="botram-eyebrow">TACTLINK APPLICATION</span>
+                  <span className="botram-eyebrow">
+                    TACTLINK APPLICATION
+                  </span>
                   <h2>Satu langkah lagi.</h2>
                   <p>
                     Download aplikasi TactLink dan unggah bukti sebagai bagian
@@ -884,6 +1049,7 @@ export default function RegisterPage() {
                   <div className="botram-app-logo">
                     <img src="/image/tactlink.png" alt="TactLink Logo" />
                   </div>
+
                   <div className="botram-download-info">
                     <span>PKKB OFFICIAL APPLICATION</span>
                     <h3>Download TactLink</h3>
@@ -931,7 +1097,9 @@ export default function RegisterPage() {
                   <strong>Butuh bantuan?</strong>
                   <small>Pelajari cara download aplikasi TactLink.</small>
                 </span>
-                <span className="botram-tutorial-action">LIHAT TUTORIAL</span>
+                <span className="botram-tutorial-action">
+                  LIHAT TUTORIAL
+                </span>
               </a>
 
               <div className="botram-upload-section">
@@ -966,8 +1134,8 @@ export default function RegisterPage() {
                       </span>
                       <strong>{proof.name}</strong>
                       <small>
-                        {(proof.size / 1024 / 1024).toFixed(2)} MB · Klik untuk
-                        mengganti gambar
+                        {(proof.size / 1024 / 1024).toFixed(2)} MB · Klik
+                        untuk mengganti gambar
                       </small>
                     </>
                   ) : (
@@ -976,7 +1144,7 @@ export default function RegisterPage() {
                         <UploadIcon />
                       </span>
                       <strong>Klik untuk mengunggah bukti</strong>
-                      <small>JPG, PNG, atau WEBP · Maksimal 5 MB</small>
+                      <small>JPG, PNG, atau WEBP · Maksimal 3 MB</small>
                     </>
                   )}
                 </button>
@@ -991,8 +1159,9 @@ export default function RegisterPage() {
                   }
                 />
                 <span>
-                  Saya menyatakan bahwa aplikasi TactLink telah berhasil diunduh
-                  dan bukti yang saya unggah sesuai dengan kondisi sebenarnya.
+                  Saya menyatakan bahwa aplikasi TactLink telah berhasil
+                  diunduh dan bukti yang saya unggah sesuai dengan kondisi
+                  sebenarnya.
                 </span>
               </label>
 
@@ -1011,6 +1180,7 @@ export default function RegisterPage() {
                 >
                   KEMBALI
                 </button>
+
                 <button
                   type="button"
                   onClick={nextToMenuStep}
@@ -1021,6 +1191,8 @@ export default function RegisterPage() {
               </div>
             </section>
           )}
+
+          {/* STEP 3: MENU BOTRAM */}
 
           {step === 3 && (
             <section
@@ -1082,8 +1254,8 @@ export default function RegisterPage() {
                         }}
                       >
                         <span className="botram-menu-icon">
-  <FoodIcon name={menu.name} />
-</span>
+                          <FoodIcon name={menu.name} />
+                        </span>
 
                         <span className="botram-menu-copy">
                           <strong>{menu.name}</strong>
@@ -1097,7 +1269,9 @@ export default function RegisterPage() {
 
                         <span className="botram-menu-check">
                           {soldOut ? (
-                            <span className="botram-menu-sold-label">HABIS</span>
+                            <span className="botram-menu-sold-label">
+                              HABIS
+                            </span>
                           ) : isSelected ? (
                             <span className="botram-menu-selected-mark">
                               <CheckIcon />
@@ -1132,6 +1306,7 @@ export default function RegisterPage() {
                 >
                   KEMBALI
                 </button>
+
                 <button
                   type="submit"
                   disabled={
