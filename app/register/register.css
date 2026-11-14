@@ -187,8 +187,8 @@
 .botram-stepper-track {
   position: absolute;
   top: 62px;
-  left: 16.666%;
-  right: 16.666%;
+  left: 25%;
+  right: 25%;
   height: 2px;
   background: #e6e4f0;
 }
@@ -201,7 +201,7 @@
 }
 
 .botram-stepper-progress.step-two {
-  width: 50%;
+  width: 100%;
 }
 
 .botram-stepper-progress.step-three {
@@ -211,7 +211,7 @@
 .botram-stepper-items {
   position: relative;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .botram-step {
@@ -1472,8 +1472,8 @@
 
   .botram-stepper-track {
     top: 49px;
-    left: 16.666%;
-    right: 16.666%;
+    left: 25%;
+    right: 25%;
   }
 
   .botram-step-number {

@@ -8,11 +8,10 @@ import {
   useRef,
   useState,
 } from "react";
-import type { ChangeEvent, FormEvent } from "react";
+import type { FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import "./register.css";
 import {
-  Check,
   Fish,
   Leaf,
   Wheat,
@@ -56,13 +55,6 @@ type ApiResponse = {
 const REGION_API =
   "https://www.emsifa.com/api-wilayah-indonesia/api";
 
-const MAX_FILE_SIZE = 3 * 1024 * 1024;
-
-const ALLOWED_TYPES = [
-  "image/jpeg",
-  "image/png",
-  "image/webp",
-];
 
 const INITIAL_DATA: RegistrationData = {
   name: "",
@@ -152,48 +144,6 @@ function ArrowLeftIcon() {
         strokeWidth="2.3"
         strokeLinecap="round"
         strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-function AppleIcon() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path
-        fill="currentColor"
-        d="M16.7 12.8c0-2.1 1.7-3.1 1.8-3.2a3.9 3.9 0 0 0-3.1-1.7c-1.3-.1-2.5.8-3.2.8-.7 0-1.7-.8-2.8-.8a4.1 4.1 0 0 0-3.5 2.1c-1.5 2.6-.4 6.4 1 8.5.7 1 1.5 2.1 2.5 2.1s1.4-.7 2.7-.7 1.7.7 2.8.7 1.8-1 2.5-2.1a9.4 9.4 0 0 0 1.1-2.4 3.7 3.7 0 0 1-1.8-3.3ZM14.6 6.5A3.9 3.9 0 0 0 15.5 3a4 4 0 0 0-3 1.5 3.7 3.7 0 0 0-.9 3.3 3.3 3.3 0 0 0 3-1.3Z"
-      />
-    </svg>
-  );
-}
-
-function GooglePlayIcon() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path fill="#34A853" d="M3.5 2.5 13 12 3.5 21.5V2.5Z" />
-      <path fill="#4285F4" d="m3.5 2.5 12 6.7-2.5 2.8-9.5-9.5Z" />
-      <path fill="#FBBC04" d="m15.5 9.2 4.1 2.3c.8.4.8.8 0 1.2l-4.1 2.3-2.5-3 2.5-2.8Z" />
-      <path fill="#EA4335" d="m3.5 21.5 12-6.7-2.5-2.8-9.5 9.5Z" />
-    </svg>
-  );
-}
-
-function UploadIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path
-        d="M12 15V3m0 0L7.5 7.5M12 3l4.5 4.5"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M5 14.5v3A2.5 2.5 0 0 0 7.5 20h9a2.5 2.5 0 0 0 2.5-2.5v-3"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
       />
     </svg>
   );
@@ -355,9 +305,6 @@ export default function RegisterPage() {
   const [loadingCities, setLoadingCities] = useState(true);
   const [loadingDistricts, setLoadingDistricts] = useState(false);
 
-  const [proof, setProof] = useState<File | null>(null);
-  const [downloadConfirmed, setDownloadConfirmed] = useState(false);
-
   const [menus, setMenus] = useState<MenuItem[]>([]);
   const [selectedMenu, setSelectedMenu] = useState("");
   const [loadingMenus, setLoadingMenus] = useState(false);
@@ -366,7 +313,6 @@ export default function RegisterPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
 
-  const fileRef = useRef<HTMLInputElement>(null);
   const stepPanelRef = useRef<HTMLElement>(null);
   const isFirstRender = useRef(true);
   const submitLockRef = useRef(false);
@@ -429,7 +375,7 @@ export default function RegisterPage() {
   }, []);
 
   useEffect(() => {
-    if (step !== 3) return;
+    if (step !== 2) return;
 
     fetchMenuStock();
 
@@ -660,58 +606,9 @@ export default function RegisterPage() {
     setStep(2);
   }
 
-  function nextToMenuStep() {
-    if (!proof) {
-      setError("Silakan upload bukti download TactLink.");
-      return;
-    }
-
-    if (!downloadConfirmed) {
-      setError("Silakan konfirmasi download TactLink.");
-      return;
-    }
-
-    setError("");
-    setStep(3);
-  }
-
   function previousStep() {
     setError("");
     setStep(1);
-  }
-
-  function previousToTactLink() {
-    setError("");
-    setStep(2);
-  }
-
-  // ==========================================
-  // FILE VALIDATION
-  // ==========================================
-
-  function handleFile(event: ChangeEvent<HTMLInputElement>) {
-    const file = event.target.files?.[0];
-
-    if (!file) return;
-
-    if (!ALLOWED_TYPES.includes(file.type)) {
-      setError("Gunakan format JPG, PNG, atau WEBP.");
-      event.target.value = "";
-      setProof(null);
-      return;
-    }
-
-    if (file.size > MAX_FILE_SIZE) {
-      setError(
-        "Ukuran gambar maksimal 3 MB. Silakan kompres foto terlebih dahulu."
-      );
-      event.target.value = "";
-      setProof(null);
-      return;
-    }
-
-    setError("");
-    setProof(file);
   }
 
   // ==========================================
@@ -723,15 +620,6 @@ export default function RegisterPage() {
 
     if (submitLockRef.current || isSubmitting) return;
 
-    if (!proof) {
-      setError("Silakan upload bukti download TactLink.");
-      return;
-    }
-
-    if (!downloadConfirmed) {
-      setError("Silakan konfirmasi download TactLink.");
-      return;
-    }
 
     if (!selectedMenu) {
       setError("Silakan pilih satu menu makanan Botram.");
@@ -752,7 +640,6 @@ export default function RegisterPage() {
       formData.append("cityId", data.cityId);
       formData.append("district", data.district);
       formData.append("districtId", data.districtId);
-      formData.append("proof", proof);
       formData.append("menuCode", selectedMenu);
 
       const response = await fetch("/api/botram/register", {
@@ -774,7 +661,7 @@ export default function RegisterPage() {
 
         if (response.status === 413) {
           throw new Error(
-            "Ukuran request terlalu besar. Silakan gunakan foto maksimal 3 MB."
+            "Data yang dikirim terlalu besar. Silakan periksa kembali isian formulir."
           );
         }
 
@@ -855,11 +742,7 @@ export default function RegisterPage() {
             <div className="botram-stepper-track">
               <div
                 className={`botram-stepper-progress ${
-                  step === 2
-                    ? "step-two"
-                    : step === 3
-                      ? "step-three"
-                      : ""
+                  step === 2 ? "step-two" : ""
                 }`}
               />
             </div>
@@ -878,27 +761,9 @@ export default function RegisterPage() {
               </div>
 
               <div
-                className={`botram-step ${
-                  step === 2
-                    ? "active"
-                    : step > 2
-                      ? "completed"
-                      : ""
-                }`}
+                className={`botram-step ${step === 2 ? "active" : ""}`}
               >
-                <div className="botram-step-number">
-                  {step > 2 ? <CheckIcon /> : "02"}
-                </div>
-                <strong>TactLink</strong>
-                <span>Download & Upload Bukti</span>
-              </div>
-
-              <div
-                className={`botram-step ${
-                  step === 3 ? "active" : ""
-                }`}
-              >
-                <div className="botram-step-number">03</div>
+                <div className="botram-step-number">02</div>
                 <strong>Menu Botram</strong>
                 <span>Pilih makanan</span>
               </div>
@@ -1022,7 +887,7 @@ export default function RegisterPage() {
             </section>
           )}
 
-          {/* STEP 2: TACTLINK */}
+          {/* STEP 2: MENU BOTRAM */}
 
           {step === 2 && (
             <section
@@ -1032,176 +897,6 @@ export default function RegisterPage() {
             >
               <div className="botram-section-heading">
                 <span className="botram-section-number">02</span>
-                <div>
-                  <span className="botram-eyebrow">
-                    TACTLINK APPLICATION
-                  </span>
-                  <h2>Satu langkah lagi.</h2>
-                  <p>
-                    Download aplikasi TactLink dan unggah bukti sebagai bagian
-                    dari proses registrasi Botram.
-                  </p>
-                </div>
-              </div>
-
-              <div className="botram-download-card">
-                <div className="botram-download-brand">
-                  <div className="botram-app-logo">
-                    <img src="/image/tactlink.png" alt="TactLink Logo" />
-                  </div>
-
-                  <div className="botram-download-info">
-                    <span>PKKB OFFICIAL APPLICATION</span>
-                    <h3>Download TactLink</h3>
-                    <p>Akses aplikasi melalui perangkat yang kamu gunakan.</p>
-                  </div>
-                </div>
-
-                <div className="botram-store-buttons">
-                  <a
-                    href="https://apps.apple.com/id/app/tactlink/id1469516661"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="botram-store-button"
-                  >
-                    <AppleIcon />
-                    <span>
-                      <small>Download on the</small>
-                      <strong>App Store</strong>
-                    </span>
-                  </a>
-
-                  <a
-                    href="https://play.google.com/store/apps/details?id=com.tactlink.app"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="botram-store-button"
-                  >
-                    <GooglePlayIcon />
-                    <span>
-                      <small>GET IT ON</small>
-                      <strong>Google Play</strong>
-                    </span>
-                  </a>
-                </div>
-              </div>
-
-              <a
-                href="https://www.youtube.com/shorts/JuYtU3TVvYo"
-                target="_blank"
-                rel="noreferrer"
-                className="botram-tutorial-link"
-              >
-                <span className="botram-tutorial-icon">?</span>
-                <span>
-                  <strong>Butuh bantuan?</strong>
-                  <small>Pelajari cara download aplikasi TactLink.</small>
-                </span>
-                <span className="botram-tutorial-action">
-                  LIHAT TUTORIAL
-                </span>
-              </a>
-
-              <div className="botram-upload-section">
-                <div className="botram-upload-heading">
-                  <div>
-                    <h3>Upload bukti download</h3>
-                    <p>
-                      Unggah screenshot aplikasi TactLink yang sudah terpasang
-                      di perangkatmu.
-                    </p>
-                  </div>
-                  <span className="botram-required-tag">WAJIB</span>
-                </div>
-
-                <input
-                  ref={fileRef}
-                  type="file"
-                  accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
-                  onChange={handleFile}
-                  hidden
-                />
-
-                <button
-                  type="button"
-                  className={`botram-upload-box ${proof ? "has-file" : ""}`}
-                  onClick={() => fileRef.current?.click()}
-                >
-                  {proof ? (
-                    <>
-                      <span className="botram-upload-symbol">
-                        <CheckIcon />
-                      </span>
-                      <strong>{proof.name}</strong>
-                      <small>
-                        {(proof.size / 1024 / 1024).toFixed(2)} MB · Klik
-                        untuk mengganti gambar
-                      </small>
-                    </>
-                  ) : (
-                    <>
-                      <span className="botram-upload-symbol">
-                        <UploadIcon />
-                      </span>
-                      <strong>Klik untuk mengunggah bukti</strong>
-                      <small>JPG, PNG, atau WEBP · Maksimal 3 MB</small>
-                    </>
-                  )}
-                </button>
-              </div>
-
-              <label className="botram-confirmation">
-                <input
-                  type="checkbox"
-                  checked={downloadConfirmed}
-                  onChange={(event) =>
-                    setDownloadConfirmed(event.target.checked)
-                  }
-                />
-                <span>
-                  Saya menyatakan bahwa aplikasi TactLink telah berhasil
-                  diunduh dan bukti yang saya unggah sesuai dengan kondisi
-                  sebenarnya.
-                </span>
-              </label>
-
-              {error && (
-                <div className="botram-error">
-                  <span>!</span> {error}
-                </div>
-              )}
-
-              <div className="botram-form-actions botram-step-two-actions">
-                <button
-                  type="button"
-                  onClick={previousStep}
-                  className="botram-button botram-button-outline"
-                  disabled={isSubmitting}
-                >
-                  KEMBALI
-                </button>
-
-                <button
-                  type="button"
-                  onClick={nextToMenuStep}
-                  className="botram-button botram-button-dark"
-                >
-                  PILIH MENU
-                </button>
-              </div>
-            </section>
-          )}
-
-          {/* STEP 3: MENU BOTRAM */}
-
-          {step === 3 && (
-            <section
-              ref={stepPanelRef}
-              className="botram-panel-card"
-              style={{ scrollMarginTop: "24px" }}
-            >
-              <div className="botram-section-heading">
-                <span className="botram-section-number">03</span>
                 <div>
                   <span className="botram-eyebrow">MENU BOTRAM</span>
                   <h2>Pilih sajianmu.</h2>
@@ -1300,7 +995,7 @@ export default function RegisterPage() {
               <div className="botram-form-actions botram-step-two-actions">
                 <button
                   type="button"
-                  onClick={previousToTactLink}
+                  onClick={previousStep}
                   className="botram-button botram-button-outline"
                   disabled={isSubmitting}
                 >

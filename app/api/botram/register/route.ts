@@ -1,53 +1,12 @@
 
 import { NextResponse } from "next/server";
-import { randomUUID } from "node:crypto";
 import { supabase } from "@/lib/supabase";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const BUCKET_NAME = "botram-proofs";
-
-// Maksimal 3 MB agar total request lebih aman untuk Vercel.
-const MAX_FILE_SIZE = 3 * 1024 * 1024;
-
-const ALLOWED_TYPES = [
-  "image/jpeg",
-  "image/png",
-  "image/webp",
-];
-
-const EXTENSION_MAP: Record<string, string> = {
-  "image/jpeg": "jpg",
-  "image/png": "png",
-  "image/webp": "webp",
-};
-
 export async function POST(request: Request) {
-  let uploadedPath: string | null = null;
-
-  // Menghapus file jika proses registrasi gagal.
-  const cleanupUploadedFile = async () => {
-    if (!uploadedPath) return;
-
-    const pathToRemove = uploadedPath;
-    uploadedPath = null;
-
-    try {
-      const { error } = await supabase.storage
-        .from(BUCKET_NAME)
-        .remove([pathToRemove]);
-
-      if (error) {
-        console.error("BOTRAM FILE CLEANUP ERROR:", error);
-      }
-    } catch (cleanupError) {
-      console.error("BOTRAM FILE CLEANUP FAILED:", cleanupError);
-    }
-  };
-
   try {
-    // Parse form data
     const formData = await request.formData();
 
     const name = String(formData.get("name") || "").trim();
@@ -61,22 +20,20 @@ export async function POST(request: Request) {
       .trim()
       .toUpperCase();
 
-    const proof = formData.get("proof");
-
     // ==========================================
     // 1. VALIDASI DATA PESERTA
     // ==========================================
 
     if (!name || !phone || !city || !cityId || !district) {
       return NextResponse.json(
-        { message: "Data pendaftaran belum lengkap." },
+        { success: false, message: "Data pendaftaran belum lengkap." },
         { status: 400 }
       );
     }
 
     if (!/^[0-9+\-\s()]{8,20}$/.test(phone)) {
       return NextResponse.json(
-        { message: "Format nomor WhatsApp tidak valid." },
+        { success: false, message: "Format nomor WhatsApp tidak valid." },
         { status: 400 }
       );
     }
@@ -86,48 +43,20 @@ export async function POST(request: Request) {
       !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
     ) {
       return NextResponse.json(
-        { message: "Format email tidak valid." },
+        { success: false, message: "Format email tidak valid." },
         { status: 400 }
       );
     }
 
     if (!menuCode) {
       return NextResponse.json(
-        { message: "Silakan pilih menu makanan." },
+        { success: false, message: "Silakan pilih menu makanan." },
         { status: 400 }
       );
     }
 
     // ==========================================
-    // 2. VALIDASI BUKTI FOTO
-    // ==========================================
-
-    if (!(proof instanceof File) || proof.size === 0) {
-      return NextResponse.json(
-        { message: "Bukti download wajib diunggah." },
-        { status: 400 }
-      );
-    }
-
-    if (!ALLOWED_TYPES.includes(proof.type)) {
-      return NextResponse.json(
-        { message: "Format bukti harus JPG, PNG, atau WEBP." },
-        { status: 400 }
-      );
-    }
-
-    if (proof.size > MAX_FILE_SIZE) {
-      return NextResponse.json(
-        {
-          message:
-            "Ukuran bukti terlalu besar. Maksimal 3 MB. Silakan kompres foto terlebih dahulu.",
-        },
-        { status: 413 }
-      );
-    }
-
-    // ==========================================
-    // 3. CEK KETERSEDIAAN MENU
+    // 2. CEK KETERSEDIAAN MENU
     // ==========================================
 
     const { data: menu, error: menuError } = await supabase
@@ -140,7 +69,10 @@ export async function POST(request: Request) {
       console.error("BOTRAM MENU VALIDATION ERROR:", menuError);
 
       return NextResponse.json(
-        { message: "Gagal memeriksa ketersediaan menu." },
+        {
+          success: false,
+          message: "Gagal memeriksa ketersediaan menu.",
+        },
         { status: 500 }
       );
     }
@@ -148,6 +80,7 @@ export async function POST(request: Request) {
     if (!menu || !menu.is_active) {
       return NextResponse.json(
         {
+          success: false,
           message:
             "Menu tersebut sudah tidak tersedia. Silakan pilih menu lainnya.",
         },
@@ -161,6 +94,7 @@ export async function POST(request: Request) {
     if (available <= 0) {
       return NextResponse.json(
         {
+          success: false,
           message:
             "Maaf, stok menu tersebut sudah habis. Silakan pilih menu lainnya.",
         },
@@ -169,31 +103,7 @@ export async function POST(request: Request) {
     }
 
     // ==========================================
-    // 4. UPLOAD BUKTI KE SUPABASE STORAGE
-    // ==========================================
-
-    const extension = EXTENSION_MAP[proof.type];
-    const fileName = `${randomUUID()}.${extension}`;
-
-    uploadedPath = `registrations/${fileName}`;
-
-    const { error: uploadError } = await supabase.storage
-      .from(BUCKET_NAME)
-      .upload(uploadedPath, proof, {
-        contentType: proof.type,
-        upsert: false,
-      });
-
-    if (uploadError) {
-      console.error("BOTRAM UPLOAD ERROR:", uploadError);
-
-      throw new Error(
-        `Upload bukti gagal: ${uploadError.message}`
-      );
-    }
-
-    // ==========================================
-    // 5. SIMPAN REGISTRASI DAN KLAIM STOK
+    // 3. SIMPAN REGISTRASI DAN KLAIM STOK
     // ==========================================
 
     const { data: registration, error: registrationError } =
@@ -204,13 +114,11 @@ export async function POST(request: Request) {
         p_city: city,
         p_city_id: cityId,
         p_district: district,
-        p_proof_path: uploadedPath,
+        p_proof_path: null,
         p_menu_code: menuCode,
       });
 
     if (registrationError) {
-      await cleanupUploadedFile();
-
       if (
         registrationError.message.includes(
           "MENU_STOCK_UNAVAILABLE"
@@ -218,6 +126,7 @@ export async function POST(request: Request) {
       ) {
         return NextResponse.json(
           {
+            success: false,
             message:
               "Menu sudah tidak tersedia atau stoknya baru saja habis. Silakan pilih menu lainnya.",
           },
@@ -232,6 +141,7 @@ export async function POST(request: Request) {
 
       return NextResponse.json(
         {
+          success: false,
           message:
             "Registrasi gagal disimpan. Silakan coba kembali.",
         },
@@ -240,7 +150,7 @@ export async function POST(request: Request) {
     }
 
     // ==========================================
-    // 6. VALIDASI HASIL REGISTRASI
+    // 4. VALIDASI HASIL REGISTRASI
     // ==========================================
 
     if (
@@ -253,20 +163,15 @@ export async function POST(request: Request) {
         registration
       );
 
-      await cleanupUploadedFile();
-
       return NextResponse.json(
         {
+          success: false,
           message:
             "Registrasi tersimpan tetapi data tiket tidak lengkap. Silakan hubungi panitia.",
         },
         { status: 500 }
       );
     }
-
-    // Registrasi berhasil.
-    // Jangan hapus foto yang sudah terhubung dengan database.
-    uploadedPath = null;
 
     return NextResponse.json(
       {
@@ -280,8 +185,6 @@ export async function POST(request: Request) {
       { status: 201 }
     );
   } catch (error) {
-    await cleanupUploadedFile();
-
     console.error("BOTRAM REGISTRATION ERROR:", error);
 
     return NextResponse.json(
